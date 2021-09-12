@@ -57,6 +57,8 @@ public class PanelHome extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
 
+        setMinimumSize(new java.awt.Dimension(1000, 500));
+        setPreferredSize(new java.awt.Dimension(1000, 500));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTabbedPane1.setBackground(new java.awt.Color(204, 204, 255));
@@ -259,7 +261,7 @@ public class PanelHome extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Yu Gothic", 3, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 102, 102));
         jLabel1.setText("$ ...");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1137, 0, 142, 68));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 142, 68));
 
         jLabel2.setFont(new java.awt.Font("Tw Cen MT", 0, 48)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -270,7 +272,7 @@ public class PanelHome extends javax.swing.JPanel {
         btnLogout.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(255, 102, 102));
         btnLogout.setText("Logout");
-        add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(1143, 458, 124, 46));
+        add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 440, 124, 46));
     }// </editor-fold>//GEN-END:initComponents
 
 
