@@ -32,89 +32,44 @@ public class PanelLogin extends javax.swing.JPanel {
         usernameText = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         btnRegister = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(204, 204, 255));
+        setBackground(new java.awt.Color(255, 255, 255));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel1.setText("Password");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 420, -1, -1));
 
         passwordText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        add(passwordText, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 420, 225, -1));
 
         usernameText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        add(usernameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 225, -1));
 
         jLabel3.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel3.setText("Username");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, -1, -1));
 
-        btnLogin.setBackground(new java.awt.Color(0, 0, 255));
+        btnLogin.setBackground(new java.awt.Color(0, 153, 51));
         btnLogin.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnLogin.setText("Login");
+        add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 480, 164, -1));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel2.setText("Login using user credentials");
-
-        btnRegister.setBackground(new java.awt.Color(0, 0, 255));
+        btnRegister.setBackground(new java.awt.Color(0, 204, 204));
         btnRegister.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnRegister.setText("Register");
+        add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, 165, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
         jLabel4.setText("Incorrect user or password");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 460, 179, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jLabel1))
-                                    .addGap(74, 74, 74)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(usernameText, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-                                        .addComponent(passwordText)))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGap(3, 3, 3)
-                                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(73, 73, 73)
-                                    .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(299, 299, 299))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(388, 388, 388)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(321, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(jLabel2)
-                .addGap(62, 62, 62)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addComponent(usernameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(50, 50, 50)
-                .addComponent(jLabel4)
-                .addGap(49, 49, 49)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLogin)
-                    .addComponent(btnRegister))
-                .addContainerGap(109, Short.MAX_VALUE))
-        );
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LOGO UCU TRUEQUE (1).png"))); // NOI18N
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 798, 328));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -122,9 +77,9 @@ public class PanelLogin extends javax.swing.JPanel {
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnRegister;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPasswordField passwordText;
     private javax.swing.JTextField usernameText;
     // End of variables declaration//GEN-END:variables

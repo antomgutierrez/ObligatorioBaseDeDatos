@@ -57,6 +57,8 @@ public class PanelHome extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
 
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         jTabbedPane1.setBackground(new java.awt.Color(204, 204, 255));
         jTabbedPane1.setForeground(new java.awt.Color(255, 114, 101));
         jTabbedPane1.setFont(new java.awt.Font("Tw Cen MT", 0, 24)); // NOI18N
@@ -252,52 +254,23 @@ public class PanelHome extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Browse", browseTab);
 
+        add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 75, -1, -1));
+
         jLabel1.setFont(new java.awt.Font("Yu Gothic", 3, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 102, 102));
         jLabel1.setText("$ ...");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1137, 0, 142, 68));
 
         jLabel2.setFont(new java.awt.Font("Tw Cen MT", 0, 48)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("UCUTRUEQUE");
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 13, 773, 43));
 
         btnLogout.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(255, 102, 102));
         btnLogout.setText("Logout");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTabbedPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
+        add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(1143, 458, 124, 46));
     }// </editor-fold>//GEN-END:initComponents
 
 
