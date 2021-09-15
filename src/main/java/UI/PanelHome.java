@@ -80,7 +80,6 @@ public class PanelHome extends javax.swing.JPanel {
         btnReplyMessage = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        btnLogout = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1000, 500));
         setPreferredSize(new java.awt.Dimension(1000, 500));
@@ -469,11 +468,6 @@ public class PanelHome extends javax.swing.JPanel {
         jLabel2.setText("UCUTRUEQUE");
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 13, 773, 43));
-
-        btnLogout.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnLogout.setForeground(new java.awt.Color(255, 102, 102));
-        btnLogout.setText("Logout");
-        add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 440, 124, 46));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -481,7 +475,6 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JPanel browseTab;
     private javax.swing.JButton btnAcceptOffer;
     private javax.swing.JButton btnAsk;
-    private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnOffer;
     private javax.swing.JButton btnPublish;
     private javax.swing.JButton btnRejectOffer;
