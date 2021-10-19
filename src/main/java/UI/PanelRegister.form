@@ -29,7 +29,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="passwordText3" pref="314" max="32767" attributes="0"/>
+                                  <Component id="passwordText3" max="32767" attributes="0"/>
                                   <Component id="passwordText2" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
@@ -61,17 +61,18 @@
                                   </Group>
                                   <Component id="passwordText7" alignment="0" min="-2" pref="314" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lblPasswordError6" min="-2" pref="233" max="-2" attributes="0"/>
+                                  <Component id="lblPasswordError8" min="-2" pref="233" max="-2" attributes="0"/>
                                   <Component id="lblPasswordError4" min="-2" pref="279" max="-2" attributes="0"/>
-                                  <Component id="lblPasswordError7" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
-                                  <Component id="lblUserError" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
-                                  <Component id="lblPasswordError" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
-                                  <Component id="lblPasswordError1" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
-                                  <Component id="lblPasswordError8" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
+                                  <Component id="lblPasswordError6" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
                                   <Component id="lblPasswordError9" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
+                                  <Component id="lblPasswordError7" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
+                                  <Component id="lblUserError" min="-2" pref="344" max="-2" attributes="0"/>
+                                  <Component id="lblPasswordError" alignment="0" min="-2" pref="328" max="-2" attributes="0"/>
+                                  <Component id="lblPasswordError1" alignment="0" min="-2" pref="233" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -105,10 +106,9 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
@@ -165,7 +165,7 @@
                           <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jComboBox1" alignment="0" min="-2" pref="34" max="-2" attributes="0"/>
+                                  <Component id="jComboBox1" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                   <Component id="lblPasswordError6" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
@@ -186,30 +186,29 @@
                           <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="lblUserError" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="lblPasswordError" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="usernameText" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="passwordText" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="passwordText1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblPasswordError1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="usernameText" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblUserError" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="passwordText" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblPasswordError" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="passwordText1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="lblPasswordError1" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace pref="19" max="32767" attributes="0"/>
                       <Component id="btnGoBack" min="-2" max="-2" attributes="0"/>
@@ -231,7 +230,8 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dubai" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Password"/>
+        <Property name="text" type="java.lang.String" value="Contrase&#xf1;a"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="passwordText">
@@ -253,7 +253,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dubai" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Username"/>
+        <Property name="text" type="java.lang.String" value="Nombre de usuario"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -272,7 +272,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Register"/>
+        <Property name="text" type="java.lang.String" value="Registrarse"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblUserError">
@@ -283,7 +283,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="User error"/>
+        <Property name="text" type="java.lang.String" value="El usuario no puede estar vacio / no esta disponible"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblPasswordError">
@@ -294,7 +294,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Password error"/>
+        <Property name="text" type="java.lang.String" value="La contrase&#xf1;a no puede estar vacia / es muy simple"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnGoBack">
@@ -305,7 +305,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Back"/>
+        <Property name="text" type="java.lang.String" value="Atras"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
@@ -313,7 +313,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dubai" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Repeat Password"/>
+        <Property name="text" type="java.lang.String" value="Reperir contrase&#xf1;a"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="passwordText1">
@@ -331,7 +331,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Must be equals"/>
+        <Property name="text" type="java.lang.String" value="Las contrase&#xf1;as deben coincidir"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
@@ -339,7 +339,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dubai" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Name"/>
+        <Property name="text" type="java.lang.String" value="Nombre"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="passwordText2">
@@ -357,7 +357,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Put your name"/>
+        <Property name="text" type="java.lang.String" value="El nombre no puede estar vacio"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
@@ -365,7 +365,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dubai" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Last Name"/>
+        <Property name="text" type="java.lang.String" value="Apellido"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="passwordText3">
@@ -383,7 +383,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Put your last name"/>
+        <Property name="text" type="java.lang.String" value="El apellido no puede estar vacio"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
@@ -391,7 +391,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dubai" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Date of birth"/>
+        <Property name="text" type="java.lang.String" value="Fecha de nacimiento"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblPasswordError4">
@@ -402,7 +402,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Select a correct date or must to be  +18 yo"/>
+        <Property name="text" type="java.lang.String" value="La fecha ingresada no es correcta"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
@@ -410,7 +410,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dubai" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Department"/>
+        <Property name="text" type="java.lang.String" value="Departamento"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblPasswordError6">
@@ -421,7 +421,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Department cannot be empty"/>
+        <Property name="text" type="java.lang.String" value="El departamento no puede estar vacio"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel10">
@@ -447,7 +447,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Email error"/>
+        <Property name="text" type="java.lang.String" value="Email no valido"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="comboDay">
@@ -497,17 +497,17 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel11">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Day"/>
+        <Property name="text" type="java.lang.String" value="Dia"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel12">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Month"/>
+        <Property name="text" type="java.lang.String" value="Mes"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel13">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Year"/>
+        <Property name="text" type="java.lang.String" value="A&#xf1;o"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="passwordText8">
@@ -522,7 +522,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dubai" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Phone"/>
+        <Property name="text" type="java.lang.String" value="Telefono"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel15">
@@ -563,7 +563,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Phone number cannt be empty"/>
+        <Property name="text" type="java.lang.String" value="El telefono no puede estar vacio"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblPasswordError9">
@@ -574,7 +574,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="CI cannot be empty"/>
+        <Property name="text" type="java.lang.String" value="La CI no puede estar vacia"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -37,7 +37,7 @@ public class PanelConfirmation extends javax.swing.JPanel {
 
         btnYes.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnYes.setForeground(new java.awt.Color(255, 102, 102));
-        btnYes.setText("Yes");
+        btnYes.setText("Si");
 
         btnNo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnNo.setForeground(new java.awt.Color(255, 102, 102));

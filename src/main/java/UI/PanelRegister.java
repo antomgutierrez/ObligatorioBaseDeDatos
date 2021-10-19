@@ -67,74 +67,75 @@ public class PanelRegister extends javax.swing.JPanel {
         lblPasswordError9 = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
-        jLabel1.setText("Password");
+        jLabel1.setText("Contraseña");
+        jLabel1.setToolTipText("");
 
         passwordText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         usernameText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
-        jLabel3.setText("Username");
+        jLabel3.setText("Nombre de usuario");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel2.setText("Register");
 
         btnRegister.setBackground(new java.awt.Color(0, 0, 255));
         btnRegister.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnRegister.setText("Register");
+        btnRegister.setText("Registrarse");
 
         lblUserError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblUserError.setForeground(new java.awt.Color(255, 0, 0));
-        lblUserError.setText("User error");
+        lblUserError.setText("El usuario no puede estar vacio / no esta disponible");
 
         lblPasswordError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPasswordError.setForeground(new java.awt.Color(255, 0, 0));
-        lblPasswordError.setText("Password error");
+        lblPasswordError.setText("La contraseña no puede estar vacia / es muy simple");
 
         btnGoBack.setBackground(new java.awt.Color(0, 0, 255));
         btnGoBack.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnGoBack.setText("Back");
+        btnGoBack.setText("Atras");
 
         jLabel4.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
-        jLabel4.setText("Repeat Password");
+        jLabel4.setText("Reperir contraseña");
 
         passwordText1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         lblPasswordError1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPasswordError1.setForeground(new java.awt.Color(255, 0, 0));
-        lblPasswordError1.setText("Must be equals");
+        lblPasswordError1.setText("Las contraseñas deben coincidir");
 
         jLabel5.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
-        jLabel5.setText("Name");
+        jLabel5.setText("Nombre");
 
         passwordText2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         lblPasswordError2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPasswordError2.setForeground(new java.awt.Color(255, 0, 0));
-        lblPasswordError2.setText("Put your name");
+        lblPasswordError2.setText("El nombre no puede estar vacio");
 
         jLabel6.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
-        jLabel6.setText("Last Name");
+        jLabel6.setText("Apellido");
 
         passwordText3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         lblPasswordError3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPasswordError3.setForeground(new java.awt.Color(255, 0, 0));
-        lblPasswordError3.setText("Put your last name");
+        lblPasswordError3.setText("El apellido no puede estar vacio");
 
         jLabel7.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
-        jLabel7.setText("Date of birth");
+        jLabel7.setText("Fecha de nacimiento");
 
         lblPasswordError4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPasswordError4.setForeground(new java.awt.Color(255, 0, 0));
-        lblPasswordError4.setText("Select a correct date or must to be  +18 yo");
+        lblPasswordError4.setText("La fecha ingresada no es correcta");
 
         jLabel9.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
-        jLabel9.setText("Department");
+        jLabel9.setText("Departamento");
 
         lblPasswordError6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPasswordError6.setForeground(new java.awt.Color(255, 0, 0));
-        lblPasswordError6.setText("Department cannot be empty");
+        lblPasswordError6.setText("El departamento no puede estar vacio");
 
         jLabel10.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel10.setText("Email");
@@ -143,7 +144,7 @@ public class PanelRegister extends javax.swing.JPanel {
 
         lblPasswordError7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPasswordError7.setForeground(new java.awt.Color(255, 0, 0));
-        lblPasswordError7.setText("Email error");
+        lblPasswordError7.setText("Email no valido");
 
         comboDay.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -151,16 +152,16 @@ public class PanelRegister extends javax.swing.JPanel {
 
         comboYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel11.setText("Day");
+        jLabel11.setText("Dia");
 
-        jLabel12.setText("Month");
+        jLabel12.setText("Mes");
 
-        jLabel13.setText("Year");
+        jLabel13.setText("Año");
 
         passwordText8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
-        jLabel14.setText("Phone");
+        jLabel14.setText("Telefono");
 
         jLabel15.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel15.setText("CI");
@@ -171,11 +172,11 @@ public class PanelRegister extends javax.swing.JPanel {
 
         lblPasswordError8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPasswordError8.setForeground(new java.awt.Color(255, 0, 0));
-        lblPasswordError8.setText("Phone number cannt be empty");
+        lblPasswordError8.setText("El telefono no puede estar vacio");
 
         lblPasswordError9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPasswordError9.setForeground(new java.awt.Color(255, 0, 0));
-        lblPasswordError9.setText("CI cannot be empty");
+        lblPasswordError9.setText("La CI no puede estar vacia");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -193,7 +194,7 @@ public class PanelRegister extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(passwordText3, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+                                    .addComponent(passwordText3)
                                     .addComponent(passwordText2))
                                 .addGap(88, 88, 88)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -219,16 +220,17 @@ public class PanelRegister extends javax.swing.JPanel {
                                         .addComponent(passwordText9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(passwordText7, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(88, 88, 88)
+                                .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblPasswordError6, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblPasswordError4, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblPasswordError7, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblUserError, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblPasswordError1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblPasswordError8, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblPasswordError9, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(lblPasswordError4, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPasswordError6, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPasswordError9, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPasswordError7, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblUserError, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPasswordError1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(22, 22, 22))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel15)
@@ -252,8 +254,7 @@ public class PanelRegister extends javax.swing.JPanel {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(usernameText, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -317,25 +318,24 @@ public class PanelRegister extends javax.swing.JPanel {
                                 .addComponent(lblPasswordError7))
                             .addComponent(jLabel10))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblUserError)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblPasswordError)
-                                .addGap(24, 24, 24))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(usernameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(9, 9, 9)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel1)
-                                    .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(15, 15, 15)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(passwordText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
-                            .addComponent(lblPasswordError1))
+                            .addComponent(jLabel3)
+                            .addComponent(usernameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblUserError))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPasswordError))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(passwordText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblPasswordError1)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                         .addComponent(btnGoBack)
                         .addGap(32, 32, 32))

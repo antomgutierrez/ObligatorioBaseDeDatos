@@ -40,8 +40,8 @@ public class PanelLogin extends javax.swing.JPanel {
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
-        jLabel1.setText("Password");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 420, -1, -1));
+        jLabel1.setText("Contraseña");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 420, -1, -1));
 
         passwordText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         add(passwordText, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 420, 225, -1));
@@ -50,17 +50,17 @@ public class PanelLogin extends javax.swing.JPanel {
         add(usernameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 225, -1));
 
         jLabel3.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
-        jLabel3.setText("Username");
+        jLabel3.setText("Usuario");
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, -1, -1));
 
         btnLogin.setBackground(new java.awt.Color(0, 153, 51));
         btnLogin.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnLogin.setText("Login");
+        btnLogin.setText("Ingresar");
         add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 480, 164, -1));
 
         btnRegister.setBackground(new java.awt.Color(0, 204, 204));
         btnRegister.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnRegister.setText("Register");
+        btnRegister.setText("Registrarse");
         add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, 165, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N

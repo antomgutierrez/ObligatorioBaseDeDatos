@@ -124,7 +124,7 @@ public class PanelHome extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("My products", myProductsTab);
+        jTabbedPane1.addTab("Mis productos", myProductsTab);
 
         jCheckBox1.setText("jCheckBox1");
 
@@ -161,11 +161,12 @@ public class PanelHome extends javax.swing.JPanel {
         btnOffer.setForeground(new java.awt.Color(255, 102, 102));
         btnOffer.setText("Offer");
 
-        jLabel7.setText("Value from");
+        jLabel7.setText("Valor desde");
 
-        jLabel8.setText("Category");
+        jLabel8.setText("Categoria");
+        jLabel8.setToolTipText("");
 
-        jLabel10.setText("Value to");
+        jLabel10.setText("Valor hasta");
 
         javax.swing.GroupLayout browseTabLayout = new javax.swing.GroupLayout(browseTab);
         browseTab.setLayout(browseTabLayout);
@@ -234,7 +235,7 @@ public class PanelHome extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Browse", browseTab);
+        jTabbedPane1.addTab("Explorar", browseTab);
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -268,19 +269,19 @@ public class PanelHome extends javax.swing.JPanel {
 
         btnRemoveOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnRemoveOffer.setForeground(new java.awt.Color(255, 102, 102));
-        btnRemoveOffer.setText("Remove");
+        btnRemoveOffer.setText("Eliminar");
 
         btnAcceptOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAcceptOffer.setForeground(new java.awt.Color(255, 102, 102));
-        btnAcceptOffer.setText("Accept");
+        btnAcceptOffer.setText("Aceptar");
 
         btnRejectOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnRejectOffer.setForeground(new java.awt.Color(255, 102, 102));
-        btnRejectOffer.setText("Reject");
+        btnRejectOffer.setText("Rechazar");
 
         btnCounterOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnCounterOffer.setForeground(new java.awt.Color(255, 102, 102));
-        btnCounterOffer.setText(" Counteroffer");
+        btnCounterOffer.setText("Contraoferta");
 
         javax.swing.GroupLayout offersTabLayout = new javax.swing.GroupLayout(offersTab);
         offersTab.setLayout(offersTabLayout);
@@ -324,7 +325,7 @@ public class PanelHome extends javax.swing.JPanel {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Offers", offersTab);
+        jTabbedPane1.addTab("Ofertas", offersTab);
 
         jLabel13.setText("Sent");
 
@@ -358,7 +359,7 @@ public class PanelHome extends javax.swing.JPanel {
 
         btnReplyMessage.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnReplyMessage.setForeground(new java.awt.Color(255, 102, 102));
-        btnReplyMessage.setText("Reply");
+        btnReplyMessage.setText("Responder");
 
         javax.swing.GroupLayout messagesTabLayout = new javax.swing.GroupLayout(messagesTab);
         messagesTab.setLayout(messagesTabLayout);
@@ -391,25 +392,25 @@ public class PanelHome extends javax.swing.JPanel {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Messages", messagesTab);
+        jTabbedPane1.addTab("Mensajes", messagesTab);
 
-        jLabel3.setText("Name");
+        jLabel3.setText("Nombre");
 
-        jLabel4.setText("Value");
+        jLabel4.setText("Valor");
 
-        jLabel5.setText("Category");
+        jLabel5.setText("Categoria");
 
         comboCategories.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel6.setText("Product image");
+        jLabel6.setText("Imagen");
 
         btnPublish.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnPublish.setForeground(new java.awt.Color(255, 102, 102));
-        btnPublish.setText("Publish");
+        btnPublish.setText("Publicar");
 
-        jLabel9.setText("Quantity");
+        jLabel9.setText("Cantidad");
 
-        jLabel15.setText("Description");
+        jLabel15.setText("Descripcion");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -450,7 +451,7 @@ public class PanelHome extends javax.swing.JPanel {
                                     .addComponent(jLabel5)
                                     .addGap(18, 18, 18)
                                     .addComponent(comboCategories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE)
                         .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6))
@@ -489,7 +490,7 @@ public class PanelHome extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Publish", publishTab);
+        jTabbedPane1.addTab("Publicar", publishTab);
 
         add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 980, -1));
 
@@ -504,9 +505,9 @@ public class PanelHome extends javax.swing.JPanel {
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 470, 43));
 
-        btnLogout.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnLogout.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(255, 102, 102));
-        btnLogout.setText("Logout");
+        btnLogout.setText("Cerrar sesion");
         add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 10, 124, 46));
     }// </editor-fold>//GEN-END:initComponents
 
