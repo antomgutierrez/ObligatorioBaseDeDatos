@@ -7,10 +7,16 @@ package UI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -20,10 +26,12 @@ import java.util.regex.Matcher;
  */
 public class PanelRegister extends javax.swing.JPanel {
     
+    private static Connection con;
     /**
      * Creates new form PanelLogin
      */
-    public PanelRegister() {
+    public PanelRegister(Connection con) {
+        this.con = con;
         initComponents();
     }
     
@@ -117,9 +125,11 @@ public class PanelRegister extends javax.swing.JPanel {
         if (!ci.getText().isBlank()) {
             try {
                 Integer.parseInt(ci.getText());
-                return true;
-            }
-            catch (Exception e) {
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(String.format("SELECT CI FROM Personas WHERE CI =%s", ci.getText()));
+                return !rs.next();
+            } catch (SQLException ex) {
+                Logger.getLogger(PanelRegister.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
             }
         }
@@ -130,14 +140,30 @@ public class PanelRegister extends javax.swing.JPanel {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         Pattern p = Pattern.compile(ePattern);
         Matcher m = p.matcher(email.getText());
-        return m.matches();
+        if (!m.matches())
+            return false;
+        
+        try {
+            emailError.setText("El email ya esta en uso");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(String.format("SELECT Email FROM Personas WHERE Email ='%s'", email.getText()));
+            return !rs.next();
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelRegister.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
     
     public boolean validateUsername() {
         if (!username.getText().isBlank()) {
-            // busco en la base de datos si existe ese username
-            usernameError.setText("El nombre de usuario no esta disponible");
-            return false;
+            try {
+                usernameError.setText("El nombre de usuario ya esta en uso");
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(String.format("SELECT NombreDeUsuario FROM Personas WHERE NombreDeUsuario ='%s'", username.getText()));
+                return !rs.next();
+            } catch (SQLException ex) {
+                Logger.getLogger(PanelRegister.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         usernameError.setText("El nombre de usuario no puede estar vacio");
         return false;
