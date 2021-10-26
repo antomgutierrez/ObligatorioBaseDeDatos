@@ -5,11 +5,15 @@
  */
 package UI;
 
+import java.sql.Connection;
+
 /**
  *
  * @author Administrador
  */
 public class main extends javax.swing.JFrame {
+    
+    static Connection con;
 
     /**
      * Creates new form main
