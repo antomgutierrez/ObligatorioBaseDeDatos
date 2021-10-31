@@ -40,39 +40,11 @@ public class Publicacion {
         
         return String.format("INSERT INTO Publicaciones(&s) VALUES(&s)", columnas, valores);
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public LocalDateTime getFechaHora() {
-        return fechaHora;
-    }
     
-    public int getCategoria() {
-        return categoria;
+    public String insertarPublicacionOferta(String oferta) {
+        return String.format("(&s,&s)", getIdQuery(), oferta);
     }
 
-    public String getNombreProducto() {
-        return nombreProducto;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public int getValorEstimado() {
-        return valorEstimado;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public int getPublicante() {
-        return publicante;
-    }
-    
     private String getIdQuery() {
         return FormatterService.formatData(id);
     }

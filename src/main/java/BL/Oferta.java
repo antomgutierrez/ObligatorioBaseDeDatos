@@ -64,26 +64,4 @@ public class Oferta {
     private String getCIofertanteQuery() {
         return FormatterService.formatData(CIofertante);
     }
-
-    public int getIdPublicacion() {
-        return idPublicacion;
-    }
-
-    public int getIdOferta() {
-        return idOferta;
-    }
-
-    public boolean isAceptada() {
-        return aceptada;
-    }
-
-    public int getIdOfertaPadre() {
-        return idOfertaPadre;
-    }
-
-    public int getCIofertante() {
-        return CIofertante;
-    }
-    
-    
 }

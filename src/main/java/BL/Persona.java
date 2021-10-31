@@ -46,83 +46,43 @@ public class Persona {
         return String.format("INSERT INTO Publicaciones(&s) VALUES(&s)", columnas, valores);
     }
     
-    public int getCi() {
-        return ci;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public Date getFechaDeNacimiento() {
-        return fechaDeNacimiento;
-    }
-
-    public int getTelefono() {
-        return telefono;
-    }
-
-    public String getDepartamento() {
-        return departamento;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getNombreDeUsuario() {
-        return nombreDeUsuario;
-    }
-
-    public String getContraseña() {
-        return contraseña;
-    }
-
-    public int getSaldoUCUCoins() {
-        return saldoUCUCoins;
-    }
-    
-    public String getCiQuery() {
+    private String getCiQuery() {
         return FormatterService.formatData(ci);
     }
     
-    public String getNombreQuery() {
+    private String getNombreQuery() {
         return FormatterService.formatData(nombre);
     }
 
-    public String getApellidoQuery() {
+    private String getApellidoQuery() {
         return FormatterService.formatData(apellido);
     }
 
-    public String getFechaDeNacimientoQuery() {
+    private String getFechaDeNacimientoQuery() {
         return FormatterService.formatData(fechaDeNacimiento);
     }
 
-    public String getTelefonoQuery() {
+    private String getTelefonoQuery() {
         return FormatterService.formatData(telefono);
     }
 
-    public String getDepartamentoQuery() {
+    private String getDepartamentoQuery() {
         return FormatterService.formatData(departamento);
     }
 
-    public String getEmailQuery() {
+    private String getEmailQuery() {
         return FormatterService.formatData(email);
     }
 
-    public String getNombreDeUsuarioQuery() {
+    private String getNombreDeUsuarioQuery() {
         return FormatterService.formatData(nombreDeUsuario);
     }
 
-    public String getContraseñaQuery() {
+    private String getContraseñaQuery() {
         return FormatterService.formatData(contraseña);
     }
 
-    public String getSaldoUCUCoinsQuery() {
+    private String getSaldoUCUCoinsQuery() {
         return FormatterService.formatData(saldoUCUCoins);
     }
 }
