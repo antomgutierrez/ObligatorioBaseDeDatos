@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BL;
+package BL.Entities;
+
+import BL.Helpers.FormatterService;
 
 /**
  *
@@ -18,8 +20,6 @@ public class Mensaje {
     private int CIdestino;
     private boolean respondido;
     
-    private static final String columnas = "IdMensaje, ContenidoMensaje, IdMensajePadre, IdPublicacion, CIOrigen, CIDestino, Respondido";
-    
     public Mensaje(int id, String contenido, int idPadre, int idPublicacion, int CIorigen, int CIdestino, boolean respondido) {
         this.id = id;
         this.contenido = contenido;
@@ -30,38 +30,31 @@ public class Mensaje {
         this.respondido = respondido;
     }
     
-    public String insertarMensaje() {
-        String valores = String.format("&s,&s,&s,&s,&s,&s,&s", getIdQuery(), getContenidoQuery(), getIdPadreQuery(), getIdPublicacionQuery(), getCIorigenQuery(), 
-                getCIdestinoQuery(), getRespondidoQuery());
-        
-        return String.format("INSERT INTO Mensajes(&s) VALUES(&s)", columnas, valores);
-    }
-    
-    private String getIdQuery() {
+    public String getIdQuery() {
         return FormatterService.formatData(id);
     }
     
-    private String getContenidoQuery() {
+    public String getContenidoQuery() {
         return FormatterService.formatData(contenido);
     }
     
-    private String getIdPadreQuery() {
+    public String getIdPadreQuery() {
         return FormatterService.formatData(idPadre);
     }
     
-    private String getIdPublicacionQuery() {
+    public String getIdPublicacionQuery() {
         return FormatterService.formatData(idPublicacion);
     }
     
-    private String getCIorigenQuery() {
+    public String getCIorigenQuery() {
         return FormatterService.formatData(CIorigen);
     }
     
-    private String getCIdestinoQuery() {
+    public String getCIdestinoQuery() {
         return FormatterService.formatData(CIdestino);
     }
     
-    private String getRespondidoQuery() {
+    public String getRespondidoQuery() {
         return FormatterService.formatData(respondido);
     }
 }

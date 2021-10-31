@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BL;
+package BL.Entities;
 
+import BL.Helpers.FormatterService;
 import java.sql.Date;
 
 /**
