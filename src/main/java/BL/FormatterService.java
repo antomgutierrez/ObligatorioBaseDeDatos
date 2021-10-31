@@ -15,18 +15,30 @@ import java.time.LocalDateTime;
 public class FormatterService {
     
     public static String formatData(int x) {
+        if (x == -1)
+            return "NULL";
         return String.valueOf(x);
     }
     
     public static String formatData(String x) {
+        if (x.isEmpty())
+            return "NULL";
         return "'" + x + "'";
     }
     
     public static String formatData(Date x) {
-        return "'" + x + "'";
+        if (x == null)
+            return "NULL";
+        return "'" + x.toString() + "'";
     }
     
     public static String formatData(LocalDateTime x) {
-        return "'" + x + "'";
+        if (x == null)
+            return "NULL";
+        return "'" + x.toString() + "'";
+    }
+    
+    public static String formatData(boolean x) {
+        return x ? "'true'" : "'false'";
     }
 }
