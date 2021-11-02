@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package UI;
+import BL.Helpers.DatabaseService;
+import java.sql.Connection;
 
 /**
  *
@@ -34,7 +36,6 @@ public class PanelLogin extends javax.swing.JPanel {
         btnLogin = new javax.swing.JButton();
         btnRegister = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -56,6 +57,11 @@ public class PanelLogin extends javax.swing.JPanel {
         btnLogin.setBackground(new java.awt.Color(0, 153, 51));
         btnLogin.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnLogin.setText("Ingresar");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
         add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 480, 164, -1));
 
         btnRegister.setBackground(new java.awt.Color(0, 204, 204));
@@ -67,10 +73,16 @@ public class PanelLogin extends javax.swing.JPanel {
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
         jLabel4.setText("Incorrect user or password");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 460, 179, -1));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LOGO UCU TRUEQUE (1).png"))); // NOI18N
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 798, 328));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // TODO add your handling code here:
+        DatabaseService db = new DatabaseService("35.193.189.154","5432","postgres");
+        boolean conn = false;
+        conn = db.connectToDB("postgres","");
+        System.out.print(conn);
+        
+    }//GEN-LAST:event_btnLoginActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -79,7 +91,6 @@ public class PanelLogin extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPasswordField passwordText;
     private javax.swing.JTextField usernameText;
     // End of variables declaration//GEN-END:variables

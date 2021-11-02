@@ -84,16 +84,16 @@ public class PanelRegister extends javax.swing.JPanel {
     }
     
     public boolean validateName() {
-        return !name.getText().isBlank();
+        return !name.getText().isEmpty();
     }
     
     public boolean validateLastName() {
-        return !lastName.getText().isBlank();
+        return !lastName.getText().isEmpty();
     }
     
     public boolean validateDate() {        
         try {
-            String date = "&s &s &s".formatted(comboDay.getSelectedItem().toString(), comboMonth.getSelectedItem().toString(), comboYear.getSelectedItem().toString()); 
+            String date = String.format("&s &s &s" , comboDay.getSelectedItem().toString(), comboMonth.getSelectedItem().toString(), comboYear.getSelectedItem().toString()); 
             LocalDate.parse(date, DateTimeFormatter.ofPattern("dd mm uuuu").withResolverStyle(ResolverStyle.STRICT));
             return true;
         }
@@ -103,7 +103,7 @@ public class PanelRegister extends javax.swing.JPanel {
     }
     
     public boolean validatePhone() {
-        if (!phone.getText().isBlank()) {
+        if (!phone.getText().isEmpty()) {
             try {
                 Integer.parseInt(phone.getText());
                 return true;
@@ -122,7 +122,7 @@ public class PanelRegister extends javax.swing.JPanel {
     }
     
     public boolean validateCI() {
-        if (!ci.getText().isBlank()) {
+        if (!ci.getText().isEmpty()) {
             try {
                 Integer.parseInt(ci.getText());
                 Statement stmt = con.createStatement();
@@ -155,7 +155,7 @@ public class PanelRegister extends javax.swing.JPanel {
     }
     
     public boolean validateUsername() {
-        if (!username.getText().isBlank()) {
+        if (!username.getText().isEmpty()) {
             try {
                 usernameError.setText("El nombre de usuario ya esta en uso");
                 Statement stmt = con.createStatement();
@@ -170,7 +170,7 @@ public class PanelRegister extends javax.swing.JPanel {
     }
     
     public boolean validatePassword() {
-        return !password.getPassword().toString().isBlank();
+        return !password.getPassword().toString().isEmpty();
     }
     
     public boolean validateRepeatPassword() {
