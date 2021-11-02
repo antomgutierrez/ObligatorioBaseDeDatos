@@ -5,6 +5,7 @@
  */
 package UI;
 
+import BL.Helpers.DatabaseService;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -19,94 +20,107 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 /**
  *
  * @author Administrador
  */
 public class PanelRegister extends javax.swing.JPanel {
-    
+
     /**
      * Creates new form PanelLogin
      */
-    public PanelRegister() {
+    public PanelRegister(JFrame frame, DatabaseService db) {
+        this.frame = frame;
+        this.db = db;
         initComponents();
+
     }
-    
+    JFrame frame;
+    DatabaseService db;
+
     public void populateComboDates() {
         for (int i = 1; i <= 31; i++) {
             comboDay.addItem(i <= 9 ? '0' + String.valueOf(i) : String.valueOf(i));
-            
-            if (i <= 12)
+
+            if (i <= 12) {
                 comboMonth.addItem(i <= 9 ? '0' + String.valueOf(i) : String.valueOf(i));
+            }
         }
-        
-        for (int i = 2021; i >= 1920; i--)
+
+        for (int i = 2021; i >= 1920; i--) {
             comboYear.addItem(String.valueOf(i));
+        }
     }
-    
-    
-    public ArrayList<javax.swing.JLabel> validateData() {
-        ArrayList missingData = new ArrayList<javax.swing.JLabel>();
-        if (!validateName())
-            missingData.add(nameError);
-        
-        if (!validateLastName())
-            missingData.add(lastNameError);
-        
-        if (!validateDate())
-            missingData.add(dateError);
-        
-        if (!validatePhone())
-            missingData.add(phoneError);
-        
-        if (!validateDepartment())
-            missingData.add(departmentError);
-        
-        if (!validateCI())
-            missingData.add(ciError);
-        
-        if (!validateEmail())
-            missingData.add(emailError);
-        
-        if (!validateUsername())
-            missingData.add(usernameError);
-        
-        if (!validatePassword())
-            missingData.add(passwordError);
-        
-        if (!validateRepeatPassword())
-            missingData.add(repearPasswordError);
-        
-        return missingData;
+
+    public void validateData() {
+        if (!validateName()) {
+            nameError.setText("El nombre no puede estar vacio.");
+        }
+
+        if (!validateLastName()) {
+            lastNameError.setText("El apellido no puede estar vacio.");
+        }
+
+        if (!validateDate()) {
+            dateError.setText("La fecha ingresada no es correcta");
+        }
+
+        if (!validatePhone()) {
+            phoneError.setText("El telefono no puede estar vacio");
+        }
+
+        if (!validateDepartment()) {
+            departmentError.setText("Elija un departamento");
+        }
+
+        if (!validateCI()) {
+            ciError.setText("Cédula invalida");
+        }
+
+        if (!validateEmail()) {
+            emailError.setText("Email inválido");
+        }
+
+        if (!validateUsername()) {
+            usernameError.setText("Nombre de usuario invalido");
+        }
+
+        if (!validatePassword()) {
+            passwordError.setText("Ingrese una contraseña");
+        }
+
+        if (!validateRepeatPassword()) {
+            repeatPasswordError.setText("Las contraseñas deben ser iguales");
+        }
     }
-    
+
     public boolean validateName() {
         return !name.getText().isEmpty();
     }
-    
+
     public boolean validateLastName() {
         return !lastName.getText().isEmpty();
     }
-    
-    public boolean validateDate() {        
+
+    public boolean validateDate() {
         try {
-            String date = String.format("&s &s &s" , comboDay.getSelectedItem().toString(), comboMonth.getSelectedItem().toString(), comboYear.getSelectedItem().toString()); 
+            String date = String.format("&s &s &s", comboDay.getSelectedItem().toString(), comboMonth.getSelectedItem().toString(), comboYear.getSelectedItem().toString());
             LocalDate.parse(date, DateTimeFormatter.ofPattern("dd mm uuuu").withResolverStyle(ResolverStyle.STRICT));
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
-    
+
     public boolean validatePhone() {
         if (!phone.getText().isEmpty()) {
             try {
                 Integer.parseInt(phone.getText());
                 return true;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 phoneError.setText("Solo se aceptan numeros");
                 return false;
             }
@@ -114,18 +128,16 @@ public class PanelRegister extends javax.swing.JPanel {
         phoneError.setText("El telefono no puede estar vacio");
         return false;
     }
-    
+
     public boolean validateDepartment() {
         return comboDespartment.getSelectedIndex() > 0;
     }
-    
+
     public boolean validateCI() {
         if (!ci.getText().isEmpty()) {
             try {
-                Integer.parseInt(ci.getText());
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(String.format("SELECT CI FROM Personas WHERE CI =%s", ci.getText()));
-                return !rs.next();
+                boolean _ci = this.db.validate_ci(ci.getText());
+                return _ci;
             } catch (SQLException ex) {
                 Logger.getLogger(PanelRegister.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
@@ -133,32 +145,29 @@ public class PanelRegister extends javax.swing.JPanel {
         }
         return false;
     }
-    
+
     public boolean validateEmail() {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         Pattern p = Pattern.compile(ePattern);
         Matcher m = p.matcher(email.getText());
-        if (!m.matches())
+        if (!m.matches()) {
             return false;
-        
+        }
+
         try {
-            emailError.setText("El email ya esta en uso");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(String.format("SELECT Email FROM Personas WHERE Email ='%s'", email.getText()));
-            return !rs.next();
+            boolean _email = this.db.validate_email(email.getText());
+            return _email;
         } catch (SQLException ex) {
             Logger.getLogger(PanelRegister.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
-    
+
     public boolean validateUsername() {
         if (!username.getText().isEmpty()) {
             try {
-                usernameError.setText("El nombre de usuario ya esta en uso");
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(String.format("SELECT NombreDeUsuario FROM Personas WHERE NombreDeUsuario ='%s'", username.getText()));
-                return !rs.next();
+                boolean _username = this.db.validate_username(username.getText());
+                return _username;
             } catch (SQLException ex) {
                 Logger.getLogger(PanelRegister.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -166,15 +175,15 @@ public class PanelRegister extends javax.swing.JPanel {
         usernameError.setText("El nombre de usuario no puede estar vacio");
         return false;
     }
-    
+
     public boolean validatePassword() {
         return !password.getPassword().toString().isEmpty();
     }
-    
+
     public boolean validateRepeatPassword() {
         return password.getPassword().toString() == repeatPassword.getPassword().toString();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -195,7 +204,7 @@ public class PanelRegister extends javax.swing.JPanel {
         btnGoBack = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         repeatPassword = new javax.swing.JPasswordField();
-        repearPasswordError = new javax.swing.JLabel();
+        repeatPasswordError = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         nameError = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -248,11 +257,9 @@ public class PanelRegister extends javax.swing.JPanel {
 
         usernameError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         usernameError.setForeground(new java.awt.Color(255, 0, 0));
-        usernameError.setText("El usuario no puede estar vacio / no esta disponible");
 
         passwordError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         passwordError.setForeground(new java.awt.Color(255, 0, 0));
-        passwordError.setText("La contraseña no puede estar vacia");
 
         btnGoBack.setBackground(new java.awt.Color(0, 0, 255));
         btnGoBack.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -268,46 +275,45 @@ public class PanelRegister extends javax.swing.JPanel {
 
         repeatPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        repearPasswordError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        repearPasswordError.setForeground(new java.awt.Color(255, 0, 0));
-        repearPasswordError.setText("Las contraseñas deben coincidir");
+        repeatPasswordError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        repeatPasswordError.setForeground(new java.awt.Color(255, 0, 0));
 
         jLabel5.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel5.setText("Nombre");
 
         nameError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         nameError.setForeground(new java.awt.Color(255, 0, 0));
-        nameError.setText("El nombre no puede estar vacio");
 
         jLabel6.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel6.setText("Apellido");
 
         lastNameError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lastNameError.setForeground(new java.awt.Color(255, 0, 0));
-        lastNameError.setText("El apellido no puede estar vacio");
 
         jLabel7.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel7.setText("Fecha de nacimiento");
 
         dateError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         dateError.setForeground(new java.awt.Color(255, 0, 0));
-        dateError.setText("La fecha ingresada no es correcta");
 
         jLabel9.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel9.setText("Departamento");
 
         departmentError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         departmentError.setForeground(new java.awt.Color(255, 0, 0));
-        departmentError.setText("El departamento no puede estar vacio");
 
         jLabel10.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel10.setText("Email");
 
         emailError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         emailError.setForeground(new java.awt.Color(255, 0, 0));
-        emailError.setText("Email no valido");
 
         comboDay.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboDay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboDayActionPerformed(evt);
+            }
+        });
 
         comboMonth.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -329,11 +335,10 @@ public class PanelRegister extends javax.swing.JPanel {
 
         phoneError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         phoneError.setForeground(new java.awt.Color(255, 0, 0));
-        phoneError.setText("El telefono no puede estar vacio");
 
         ciError.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ciError.setForeground(new java.awt.Color(255, 0, 0));
-        ciError.setText("La CI no puede estar vacia");
+        ciError.setLabelFor(ci);
 
         email.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -402,7 +407,7 @@ public class PanelRegister extends javax.swing.JPanel {
                                             .addComponent(emailError, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(usernameError, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(passwordError, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(repearPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(repeatPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(6, 6, 6)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -500,7 +505,7 @@ public class PanelRegister extends javax.swing.JPanel {
                             .addComponent(jLabel4)))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(repearPasswordError)))
+                        .addComponent(repeatPasswordError)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGoBack)
@@ -510,16 +515,20 @@ public class PanelRegister extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-        ArrayList errors = validateData();
-        //if (!errors.isEmpty())
-            // pim pum mostrar los labels
+        validateData();
+
+        // pim pum mostrar los labels
         //else
-            // creo el registro en Personas
+        // creo el registro en Personas
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void btnGoBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoBackActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGoBackActionPerformed
+
+    private void comboDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboDayActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -557,8 +566,8 @@ public class PanelRegister extends javax.swing.JPanel {
     private javax.swing.JLabel passwordError;
     private javax.swing.JTextField phone;
     private javax.swing.JLabel phoneError;
-    private javax.swing.JLabel repearPasswordError;
     private javax.swing.JPasswordField repeatPassword;
+    private javax.swing.JLabel repeatPasswordError;
     private javax.swing.JTextField username;
     private javax.swing.JLabel usernameError;
     // End of variables declaration//GEN-END:variables

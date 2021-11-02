@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package UI;
+import BL.Helpers.DatabaseService;
 import UI.PanelLogin;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -78,12 +79,13 @@ public class main extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                DatabaseService db = new DatabaseService("192.168.56.2", "5432", "proyectoBBDD");
                 JFrame frame = new JFrame();
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.setSize(800, 600);
                 frame.setLocationRelativeTo(null);
                 
-                PanelLogin panel = new PanelLogin(frame);
+                PanelLogin panel = new PanelLogin(frame, db);
                 frame.getContentPane().add(panel);
                 frame.setVisible(true);
                 

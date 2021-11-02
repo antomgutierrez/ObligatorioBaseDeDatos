@@ -22,11 +22,15 @@ public class PanelLogin extends javax.swing.JPanel {
     /**
      * Creates new form PanelLogin
      */
-    public PanelLogin(JFrame frame) {
-        initComponents();
+    public PanelLogin(JFrame frame, DatabaseService db) {
         this.frame = frame;
+        this.db = db;
+        initComponents();
+        
     }
     JFrame frame;
+    DatabaseService db;
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -91,11 +95,10 @@ public class PanelLogin extends javax.swing.JPanel {
         // TODO add your handling code here:
         
         boolean is_valid_user = false;
-        DatabaseService db = new DatabaseService("192.168.56.2", "5432", "proyectoBBDD");
-        boolean is_connected_with_db = db.connectToDB("diego", "0");
+        boolean is_connected_with_db = this.db.connectToDB("diego", "diego");
         if (is_connected_with_db) {
             try {
-                is_valid_user = db.login(usernameText.getText(), passwordText.getText());
+                is_valid_user = this.db.login(usernameText.getText(), passwordText.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(PanelLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -116,15 +119,23 @@ public class PanelLogin extends javax.swing.JPanel {
             jLabel4.setHorizontalAlignment(SwingConstants.CENTER);
             jLabel4.setText("Imposible conectar a la Base de Datos");
         }
+        this.db.closeConnectionDB();
 
 
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         this.setVisible(false);
-        PanelRegister panel = new PanelRegister();
-        this.frame.getContentPane().add(panel);
-        this.frame.setVisible(true);
+        boolean is_connected_with_db = this.db.connectToDB("diego", "diego");
+        if (is_connected_with_db) {
+            PanelRegister panel = new PanelRegister(this.frame, this.db);
+            this.frame.setSize(1075, 609);
+            this.frame.getContentPane().add(panel);
+            this.frame.setVisible(true);
+        } else {
+            jLabel4.setHorizontalAlignment(SwingConstants.CENTER);
+            jLabel4.setText("Imposible conectar a la Base de Datos");
+        }
     }//GEN-LAST:event_btnRegisterActionPerformed
 
 

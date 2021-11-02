@@ -83,16 +83,34 @@ public class DatabaseService {
             return connection;
         }
     }
-    
-        public boolean login(String login_user, String pass) throws SQLException {
+
+    public boolean login(String login_user, String pass) throws SQLException {
 
         Statement stmt = this.getConn().createStatement();
-        ResultSet rs = stmt.executeQuery(String.format("SELECT \"contraseña\" FROM public.personas WHERE nombre_usuario = '%s'", login_user ));
+        ResultSet rs = stmt.executeQuery(String.format("SELECT \"contraseña\" FROM public.personas WHERE nombre_usuario = '%s'", login_user));
         String user_pass = null;
-        while (rs.next()){
+        while (rs.next()) {
             user_pass = rs.getString("contraseña");
         }
         return (pass == null ? user_pass == null : pass.equals(user_pass));
+    }
+
+    public boolean validate_ci(String ci) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        ResultSet rs = stmt.executeQuery(String.format("SELECT ci FROM public.personas WHERE ci =%s", ci));
+        return !rs.next();
+    }
+
+    public boolean validate_email(String email) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        ResultSet rs = stmt.executeQuery(String.format("SELECT email FROM public.personas WHERE email ='%s'", email));
+        return !rs.next();
+    }
+
+    public boolean validate_username(String username) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        ResultSet rs = stmt.executeQuery(String.format("SELECT nombre_usuario FROM public.personas WHERE nombre_usuario ='%s'", username));
+        return !rs.next();
     }
 
 }
