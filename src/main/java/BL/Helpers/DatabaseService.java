@@ -5,10 +5,10 @@
  */
 package BL.Helpers;
 
-
 import BL.Entities.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -57,7 +57,7 @@ public class DatabaseService {
      */
     public boolean connectToDB(String user, String pass) {
         boolean connection = false;
-        
+
         try {
             this.conn = DriverManager.getConnection(this.url, user, pass);
             connection = conn.isValid(50000);
@@ -82,6 +82,17 @@ public class DatabaseService {
         } finally {
             return connection;
         }
+    }
+    
+        public boolean login(String login_user, String pass) throws SQLException {
+
+        Statement stmt = this.getConn().createStatement();
+        ResultSet rs = stmt.executeQuery(String.format("SELECT \"contraseña\" FROM public.personas WHERE nombre_usuario = '%s'", login_user ));
+        String user_pass = null;
+        while (rs.next()){
+            user_pass = rs.getString("contraseña");
+        }
+        return (pass == null ? user_pass == null : pass.equals(user_pass));
     }
 
 }

@@ -88,7 +88,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="220" y="480" width="164" height="-1"/>
+          <AbsoluteConstraints x="220" y="490" width="164" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -102,9 +102,12 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Registrarse"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegisterActionPerformed"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="390" y="480" width="165" height="-1"/>
+          <AbsoluteConstraints x="390" y="490" width="165" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -116,11 +119,10 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Incorrect user or password"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="320" y="460" width="179" height="-1"/>
+          <AbsoluteConstraints x="220" y="460" width="340" height="20"/>
         </Constraint>
       </Constraints>
     </Component>

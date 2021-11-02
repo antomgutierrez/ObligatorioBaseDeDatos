@@ -26,12 +26,10 @@ import java.util.regex.Matcher;
  */
 public class PanelRegister extends javax.swing.JPanel {
     
-    private static Connection con;
     /**
      * Creates new form PanelLogin
      */
-    public PanelRegister(Connection con) {
-        this.con = con;
+    public PanelRegister() {
         initComponents();
     }
     

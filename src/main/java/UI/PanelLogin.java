@@ -4,8 +4,14 @@
  * and open the template in the editor.
  */
 package UI;
+
 import BL.Helpers.DatabaseService;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -16,9 +22,11 @@ public class PanelLogin extends javax.swing.JPanel {
     /**
      * Creates new form PanelLogin
      */
-    public PanelLogin() {
+    public PanelLogin(JFrame frame) {
         initComponents();
+        this.frame = frame;
     }
+    JFrame frame;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,27 +70,62 @@ public class PanelLogin extends javax.swing.JPanel {
                 btnLoginActionPerformed(evt);
             }
         });
-        add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 480, 164, -1));
+        add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 490, 164, -1));
 
         btnRegister.setBackground(new java.awt.Color(0, 204, 204));
         btnRegister.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnRegister.setText("Registrarse");
-        add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, 165, -1));
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
+        add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 490, 165, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel4.setText("Incorrect user or password");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 460, 179, -1));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 340, 20));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        DatabaseService db = new DatabaseService("35.193.189.154","5432","postgres");
-        boolean conn = false;
-        conn = db.connectToDB("postgres","");
-        System.out.print(conn);
         
+        boolean is_valid_user = false;
+        DatabaseService db = new DatabaseService("192.168.56.2", "5432", "proyectoBBDD");
+        boolean is_connected_with_db = db.connectToDB("diego", "0");
+        if (is_connected_with_db) {
+            try {
+                is_valid_user = db.login(usernameText.getText(), passwordText.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(PanelLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (is_valid_user) {
+                /**
+                 * crear la persona y mandarla a panelhome
+                 */
+                System.out.println("usuario valido");
+                this.setVisible(false);
+                PanelHome panel = new PanelHome();
+                this.frame.getContentPane().add(panel);
+                this.frame.setVisible(true);
+            } else {
+                jLabel4.setHorizontalAlignment(SwingConstants.CENTER);
+                jLabel4.setText("Usuario o contraseña inválidos");
+            }
+        } else {
+            jLabel4.setHorizontalAlignment(SwingConstants.CENTER);
+            jLabel4.setText("Imposible conectar a la Base de Datos");
+        }
+
+
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        this.setVisible(false);
+        PanelRegister panel = new PanelRegister();
+        this.frame.getContentPane().add(panel);
+        this.frame.setVisible(true);
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -24,9 +24,9 @@ public class Persona {
     private String nombreDeUsuario;
     private String contraseña;
     private int saldoUCUCoins;
-    
+
     private static final String columnas = "CI, Nombre, Apellido, FechaDeNac, Telefono, Departamento, Email, NombreDeUsuario, Contraseña, SaldoUCUCoins";
-    
+
     public Persona(int ci, String nombre, String apellido, Date fechaDeNacimiento, int telefono, String departamento, String email, String nombreDeUsuario, String contraseña, int saldoUCUCoins) {
         this.ci = ci;
         this.nombre = nombre;
@@ -39,18 +39,18 @@ public class Persona {
         this.contraseña = contraseña;
         this.saldoUCUCoins = saldoUCUCoins;
     }
-    
+
     public String insertarPersona() {
-        String valores = String.format("&s,&s,&s,&s,&s,&s,&s,&s,&s,&s", getCiQuery(), getNombreQuery(), getApellidoQuery(), getFechaDeNacimientoQuery(), 
+        String valores = String.format("&s,&s,&s,&s,&s,&s,&s,&s,&s,&s", getCiQuery(), getNombreQuery(), getApellidoQuery(), getFechaDeNacimientoQuery(),
                 getTelefonoQuery(), getDepartamentoQuery(), getEmailQuery(), getNombreDeUsuarioQuery(), getContraseñaQuery(), getSaldoUCUCoinsQuery());
-        
+
         return String.format("INSERT INTO Publicaciones(&s) VALUES(&s)", columnas, valores);
     }
-    
+
     private String getCiQuery() {
         return FormatterService.formatData(ci);
     }
-    
+
     private String getNombreQuery() {
         return FormatterService.formatData(nombre);
     }
