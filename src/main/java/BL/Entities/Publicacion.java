@@ -21,10 +21,16 @@ public class Publicacion {
     private int valorEstimado;
     private int cantidad;
     private int publicante;
+    private boolean vendida;
+    
+    
+    /*
+    * Esto hay que cambiarlo, las columnas ya no se llaman asi.
+    */
     
     private static final String columnas = "IdPublicacion, FechaHoraPublicacion, IdCategoria, NombreProducto, Descripcion, ValorEstimado, Cantidad, CIpublicante";
 
-    public Publicacion(int id, LocalDateTime fechaHora, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, int publicante) {
+    public Publicacion(int id, LocalDateTime fechaHora, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, int publicante, boolean vendida) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.categoria = categoria;
@@ -33,6 +39,7 @@ public class Publicacion {
         this.valorEstimado = valorEstimado;
         this.cantidad = cantidad;
         this.publicante = publicante;
+        this.vendida = vendida;
     }
     
     public String insertarPublicacion() {
@@ -76,5 +83,9 @@ public class Publicacion {
 
     private String getPublicanteQuery() {
         return FormatterService.formatData(publicante);
+    }
+    
+    private String getVendidaQuery() {
+        return FormatterService.formatData(vendida);
     }
 }
