@@ -35,28 +35,32 @@ public class EmailService {
         Properties properties = System.getProperties();
 
         // Setup mail server
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "465");
-        properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        
+        String appMail = "ucutrueque@gmail.com";
+        String appPassword = "basededatos2021";
         
         // Get the Session object.// and pass username and password
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
 
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("ucutrueque@gmail.com", "basededatos2021");
+                return new PasswordAuthentication(appMail, appPassword);
             }
         });
         
+        MimeMessage message = null;
         try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("ucutrueque@gmail.com"));
+            message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(appMail));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             message.setSubject(subject);
             message.setText(content);
             Transport.send(message);
-        } catch (MessagingException mex) {
+        } catch (Exception mex) {
         }
     }
 }
