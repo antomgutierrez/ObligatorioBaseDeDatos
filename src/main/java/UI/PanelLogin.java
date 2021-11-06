@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 
+
 /**
  *
  * @author Administrador
@@ -48,6 +49,7 @@ public class PanelLogin extends javax.swing.JPanel {
         btnLogin = new javax.swing.JButton();
         btnRegister = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -89,6 +91,9 @@ public class PanelLogin extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 340, 20));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\proyecto\\ObligatorioBaseDeDatos\\src\\main\\java\\images\\LOGO UCU TRUEQUE (1).png")); // NOI18N
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 780, 400));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
@@ -143,6 +148,7 @@ public class PanelLogin extends javax.swing.JPanel {
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnRegister;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPasswordField passwordText;

@@ -80,6 +80,7 @@ public class main extends javax.swing.JFrame {
             @Override
             public void run() {
                 DatabaseService db = new DatabaseService("192.168.56.2", "5432", "proyectoBBDD");
+                
                 JFrame frame = new JFrame();
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.setSize(800, 600);

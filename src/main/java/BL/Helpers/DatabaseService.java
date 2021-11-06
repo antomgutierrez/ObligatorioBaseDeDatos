@@ -112,5 +112,18 @@ public class DatabaseService {
         ResultSet rs = stmt.executeQuery(String.format("SELECT nombre_usuario FROM public.personas WHERE nombre_usuario ='%s'", username));
         return !rs.next();
     }
+    
+    public boolean add_new_user(String ci,String name, String lastName,
+                String date,String phone, String username, String password, String department, String email) throws SQLException{
+        //this.getConn().setAutoCommit(false);
+        Statement stmt = this.getConn().createStatement();
+        stmt.executeUpdate(String.format("INSERT INTO public.personas"
+                + "(ci, nombre, apellido, fecha_nac, telefono, nombre_usuario, \"contraseña\", saldo_ucucoins, departamento, email)"
+                + " VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '0', '%s', '%s');"
+                , ci, name, lastName, date, phone, username, password, department, email));
+
+        return true;
+
+    }
 
 }
