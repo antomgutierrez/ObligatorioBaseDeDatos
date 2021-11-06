@@ -85,7 +85,7 @@ public class Publicacion {
         return FormatterService.formatData(publicante);
     }
     
-    private String getVendidaQuery() {
+    private String getVendidaQuery() { 
         return FormatterService.formatData(vendida);
     }
 }

@@ -35,6 +35,7 @@ public class DatabaseService {
      * @return
      */
     public Connection getConn() {
+        
         return conn;
     }
 
@@ -61,6 +62,7 @@ public class DatabaseService {
         try {
             this.conn = DriverManager.getConnection(this.url, user, pass);
             connection = conn.isValid(50000);
+            this.getConn().setAutoCommit(false);
         } catch (SQLException ex) {
             System.out.println("Error al conectar con Postgres: " + ex);
         } finally {
@@ -115,15 +117,25 @@ public class DatabaseService {
     
     public boolean add_new_user(String ci,String name, String lastName,
                 String date,String phone, String username, String password, String department, String email) throws SQLException{
-        //this.getConn().setAutoCommit(false);
+        
         Statement stmt = this.getConn().createStatement();
         stmt.executeUpdate(String.format("INSERT INTO public.personas"
                 + "(ci, nombre, apellido, fecha_nac, telefono, nombre_usuario, \"contraseña\", saldo_ucucoins, departamento, email)"
                 + " VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '0', '%s', '%s');"
                 , ci, name, lastName, date, phone, username, password, department, email));
-
+        this.getConn().commit();
         return true;
 
+    }
+    
+    
+    public void add_new_user(Persona p) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        stmt.executeUpdate(String.format("INSERT INTO public.personas"
+                + "(ci, nombre, apellido, fecha_nac, telefono, nombre_usuario, \"contraseña\", saldo_ucucoins, departamento, email)"
+                + " VALUES ('%s', '%s', '%s', %s, '%s', '%s', '%s', 0, '%s', '%s');"
+                , String.valueOf(p.getCi()), p.getNombre(), p.getApellido(), FormatterService.formatData(p.getFechaDeNacimiento()), p.getTelefono(), p.getNombreDeUsuario(), String.valueOf(p.getContraseña()), p.getDepartamento(), p.getEmail()));
+        this.getConn().commit();
     }
 
 }

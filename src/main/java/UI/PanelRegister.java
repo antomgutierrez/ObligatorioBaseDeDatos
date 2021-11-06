@@ -5,7 +5,9 @@
  */
 package UI;
 
+import BL.Entities.Persona;
 import BL.Helpers.DatabaseService;
+import static BL.Helpers.FormatterService.convert;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,12 +45,11 @@ public class PanelRegister extends javax.swing.JPanel {
         this.frame = frame;
         this.db = db;
         initComponents();
-        String[] departamentos = new String[] {"Elija un Departamento", "Montevideo", "Canelones", "Rocha", 
-            "San Jose", "Colonia", "Treinta y Tres", "Lavalleja", "Tacuarembó", 
-            "flores", "Salto", "Artigas", "Paysandú", "Rivera", "Rio Negro", 
-            "Durazno", "Cerro Largo", "Florida", "Maldonado", "Soriano" };
+        String[] departamentos = new String[]{"Elija un Departamento", "Montevideo", "Canelones", "Rocha",
+            "San Jose", "Colonia", "Treinta y Tres", "Lavalleja", "Tacuarembó",
+            "flores", "Salto", "Artigas", "Paysandú", "Rivera", "Rio Negro",
+            "Durazno", "Cerro Largo", "Florida", "Maldonado", "Soriano"};
         comboDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(departamentos));
-        
 
     }
     JFrame frame;
@@ -173,13 +174,12 @@ public class PanelRegister extends javax.swing.JPanel {
     }
 
     public boolean validateEmail() {
-        /**String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-        Pattern p = Pattern.compile(ePattern);
-        Matcher m = p.matcher(email.getText());
-        if (!m.matches()) {
-            return false;
-        }
-        */
+        /**
+         * String ePattern =
+         * "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+         * Pattern p = Pattern.compile(ePattern); Matcher m =
+         * p.matcher(email.getText()); if (!m.matches()) { return false; }
+         */
         try {
             boolean _email = this.db.validate_email(email.getText());
             return _email;
@@ -209,7 +209,7 @@ public class PanelRegister extends javax.swing.JPanel {
     public boolean validateRepeatPassword() {
         //return password.getPassword().toString() == repeatPassword.getPassword().toString();
         String pass = password.getText();
-        
+
         return (pass.equals(repeatPassword.getText()));
     }
 
@@ -486,8 +486,7 @@ public class PanelRegister extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ci, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel15)))
+                            .addComponent(jLabel15))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
@@ -508,37 +507,29 @@ public class PanelRegister extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnGoBack)
                             .addComponent(btnRegister))))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         boolean dataValid = validateData();
         boolean is_connected_with_db = this.db.connectToDB("diego", "diego");
-        Date fecha = jDateChooser.getDate();
-        
+
+        java.sql.Date sqlDate = convert(jDateChooser.getDate());
+
+        Persona p = new Persona(Integer.valueOf(ci.getText()), name.getText(),
+                lastName.getText(), sqlDate, Integer.valueOf(phone.getText()),
+                String.format("%s", comboDepartment.getSelectedIndex()), email.getText(),
+                username.getText(), String.valueOf(password.getPassword().hashCode()), 0);
         if (is_connected_with_db && dataValid) {
-                  
             try {
-                this.db.add_new_user(ci.getText(), name.getText(), lastName.getText(),
-                        String.format("%02d-%02d-%04d",fecha.getDate(), fecha.getMonth() + 1, fecha.getYear() + 1900),
-                        phone.getText(), username.getText(), password.getText() ,String.format("%s", comboDepartment.getSelectedIndex()), email.getText());
-                
+                this.db.add_new_user(p);
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
             this.db.closeConnectionDB();
-                
         }
-            /**INSERT INTO public.personas(
-	ci, nombre, apellido, fecha_nac, telefono, nombre_usuario, "contraseña", saldo_ucucoins, departamento, email)
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);*/
-
-        
-
-        // pim pum mostrar los labels
-        //else
-        // creo el registro en Personas
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void btnGoBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoBackActionPerformed

@@ -13,32 +13,41 @@ import java.time.LocalDateTime;
  * @author Administrador
  */
 public class FormatterService {
-    
+
     public static String formatData(int x) {
-        if (x == -1)
+        if (x == -1) {
             return "NULL";
+        }
         return String.valueOf(x);
     }
-    
+
     public static String formatData(String x) {
-        if (x.isEmpty())
+        if (x.isEmpty()) {
             return "NULL";
+        }
         return "'" + x + "'";
     }
-    
+
     public static String formatData(Date x) {
-        if (x == null)
+        if (x == null) {
             return "NULL";
+        }
         return "'" + x.toString() + "'";
     }
-    
+
     public static String formatData(LocalDateTime x) {
-        if (x == null)
+        if (x == null) {
             return "NULL";
+        }
         return "'" + x.toString() + "'";
     }
-    
+
     public static String formatData(boolean x) {
         return x ? "'true'" : "'false'";
+    }
+
+    public static java.sql.Date convert(java.util.Date uDate) {
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        return sDate;
     }
 }

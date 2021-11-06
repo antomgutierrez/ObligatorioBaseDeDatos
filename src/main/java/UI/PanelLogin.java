@@ -52,6 +52,7 @@ public class PanelLogin extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(800, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
@@ -103,7 +104,7 @@ public class PanelLogin extends javax.swing.JPanel {
         boolean is_connected_with_db = this.db.connectToDB("diego", "diego");
         if (is_connected_with_db) {
             try {
-                is_valid_user = this.db.login(usernameText.getText(), passwordText.getText());
+                is_valid_user = this.db.login(usernameText.getText(), String.valueOf(passwordText.getText().hashCode()));
             } catch (SQLException ex) {
                 Logger.getLogger(PanelLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -134,7 +135,8 @@ public class PanelLogin extends javax.swing.JPanel {
         boolean is_connected_with_db = this.db.connectToDB("diego", "diego");
         if (is_connected_with_db) {
             PanelRegister panel = new PanelRegister(this.frame, this.db);
-            this.frame.setSize(1075, 609);
+
+            this.frame.setSize(panel.getPreferredSize());
             this.frame.getContentPane().add(panel);
             this.frame.setVisible(true);
         } else {
