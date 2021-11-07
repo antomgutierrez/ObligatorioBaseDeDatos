@@ -8,32 +8,15 @@ package UI;
 import BL.Entities.Persona;
 import BL.Helpers.DatabaseService;
 import static BL.Helpers.FormatterService.convert;
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -87,6 +70,9 @@ public class PanelRegister extends javax.swing.JPanel {
         if (!validateDate()) {
             dateError.setText("La fecha ingresada no es correcta");
             result = false;
+        } else if (!validateGreaterThan18yo()) {
+            dateError.setText("Debe ser mayor de 18 años");
+            result = false;
         }
 
         if (!validatePhone()) {
@@ -123,6 +109,7 @@ public class PanelRegister extends javax.swing.JPanel {
             repeatPasswordError.setText("Las contraseñas deben ser iguales");
             result = false;
         }
+
         return result;
     }
 
@@ -136,10 +123,15 @@ public class PanelRegister extends javax.swing.JPanel {
 
     public boolean validateDate() {
         Date fecha = jDateChooser.getDate();
+        return (fecha != null);
+    }
+
+    public boolean validateGreaterThan18yo() {
+        Date fecha = jDateChooser.getDate();
         LocalDate date = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate today = LocalDate.now();
         Period p = Period.between(date, today);
-        return (fecha != null) && (p.getYears()>=18);
+        return (p.getYears() >= 18);
     }
 
     public boolean validatePhone() {
@@ -174,12 +166,6 @@ public class PanelRegister extends javax.swing.JPanel {
     }
 
     public boolean validateEmail() {
-        /**
-         * String ePattern =
-         * "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-         * Pattern p = Pattern.compile(ePattern); Matcher m =
-         * p.matcher(email.getText()); if (!m.matches()) { return false; }
-         */
         if (email.getText().isEmpty()) {
             return false;
         }
@@ -206,7 +192,7 @@ public class PanelRegister extends javax.swing.JPanel {
     }
 
     public boolean validatePassword() {
-        return !Arrays.toString(password.getPassword()).isBlank();
+        return !(password.getText().isEmpty());
     }
 
     public boolean validateRepeatPassword() {
@@ -258,8 +244,9 @@ public class PanelRegister extends javax.swing.JPanel {
         name = new javax.swing.JTextField();
         lastName = new javax.swing.JTextField();
         jDateChooser = new com.toedter.calendar.JDateChooser();
+        SQLerrorText = new javax.swing.JLabel();
 
-        setPreferredSize(new java.awt.Dimension(1090, 600));
+        setPreferredSize(new java.awt.Dimension(962, 650));
 
         jLabel1.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel1.setText("Contraseña");
@@ -367,6 +354,9 @@ public class PanelRegister extends javax.swing.JPanel {
 
         lastName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        SQLerrorText.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        SQLerrorText.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -442,11 +432,12 @@ public class PanelRegister extends javax.swing.JPanel {
                                     .addComponent(emailError, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(usernameError, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(passwordError, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(repeatPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(repeatPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(SQLerrorText, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -515,16 +506,20 @@ public class PanelRegister extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnGoBack)
                             .addComponent(btnRegister)))
-                    .addComponent(repeatPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(41, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(repeatPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(SQLerrorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         resetTexts();
-        boolean dataValid = validateData();
         boolean is_connected_with_db = this.db.connectToDB("diego", "diego");
+        boolean dataValid = validateData();
+        boolean is_valid_user = false;
 
         if (is_connected_with_db && dataValid) {
             java.sql.Date sqlDate = convert(jDateChooser.getDate());
@@ -532,23 +527,44 @@ public class PanelRegister extends javax.swing.JPanel {
             Persona p = new Persona(Integer.valueOf(ci.getText()), name.getText(),
                     lastName.getText(), sqlDate, Integer.valueOf(phone.getText()),
                     String.format("%s", comboDepartment.getSelectedIndex()), email.getText(),
-                    username.getText(), String.valueOf(password.getPassword().hashCode()), 0);
+                    username.getText(), String.valueOf(password.getText().hashCode()), 0);
             try {
                 this.db.add_new_user(p);
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
+            try {
+                is_valid_user = this.db.login(username.getText(), String.valueOf(password.getText().hashCode()));
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+            if (is_valid_user) {
+                Persona persona = null;
+                try {
+                    persona = this.db.getPersona(username.getText());
+                } catch (SQLException ex) {
+                    Logger.getLogger(PanelRegister.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                PanelHome panel = new PanelHome(persona, this.frame, this.db);
+                this.frame.setSize(panel.getPreferredSize());
+                this.frame.getContentPane().add(panel);
+                this.frame.setVisible(true);
+                this.frame.remove(this);
+            }
+
             this.db.closeConnectionDB();
+
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void btnGoBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoBackActionPerformed
-        this.setVisible(false);
         PanelLogin panel = new PanelLogin(this.frame, this.db);
         frame.setSize(panel.getPreferredSize());
         frame.setLocationRelativeTo(null);
         frame.getContentPane().add(panel);
         frame.setVisible(true);
+        this.frame.remove(this);
     }//GEN-LAST:event_btnGoBackActionPerformed
 
     private void phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneActionPerformed
@@ -557,6 +573,7 @@ public class PanelRegister extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel SQLerrorText;
     private javax.swing.JButton btnGoBack;
     private javax.swing.JButton btnRegister;
     private javax.swing.JTextField ci;

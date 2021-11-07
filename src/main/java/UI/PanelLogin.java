@@ -5,6 +5,7 @@
  */
 package UI;
 
+import BL.Entities.Persona;
 import BL.Helpers.DatabaseService;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -109,14 +110,18 @@ public class PanelLogin extends javax.swing.JPanel {
                 Logger.getLogger(PanelLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (is_valid_user) {
-                /**
-                 * crear la persona y mandarla a panelhome
-                 */
-                System.out.println("usuario valido");
-                this.setVisible(false);
-                PanelHome panel = new PanelHome();
+                Persona persona = null;
+                try {
+                    persona = this.db.getPersona(usernameText.getText());
+                } catch (SQLException ex) {
+                    Logger.getLogger(PanelLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                PanelHome panel = new PanelHome(persona, this.frame , this.db);
+                this.frame.setSize(panel.getPreferredSize());
                 this.frame.getContentPane().add(panel);
                 this.frame.setVisible(true);
+                this.frame.remove(this);
             } else {
                 jLabel4.setHorizontalAlignment(SwingConstants.CENTER);
                 jLabel4.setText("Usuario o contraseña inválidos");
@@ -135,14 +140,14 @@ public class PanelLogin extends javax.swing.JPanel {
         boolean is_connected_with_db = this.db.connectToDB("diego", "diego");
         if (is_connected_with_db) {
             PanelRegister panel = new PanelRegister(this.frame, this.db);
-
             this.frame.setSize(panel.getPreferredSize());
             this.frame.getContentPane().add(panel);
-            this.frame.setVisible(true);
+            this.frame.remove(this);
         } else {
             jLabel4.setHorizontalAlignment(SwingConstants.CENTER);
             jLabel4.setText("Imposible conectar a la Base de Datos");
         }
+        this.db.closeConnectionDB();
     }//GEN-LAST:event_btnRegisterActionPerformed
 
 
