@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package BL.Helpers;
-
 import BL.Entities.*;
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,8 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -100,38 +98,25 @@ public class DatabaseService {
         return (pass.equals(user_pass));
     }
 
-    public boolean validate_ci(String ci) throws SQLException {
+    public boolean validateCI(String ci) throws SQLException {
         Statement stmt = this.getConn().createStatement();
         ResultSet rs = stmt.executeQuery(String.format("SELECT ci FROM public.personas WHERE ci =%s", ci));
         return !rs.next();
     }
 
-    public boolean validate_email(String email) throws SQLException {
+    public boolean validateEmail(String email) throws SQLException {
         Statement stmt = this.getConn().createStatement();
         ResultSet rs = stmt.executeQuery(String.format("SELECT email FROM public.personas WHERE email ='%s'", email));
         return !rs.next();
     }
 
-    public boolean validate_username(String username) throws SQLException {
+    public boolean validateUserName(String username) throws SQLException {
         Statement stmt = this.getConn().createStatement();
         ResultSet rs = stmt.executeQuery(String.format("SELECT nombre_usuario FROM public.personas WHERE nombre_usuario ='%s'", username));
         return !rs.next();
     }
 
-    public boolean add_new_user(String ci, String name, String lastName,
-            String date, String phone, String username, String password, String department, String email) throws SQLException {
-
-        Statement stmt = this.getConn().createStatement();
-        stmt.executeUpdate(String.format("INSERT INTO public.personas"
-                + "(ci, nombre, apellido, fecha_nac, telefono, nombre_usuario, \"contraseña\", saldo_ucucoins, departamento, email)"
-                + " VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '0', '%s', '%s');",
-                ci, name, lastName, date, phone, username, password, department, email));
-        this.getConn().commit();
-        return true;
-
-    }
-
-    public void add_new_user(Persona p) throws SQLException {
+    public void addNewUser(Persona p) throws SQLException {
         Statement stmt = this.getConn().createStatement();
         stmt.executeUpdate(String.format("INSERT INTO public.personas"
                 + "(ci, nombre, apellido, fecha_nac, telefono, nombre_usuario, \"contraseña\", saldo_ucucoins, departamento, email)"

@@ -7,7 +7,6 @@ package UI;
 
 import BL.Entities.Persona;
 import BL.Helpers.DatabaseService;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,8 +43,8 @@ public class PanelLogin extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        passwordText = new javax.swing.JPasswordField();
-        usernameText = new javax.swing.JTextField();
+        inputPassword = new javax.swing.JPasswordField();
+        inputNombreDeUsuario = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         btnRegister = new javax.swing.JButton();
@@ -60,11 +59,11 @@ public class PanelLogin extends javax.swing.JPanel {
         jLabel1.setText("Contraseña");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 420, -1, -1));
 
-        passwordText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        add(passwordText, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 420, 225, -1));
+        inputPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        add(inputPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 420, 225, -1));
 
-        usernameText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        add(usernameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 225, -1));
+        inputNombreDeUsuario.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        add(inputNombreDeUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 225, -1));
 
         jLabel3.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel3.setText("Usuario");
@@ -93,26 +92,24 @@ public class PanelLogin extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 340, 20));
-
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\proyecto\\ObligatorioBaseDeDatos\\src\\main\\java\\images\\LOGO UCU TRUEQUE (1).png")); // NOI18N
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 780, 400));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         
-        boolean is_valid_user = false;
-        boolean is_connected_with_db = this.db.connectToDB("diego", "diego");
-        if (is_connected_with_db) {
+        boolean isValidUser = false;
+        boolean isConnectedWithDB = this.db.connectToDB("diego", "diego");
+        if (isConnectedWithDB) {
             try {
-                is_valid_user = this.db.login(usernameText.getText(), String.valueOf(passwordText.getText().hashCode()));
+                isValidUser = this.db.login(inputNombreDeUsuario.getText(), String.valueOf(inputPassword.getText().hashCode()));
             } catch (SQLException ex) {
                 Logger.getLogger(PanelLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (is_valid_user) {
+            if (isValidUser) {
                 Persona persona = null;
                 try {
-                    persona = this.db.getPersona(usernameText.getText());
+                    persona = this.db.getPersona(inputNombreDeUsuario.getText());
                 } catch (SQLException ex) {
                     Logger.getLogger(PanelLogin.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -137,8 +134,8 @@ public class PanelLogin extends javax.swing.JPanel {
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         this.setVisible(false);
-        boolean is_connected_with_db = this.db.connectToDB("diego", "diego");
-        if (is_connected_with_db) {
+        boolean isConnectedWithDB = this.db.connectToDB("diego", "diego");
+        if (isConnectedWithDB) {
             PanelRegister panel = new PanelRegister(this.frame, this.db);
             this.frame.setSize(panel.getPreferredSize());
             this.frame.getContentPane().add(panel);
@@ -154,11 +151,11 @@ public class PanelLogin extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnRegister;
+    private javax.swing.JTextField inputNombreDeUsuario;
+    private javax.swing.JPasswordField inputPassword;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField passwordText;
-    private javax.swing.JTextField usernameText;
     // End of variables declaration//GEN-END:variables
 }
