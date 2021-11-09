@@ -6,6 +6,7 @@
 package BL.Entities;
 
 import BL.Helpers.FormatterService;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -19,8 +20,9 @@ public class Mensaje {
     private int CIorigen;
     private int CIdestino;
     private boolean respondido;
+    private LocalDateTime fechaHora;
     
-    public Mensaje(int id, String contenido, int idPadre, int idPublicacion, int CIorigen, int CIdestino, boolean respondido) {
+    public Mensaje(int id, String contenido, int idPadre, int idPublicacion, int CIorigen, int CIdestino, boolean respondido, LocalDateTime fechaHora) {
         this.id = id;
         this.contenido = contenido;
         this.idPadre = idPadre;
@@ -28,33 +30,70 @@ public class Mensaje {
         this.CIorigen = CIorigen;
         this.CIdestino = CIdestino;
         this.respondido = respondido;
+        this.fechaHora = fechaHora;
     }
-    
-    public String getIdQuery() {
-        return FormatterService.formatData(id);
+
+    public int getId() {
+        return id;
     }
-    
-    public String getContenidoQuery() {
-        return FormatterService.formatData(contenido);
+
+    public String getContenido() {
+        return contenido;
     }
-    
-    public String getIdPadreQuery() {
-        return FormatterService.formatData(idPadre);
+
+    public int getIdPadre() {
+        return idPadre;
     }
-    
-    public String getIdPublicacionQuery() {
-        return FormatterService.formatData(idPublicacion);
+
+    public int getIdPublicacion() {
+        return idPublicacion;
     }
-    
-    public String getCIorigenQuery() {
-        return FormatterService.formatData(CIorigen);
+
+    public int getCIorigen() {
+        return CIorigen;
     }
-    
-    public String getCIdestinoQuery() {
-        return FormatterService.formatData(CIdestino);
+
+    public int getCIdestino() {
+        return CIdestino;
     }
-    
-    public String getRespondidoQuery() {
-        return FormatterService.formatData(respondido);
+
+    public boolean isRespondido() {
+        return respondido;
+    }
+
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
+
+    public void setIdPadre(int idPadre) {
+        this.idPadre = idPadre;
+    }
+
+    public void setIdPublicacion(int idPublicacion) {
+        this.idPublicacion = idPublicacion;
+    }
+
+    public void setCIorigen(int CIorigen) {
+        this.CIorigen = CIorigen;
+    }
+
+    public void setCIdestino(int CIdestino) {
+        this.CIdestino = CIdestino;
+    }
+
+    public void setRespondido(boolean respondido) {
+        this.respondido = respondido;
+    }
+
+    public void setFechaHora(LocalDateTime fechaHora) {
+        this.fechaHora = fechaHora;
     }
 }

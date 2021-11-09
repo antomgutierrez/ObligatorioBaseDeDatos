@@ -5,7 +5,6 @@
  */
 package BL.Entities;
 
-import BL.Helpers.FormatterService;
 import java.sql.Date;
 
 /**
@@ -26,9 +25,7 @@ public class Persona {
     private int saldoUCUCoins;
     private boolean emailConfirmed;
 
-    private static final String COLUMNAS = "CI, Nombre, Apellido, FechaDeNac, Telefono, Departamento, Email, NombreDeUsuario, Contraseña, SaldoUCUCoins";
-
-    public Persona(int ci, String nombre, String apellido, Date fechaDeNacimiento, int telefono, String departamento, String email, String nombreDeUsuario, String contraseña, int saldoUCUCoins) {
+    public Persona(int ci, String nombre, String apellido, Date fechaDeNacimiento, int telefono, String departamento, String email, String nombreDeUsuario, String contraseña, int saldoUCUCoins, boolean emailConfirmado) {
         this.ci = ci;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -39,6 +36,7 @@ public class Persona {
         this.nombreDeUsuario = nombreDeUsuario;
         this.contraseña = contraseña;
         this.saldoUCUCoins = saldoUCUCoins;
+        this.emailConfirmed = emailConfirmado;
     }
 
     public boolean isEmailConfirmed() {
@@ -127,52 +125,5 @@ public class Persona {
 
     public void setSaldoUCUCoins(int saldoUCUCoins) {
         this.saldoUCUCoins = saldoUCUCoins;
-    }
-
-    public String insertarPersona() {
-        String valores = String.format("&s,&s,&s,&s,&s,&s,&s,&s,&s,&s", getCiQuery(), getNombreQuery(), getApellidoQuery(), getFechaDeNacimientoQuery(),
-                getTelefonoQuery(), getDepartamentoQuery(), getEmailQuery(), getNombreDeUsuarioQuery(), getContraseñaQuery(), getSaldoUCUCoinsQuery());
-
-        return String.format("INSERT INTO Publicaciones(&s) VALUES(&s)", COLUMNAS, valores);
-    }
-
-    private String getCiQuery() {
-        return FormatterService.formatData(ci);
-    }
-
-    private String getNombreQuery() {
-        return FormatterService.formatData(nombre);
-    }
-
-    private String getApellidoQuery() {
-        return FormatterService.formatData(apellido);
-    }
-
-    private String getFechaDeNacimientoQuery() {
-        return FormatterService.formatData(fechaDeNacimiento);
-    }
-
-    private String getTelefonoQuery() {
-        return FormatterService.formatData(telefono);
-    }
-
-    private String getDepartamentoQuery() {
-        return FormatterService.formatData(departamento);
-    }
-
-    private String getEmailQuery() {
-        return FormatterService.formatData(email);
-    }
-
-    private String getNombreDeUsuarioQuery() {
-        return FormatterService.formatData(nombreDeUsuario);
-    }
-
-    private String getContraseñaQuery() {
-        return FormatterService.formatData(contraseña);
-    }
-
-    private String getSaldoUCUCoinsQuery() {
-        return FormatterService.formatData(saldoUCUCoins);
     }
 }

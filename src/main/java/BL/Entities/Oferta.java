@@ -5,7 +5,6 @@
  */
 package BL.Entities;
 
-import BL.Helpers.FormatterService;
 import java.util.List;
 
 /**
@@ -20,8 +19,6 @@ public class Oferta {
     int CIofertante;
     List<Publicacion> publicaciones;
     
-    private static final String columnas = "IdPublicacion, IdOferta, Aceptada, IdOfertaPadre, CIOfertante";
-    
     public Oferta(int idPublicacion, int idOferta, boolean aceptada, int idOfertaPadre, int CIofertante) {
         this.idPublicacion = idPublicacion;
         this.idOferta = idOferta;
@@ -29,40 +26,28 @@ public class Oferta {
         this.idOfertaPadre = idOfertaPadre;
         this.CIofertante = CIofertante;
     }
-    
-    public String insertarOferta() {
-        String valores = String.format("&s,&s,&s,&s,&s", getIdPublicacionQuery(), getIdOfertaQuery(), 
-                isAceptadaQuery(), getIdOfertaPadreQuery(), getCIofertanteQuery());
-        
-        return String.format("INSERT INTO Ofertas(&s) VALUES(&s)", columnas, valores);
+
+    public int getIdPublicacion() {
+        return idPublicacion;
     }
-    
-    public String insertarPublicacionOferta() {
-        String result = "";
-        if (!publicaciones.isEmpty()) {
-            result = publicaciones.stream().map(pub -> pub.insertarPublicacionOferta(getIdOfertaQuery()) + ",").reduce(result, String::concat);
-            return String.format("INSERT INTO PublicacionOferta(IdPublicacion, IdOferta) VALUES &s", result.substring(0, result.length()- 1));
-        }
-        return result;
+
+    public int getIdOferta() {
+        return idOferta;
     }
-    
-    private String getIdPublicacionQuery() {
-        return FormatterService.formatData(idPublicacion);
+
+    public boolean isAceptada() {
+        return aceptada;
     }
-    
-    private String getIdOfertaQuery() {
-        return FormatterService.formatData(idOferta);
+
+    public int getIdOfertaPadre() {
+        return idOfertaPadre;
     }
-    
-    private String isAceptadaQuery() {
-        return FormatterService.formatData(aceptada);
+
+    public int getCIofertante() {
+        return CIofertante;
     }
-    
-    private String getIdOfertaPadreQuery() {
-        return FormatterService.formatData(idOfertaPadre);
-    }
-    
-    private String getCIofertanteQuery() {
-        return FormatterService.formatData(CIofertante);
+
+    public List<Publicacion> getPublicaciones() {
+        return publicaciones;
     }
 }

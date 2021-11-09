@@ -26,6 +26,8 @@ public class PanelRegister extends javax.swing.JPanel {
 
     /**
      * Creates new form PanelLogin
+     * @param frame
+     * @param db
      */
     public PanelRegister(JFrame frame, DatabaseService db) {
         this.frame = frame;
@@ -140,7 +142,7 @@ public class PanelRegister extends javax.swing.JPanel {
             try {
                 Integer.parseInt(phone.getText());
                 return true;
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 phoneError.setText("Solo se aceptan numeros");
                 return false;
             }
@@ -528,7 +530,7 @@ public class PanelRegister extends javax.swing.JPanel {
             Persona nuevaPersona = new Persona(Integer.valueOf(ci.getText()), name.getText(),
                     lastName.getText(), sqlDate, Integer.valueOf(phone.getText()),
                     String.format("%s", comboDepartment.getSelectedIndex()), email.getText(),
-                    username.getText(), String.valueOf(password.getText().hashCode()), 0);
+                    username.getText(), String.valueOf(password.getText().hashCode()), 0, false);
             try {
                 this.db.addNewUser(nuevaPersona);
             } catch (SQLException ex) {

@@ -5,7 +5,7 @@
  */
 package BL.Entities;
 
-import BL.Helpers.FormatterService;
+import java.io.File;
 import java.time.LocalDateTime;
 
 /**
@@ -14,6 +14,40 @@ import java.time.LocalDateTime;
  */
 public class Publicacion {
 
+    private int id;
+    private LocalDateTime fechaHora;
+    private int categoria;
+    private String nombreProducto;
+    private String descripcion;
+    private int valorEstimado;
+    private int cantidad;
+    private int publicante;
+    private boolean vendida;
+    private File imagen;
+
+    public Publicacion(int id, LocalDateTime fechaHora, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, int publicante, boolean vendida, File imagen) {
+        this.id = id;
+        this.fechaHora = fechaHora;
+        this.categoria = categoria;
+        this.nombreProducto = nombreProducto;
+        this.descripcion = descripcion;
+        this.valorEstimado = valorEstimado;
+        this.cantidad = cantidad;
+        this.publicante = publicante;
+        this.vendida = vendida;
+        this.imagen = imagen;
+    }
+    
+    public Publicacion(int id, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, boolean vendida) {
+        this.id = id;
+        this.categoria = categoria;
+        this.nombreProducto = nombreProducto;
+        this.descripcion = descripcion;
+        this.valorEstimado = valorEstimado;
+        this.cantidad = cantidad;
+        this.vendida = vendida;
+    }
+    
     public int getId() {
         return id;
     }
@@ -85,86 +119,12 @@ public class Publicacion {
     public void setVendida(boolean vendida) {
         this.vendida = vendida;
     }
-    private int id;
-    private LocalDateTime fechaHora;
-    private int categoria;
-    private String nombreProducto;
-    private String descripcion;
-    private int valorEstimado;
-    private int cantidad;
-    private int publicante;
-    private boolean vendida;
 
-    /*
-    * Esto hay que cambiarlo, las columnas ya no se llaman asi.
-     */
-    private static final String columnas = "IdPublicacion, FechaHoraPublicacion, IdCategoria, NombreProducto, Descripcion, ValorEstimado, Cantidad, CIpublicante";
-
-    public Publicacion(int id, LocalDateTime fechaHora, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, int publicante, boolean vendida) {
-        this.id = id;
-        this.fechaHora = fechaHora;
-        this.categoria = categoria;
-        this.nombreProducto = nombreProducto;
-        this.descripcion = descripcion;
-        this.valorEstimado = valorEstimado;
-        this.cantidad = cantidad;
-        this.publicante = publicante;
-        this.vendida = vendida;
+    public File getImagen() {
+        return imagen;
     }
 
-    public Publicacion(int id, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad) {
-        this.id = id;
-        this.categoria = categoria;
-        this.nombreProducto = nombreProducto;
-        this.descripcion = descripcion;
-        this.valorEstimado = valorEstimado;
-        this.cantidad = cantidad;
-    }
-
-    public String insertarPublicacion() {
-        String valores = String.format("&s,&s,&s,&s,&s,&s,&s,&s", getIdQuery(), getFechaHoraQuery(), getCategoriaQuery(), getNombreProductoQuery(),
-                getDescripcionQuery(), getValorEstimadoQuery(), getCantidadQuery(), getPublicanteQuery());
-
-        return String.format("INSERT INTO Publicaciones(&s) VALUES(&s)", columnas, valores);
-    }
-
-    public String insertarPublicacionOferta(String oferta) {
-        return String.format("(&s,&s)", getIdQuery(), oferta);
-    }
-
-    private String getIdQuery() {
-        return FormatterService.formatData(id);
-    }
-
-    private String getFechaHoraQuery() {
-        return FormatterService.formatData(fechaHora);
-    }
-
-    private String getCategoriaQuery() {
-        return FormatterService.formatData(categoria);
-    }
-
-    private String getNombreProductoQuery() {
-        return FormatterService.formatData(nombreProducto);
-    }
-
-    private String getDescripcionQuery() {
-        return FormatterService.formatData(descripcion);
-    }
-
-    private String getValorEstimadoQuery() {
-        return FormatterService.formatData(valorEstimado);
-    }
-
-    private String getCantidadQuery() {
-        return FormatterService.formatData(cantidad);
-    }
-
-    private String getPublicanteQuery() {
-        return FormatterService.formatData(publicante);
-    }
-
-    private String getVendidaQuery() {
-        return FormatterService.formatData(vendida);
+    public void setImagen(File imagen) {
+        this.imagen = imagen;
     }
 }
