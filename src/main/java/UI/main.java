@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package UI;
+import BL.Helpers.Constants;
 import BL.Helpers.DatabaseService;
 import javax.swing.JFrame;
 
@@ -77,7 +78,7 @@ public class main extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                DatabaseService db = new DatabaseService("192.168.56.2", "5432", "proyectoBBDD");
+                DatabaseService db = new DatabaseService(Constants.DB_ADDRESS, Constants.DB_PORT, Constants.DB_NAME);
                 JFrame frame = new JFrame("UCUTRUEQUE APP");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 

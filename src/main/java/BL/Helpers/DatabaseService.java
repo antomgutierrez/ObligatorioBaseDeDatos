@@ -53,27 +53,24 @@ public class DatabaseService {
 
     /**
      *
-     * @param user the name for auth in the DB
-     * @param pass the pass for auth in the DB
-     * @return true if the connect is succesfull
+     * @return true if the connect is successful
      */
-    public boolean connectToDB(String user, String pass) {
+    public boolean connectToDB() {
         boolean connection = false;
 
         try {
-            this.conn = DriverManager.getConnection(this.url, user, pass);
+            this.conn = DriverManager.getConnection(this.url, Constants.DB_USER, Constants.DB_PASSWORD);
             connection = conn.isValid(50000);
             this.getConn().setAutoCommit(false);
         } catch (SQLException ex) {
             System.out.println("Error al conectar con Postgres: " + ex);
-        } finally {
-            return connection;
         }
+        return connection;
     }
 
     /**
      *
-     * @return true if the connection close succesfull
+     * @return true if the connection close successful
      */
     public boolean closeConnectionDB() {
         boolean connection = false;
@@ -82,9 +79,8 @@ public class DatabaseService {
             connection = this.conn.isClosed();
         } catch (SQLException ex) {
             System.out.println("Error al cerrar la conexion: " + ex);
-        } finally {
-            return connection;
-        }
+        } 
+        return connection;
     }
 
     public boolean login(String login_user, String pass) throws SQLException {
@@ -139,14 +135,35 @@ public class DatabaseService {
         return p;
     }
 
-    public String[] getDepartments() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String[] getDepartments() throws SQLException {
+        ArrayList<String> result = new ArrayList<>();
+        Statement stmt = this.getConn().createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT nombre_departamento FROM public.departamentos");
+        
+        while (rs.next()) {
+            result.add(rs.getString("nombre_departamento"));
+        }
+        
+        return result.toArray(new String[0]);
+    }
+    
+    public String[] getCategories() throws SQLException {
+        ArrayList<String> result = new ArrayList<>();
+        Statement stmt = this.getConn().createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT nombre_categoria FROM public.categorias");
+        
+        while (rs.next()) {
+            result.add(rs.getString("nombre_categoria"));
+        }
+        
+        return result.toArray(new String[0]);
     }
 
     public List<Publicacion> getPublicaciones(Persona persona) throws SQLException {
-        List<Publicacion> publicaciones = new ArrayList<Publicacion>();
+        List<Publicacion> publicaciones = new ArrayList<>();
         Statement stmt = this.getConn().createStatement();
-        ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, valor_ucu_coin_estimado, vendida FROM public.publicaciones where publicaciones.ci_publicante ='%s'", persona.getCi()));
+        ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, "
+                + "valor_ucu_coin_estimado, vendida FROM public.publicaciones where publicaciones.ci_publicante = '%s' AND publicaciones.vendida = 'false'", persona.getCi()));
         while (rs.next()) {
             Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
                     rs.getString("descripcion_producto"),Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")), 
@@ -154,6 +171,35 @@ public class DatabaseService {
             publicaciones.add(p);
         }
 
+        return publicaciones;
+    }
+    
+    public List<Publicacion> getPublicaciones(PublicationFilter filter) throws SQLException {
+        List<Publicacion> publicaciones = new ArrayList<>();
+        
+        String whereClause = String.format("vendida = false AND ci_publicante <> %s ", filter.getOwner().getCi());
+        
+        if (filter.getPattern() != null)
+            whereClause += String.format("AND nombre_producto like '%s' ", filter.getPattern());
+        
+        if (filter.getCategory() != null)
+            whereClause += String.format("AND id_categoria = %s ", filter.getCategory());
+        
+        if (filter.getMinValue() != null)
+            whereClause += String.format("AND valor_ucu_coin_estimado >= %s ", filter.getMinValue());
+        
+        if (filter.getMaxValue() != null)
+            whereClause += String.format("AND valor_ucu_coin_estimado <= %s ", filter.getMaxValue());
+        
+        Statement stmt = this.getConn().createStatement();
+        ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, valor_ucu_coin_estimado, vendida FROM public.publicaciones where %s", whereClause));
+        while (rs.next()) {
+            Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
+                    rs.getString("descripcion_producto"),Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")), 
+                    Boolean.valueOf(rs.getString("vendida")));
+            publicaciones.add(p);
+        }
+        
         return publicaciones;
     }
 

@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -34,12 +35,7 @@ public class PanelRegister extends javax.swing.JPanel {
         this.db = db;
         initComponents();
         
-        String[] departamentos = new String[]{"Elija un Departamento", "Montevideo", "Canelones", "Rocha",
-            "San Jose", "Colonia", "Treinta y Tres", "Lavalleja", "Tacuarembó",
-            "flores", "Salto", "Artigas", "Paysandú", "Rivera", "Rio Negro",
-            "Durazno", "Cerro Largo", "Florida", "Maldonado", "Soriano"};
-        comboDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(departamentos));
-
+        populateComboDepartment();
     }
     JFrame frame;
     DatabaseService db;
@@ -198,6 +194,19 @@ public class PanelRegister extends javax.swing.JPanel {
     public boolean validateRepeatPassword() {
         String pass = Arrays.toString(password.getPassword());
         return (pass.equals(Arrays.toString(repeatPassword.getPassword())));
+    }
+    
+    private void populateComboDepartment() {
+        try {
+            String[] departments = db.getDepartments();
+            comboDepartment.removeAllItems();
+            comboDepartment.addItem("Select");
+            for (String department : departments) {
+                comboDepartment.addItem(department);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelRegister.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -520,7 +529,7 @@ public class PanelRegister extends javax.swing.JPanel {
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         resetTexts();
-        boolean isConnectedWithDB = this.db.connectToDB("diego", "diego");
+        boolean isConnectedWithDB = this.db.connectToDB();
         boolean dataValid = validateData();
         boolean isValidUser = false;
 

@@ -40,27 +40,24 @@ public class EmailService {
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
         
-        String appMail = "ucutrueque@gmail.com";
-        String appPassword = "basededatos2021";
-        
         // Get the Session object.// and pass username and password
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
 
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(appMail, appPassword);
+                return new PasswordAuthentication(Constants.EMAIL, Constants.EMAIL_PASSWORD);
             }
         });
         
-        MimeMessage message = null;
+        MimeMessage message;
         try {
             message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(appMail));
+            message.setFrom(new InternetAddress(Constants.EMAIL));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             message.setSubject(subject);
             message.setText(content);
             Transport.send(message);
-        } catch (Exception mex) {
+        } catch (MessagingException mex) {
         }
     }
 }

@@ -6,28 +6,20 @@
 package BL.Helpers;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import javax.swing.JFormattedTextField;
 
 /**
  *
  * @author Administrador
  */
-public class FormatterService {
+public class FormatterService extends JFormattedTextField.AbstractFormatter {
 
-    public static String formatData(int x) {
-        if (x == -1) {
-            return "NULL";
-        }
-        return String.valueOf(x);
-    }
-
-    public static String formatData(String x) {
-        if (x.isEmpty()) {
-            return "NULL";
-        }
-        return "'" + x + "'";
-    }
-
+    private final String datePattern = "yyyy-MM-dd";
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+    
     public static String formatData(Date x) {
         if (x == null) {
             return "NULL";
@@ -35,16 +27,18 @@ public class FormatterService {
         return "'" + x.toString() + "'";
     }
 
-    public static String formatData(LocalDateTime x) {
-        if (x == null) {
-            return "NULL";
+    @Override
+    public Object stringToValue(String text) throws ParseException {
+        return dateFormatter.parseObject(text);
+    }
+
+    @Override
+    public String valueToString(Object value) throws ParseException {
+        if (value != null) {
+            Calendar cal = (Calendar) value;
+            return dateFormatter.format(cal.getTime());
         }
-        return "'" + x.toString() + "'";
+
+        return "";
     }
-
-    public static String formatData(boolean x) {
-        return x ? "'true'" : "'false'";
-    }
-
-
 }

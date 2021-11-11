@@ -99,7 +99,7 @@ public class PanelLogin extends javax.swing.JPanel {
         // TODO add your handling code here:
         
         boolean isValidUser = false;
-        boolean isConnectedWithDB = this.db.connectToDB("diego", "diego");
+        boolean isConnectedWithDB = this.db.connectToDB();
         if (isConnectedWithDB) {
             try {
                 isValidUser = this.db.login(inputNombreDeUsuario.getText(), String.valueOf(inputPassword.getText().hashCode()));
@@ -134,7 +134,7 @@ public class PanelLogin extends javax.swing.JPanel {
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         this.setVisible(false);
-        boolean isConnectedWithDB = this.db.connectToDB("diego", "diego");
+        boolean isConnectedWithDB = this.db.connectToDB();
         if (isConnectedWithDB) {
             PanelRegister panel = new PanelRegister(this.frame, this.db);
             this.frame.setSize(panel.getPreferredSize());

@@ -7,16 +7,16 @@ package UI;
 
 import BL.Entities.Persona;
 import BL.Entities.Publicacion;
+import BL.Entities.PublicationFilter;
 import BL.Helpers.DatabaseService;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -43,14 +43,15 @@ public class PanelHome extends javax.swing.JPanel {
         this.frame = frame;
         this.db = db;
         initComponents();
+        populateCategoryCombos();
         labelNombreDeUsuario.setText(persona.getNombre() + " " + persona.getApellido());
         saldo.setText("U$C " + persona.getSaldoUCUCoins());
         try {
-            mostrarPublicacionesEnTabla(tablaPublicaciones);
+            List<Publicacion> listaPublicaciones = this.db.getPublicaciones(this.persona);
+            mostrarPublicacionesEnTabla(tablaPublicaciones, listaPublicaciones);
         } catch (SQLException ex) {
             System.out.println(ex);
-        }
-
+        }        
     }
 
     /**
@@ -72,7 +73,7 @@ public class PanelHome extends javax.swing.JPanel {
         browseTab = new javax.swing.JPanel();
         btnSearch = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaExplorar = new javax.swing.JTable();
         btnAsk = new javax.swing.JButton();
         btnOffer = new javax.swing.JButton();
         txtValueFrom = new javax.swing.JTextField();
@@ -80,8 +81,9 @@ public class PanelHome extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtValueTo = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField3 = new javax.swing.JTextField();
+        comboCategories1 = new javax.swing.JComboBox<>();
+        txtSearch = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
         offersTab = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
@@ -97,7 +99,7 @@ public class PanelHome extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        comboCategories = new javax.swing.JComboBox<>();
+        comboCategories2 = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -195,8 +197,13 @@ public class PanelHome extends javax.swing.JPanel {
         btnSearch.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnSearch.setForeground(new java.awt.Color(255, 102, 102));
         btnSearch.setText("Buscar");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaExplorar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -207,7 +214,7 @@ public class PanelHome extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tablaExplorar);
 
         btnAsk.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAsk.setForeground(new java.awt.Color(255, 102, 102));
@@ -224,7 +231,9 @@ public class PanelHome extends javax.swing.JPanel {
 
         jLabel10.setText("Valor hasta");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboCategories1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel16.setText("Buscar productos");
 
         javax.swing.GroupLayout browseTabLayout = new javax.swing.GroupLayout(browseTab);
         browseTab.setLayout(browseTabLayout);
@@ -233,16 +242,10 @@ public class PanelHome extends javax.swing.JPanel {
             .addGroup(browseTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(browseTabLayout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, browseTabLayout.createSequentialGroup()
                         .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(browseTabLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboCategories1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(browseTabLayout.createSequentialGroup()
                                 .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
@@ -251,7 +254,13 @@ public class PanelHome extends javax.swing.JPanel {
                                 .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtValueFrom, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
                                     .addComponent(txtValueTo))))
-                        .addGap(18, 18, 18)))
+                        .addGap(18, 18, 18))
+                    .addGroup(browseTabLayout.createSequentialGroup()
+                        .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel16)
+                            .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)))
                 .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(browseTabLayout.createSequentialGroup()
                         .addComponent(btnOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -264,21 +273,15 @@ public class PanelHome extends javax.swing.JPanel {
             browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(browseTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(browseTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                        .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnAsk, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
-                    .addGroup(browseTabLayout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboCategories1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
@@ -287,9 +290,14 @@ public class PanelHome extends javax.swing.JPanel {
                         .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
                             .addComponent(txtValueTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(40, 40, 40)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAsk, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Explorar", browseTab);
@@ -395,7 +403,7 @@ public class PanelHome extends javax.swing.JPanel {
 
         jLabel5.setText("Categoria");
 
-        comboCategories.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboCategories2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setText("Imagen");
 
@@ -444,7 +452,7 @@ public class PanelHome extends javax.swing.JPanel {
                                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(publishTabLayout.createSequentialGroup()
                                     .addGap(24, 24, 24)
-                                    .addComponent(comboCategories, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(comboCategories2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addComponent(btnPublish, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(publishTabLayout.createSequentialGroup()
                         .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -493,7 +501,7 @@ public class PanelHome extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(comboCategories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(comboCategories2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(13, 13, 13)
                         .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
@@ -632,7 +640,7 @@ public class PanelHome extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCerrarSesion1ActionPerformed
 
     private void btnEditarPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPublicacionActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnEditarPublicacionActionPerformed
 
     private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed
@@ -667,8 +675,45 @@ public class PanelHome extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
-    private void mostrarPublicacionesEnTabla(javax.swing.JTable table) throws SQLException {
-        List<Publicacion> listaPublicaciones = this.db.getPublicaciones(this.persona);
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        if (this.db.connectToDB()) {
+            PublicationFilter filter = new PublicationFilter(this.persona);
+
+            if (!txtSearch.getText().isEmpty())
+                filter.setPattern(txtSearch.getText());
+
+            if (comboCategories1.getSelectedIndex() != 0)
+                filter.setCategory(comboCategories1.getSelectedIndex());
+
+            if (!txtValueFrom.getText().isEmpty()) {
+                try {
+                    filter.setMinValue(Integer.parseInt(txtValueFrom.getText()));
+                }
+                catch (NumberFormatException e) { }
+            }
+
+            if (!txtValueTo.getText().isEmpty()) {
+                try {
+                    filter.setMaxValue(Integer.parseInt(txtValueTo.getText()));
+                }
+                catch (NumberFormatException e) { }
+            } 
+
+            try {
+                List<Publicacion> publicaciones = db.getPublicaciones(filter);
+                mostrarPublicacionesEnTabla(tablaExplorar, publicaciones);
+            } catch (SQLException ex) {
+                Logger.getLogger(PanelHome.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        this.db.closeConnectionDB();
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        
         if (listaPublicaciones.size() > 0) {
             DefaultTableModel tableModel = new DefaultTableModel();
             tableModel.addColumn("Cdad.");
@@ -681,13 +726,29 @@ public class PanelHome extends javax.swing.JPanel {
 
             for (int i = 0; i < listaPublicaciones.size(); i++) {
                 row[0] = listaPublicaciones.get(i).getCantidad();
-                row[1] = listaPublicaciones.get(i).getCategoria();
+                row[1] = comboCategories1.getItemAt(listaPublicaciones.get(i).getCategoria());
                 row[2] = listaPublicaciones.get(i).getNombreProducto();
                 row[3] = listaPublicaciones.get(i).getDescripcion();
                 row[4] = listaPublicaciones.get(i).getValorEstimado();
                 tableModel.addRow(row);
             }
             table.setModel(tableModel);
+        }
+    }
+    
+    private void populateCategoryCombos() {
+        try {
+            String[] categories = db.getCategories();
+            comboCategories1.removeAllItems();
+            comboCategories2.removeAllItems();
+            comboCategories1.addItem("Select");
+            comboCategories2.addItem("Select");
+            for (String category : categories) {
+                comboCategories1.addItem(category);
+                comboCategories2.addItem(category);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelEditPublication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -707,8 +768,8 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JButton btnReplyMessage;
     private javax.swing.JButton btnSearch;
     private javax.swing.ButtonGroup categoriesGroup;
-    private javax.swing.JComboBox<String> comboCategories;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> comboCategories1;
+    private javax.swing.JComboBox<String> comboCategories2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -716,6 +777,7 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -732,7 +794,6 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
@@ -740,7 +801,6 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel labelMostrarImagen;
@@ -751,7 +811,9 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JPanel offersTab;
     private javax.swing.JPanel publishTab;
     private javax.swing.JLabel saldo;
+    private javax.swing.JTable tablaExplorar;
     private javax.swing.JTable tablaPublicaciones;
+    private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtValueFrom;
     private javax.swing.JTextField txtValueTo;
     // End of variables declaration//GEN-END:variables
