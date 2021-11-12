@@ -7,10 +7,10 @@ package UI;
 
 import BL.Entities.Publicacion;
 import BL.Helpers.DatabaseService;
+import BL.Helpers.FormatterService;
 import java.awt.Image;
 import java.io.File;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -24,15 +24,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class PanelEditPublication extends javax.swing.JPanel {
 
-    private Publicacion publicacion;
-    private DatabaseService db;
-    private JFrame parent;
+    private final Publicacion publicacion;
+    private final DatabaseService db;
+    private final JFrame parent;
     private File file = null;
     
     /**
      * Creates new form PanelEditPublication
      * @param parent
-     * @param modal
      * @param publicacion
      * @param db
      */
@@ -262,9 +261,9 @@ public class PanelEditPublication extends javax.swing.JPanel {
     private ImageIcon ResizeImage(String ImagePath) {
         ImageIcon MyImage = new ImageIcon(ImagePath);
         Image img = MyImage.getImage();
-        Image newImg = img.getScaledInstance(labelMostrarImagen.getWidth(), labelMostrarImagen.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon image = new ImageIcon(newImg);
-        return image;
+        Image image = img.getScaledInstance(labelMostrarImagen.getWidth(), labelMostrarImagen.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(image);
+        return imageIcon;
     }
     
     private void populateCategoryCombo() {
@@ -295,13 +294,13 @@ public class PanelEditPublication extends javax.swing.JPanel {
             qty = Integer.parseInt(pubQty.getText());
         } catch (NumberFormatException e) { }
         
-        Publicacion p = new Publicacion(this.publicacion.getId(), this.publicacion.getFechaHora(), category == 0 ? this.publicacion.getCategoria() : category,
-                name, desc, value == null ? this.publicacion.getValorEstimado() : value, qty == null ? this.publicacion.getCantidad() : qty, 
-                this.publicacion.getPublicante(), this.publicacion.isVendida(), this.file == null ? this.publicacion.getImagen() : this.file);
-        
         try {
+            Publicacion p = new Publicacion(this.publicacion.getId(), this.publicacion.getFechaHora(), category == 0 ? this.publicacion.getCategoria() : category,
+                name, desc, value == null ? this.publicacion.getValorEstimado() : value, qty == null ? this.publicacion.getCantidad() : qty, 
+                this.publicacion.getPublicante(), this.publicacion.isVendida(), this.file == null ? this.publicacion.getImagen() : FormatterService.ImageToByte(this.file));
+        
             this.db.updatePublicacion(p);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         

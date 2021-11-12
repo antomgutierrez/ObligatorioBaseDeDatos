@@ -5,6 +5,11 @@
  */
 package BL.Helpers;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,4 +46,19 @@ public class FormatterService extends JFormattedTextField.AbstractFormatter {
 
         return "";
     }
+    
+    public static byte[] ImageToByte(File file) throws FileNotFoundException{
+        FileInputStream fis = new FileInputStream(file);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        try {
+            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                bos.write(buf, 0, readNum);
+            }
+        } catch (IOException ex) {
+        }
+        byte[] bytes = bos.toByteArray();
+        return bytes;
+    }
+
 }

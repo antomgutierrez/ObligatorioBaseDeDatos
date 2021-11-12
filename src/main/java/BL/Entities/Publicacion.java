@@ -5,7 +5,6 @@
  */
 package BL.Entities;
 
-import java.io.File;
 import java.time.LocalDateTime;
 
 /**
@@ -23,9 +22,9 @@ public class Publicacion {
     private int cantidad;
     private int publicante;
     private boolean vendida;
-    private File imagen;
+    private byte[] imagen;
 
-    public Publicacion(int id, LocalDateTime fechaHora, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, int publicante, boolean vendida, File imagen) {
+    public Publicacion(int id, LocalDateTime fechaHora, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, int publicante, boolean vendida, byte[] imagen) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.categoria = categoria;
@@ -38,7 +37,7 @@ public class Publicacion {
         this.imagen = imagen;
     }
     
-    public Publicacion(int id, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, boolean vendida) {
+    public Publicacion(int id, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, boolean vendida, byte[] imagen) {
         this.id = id;
         this.categoria = categoria;
         this.nombreProducto = nombreProducto;
@@ -46,6 +45,7 @@ public class Publicacion {
         this.valorEstimado = valorEstimado;
         this.cantidad = cantidad;
         this.vendida = vendida;
+        this.imagen = imagen;
     }
     
     public int getId() {
@@ -120,11 +120,11 @@ public class Publicacion {
         this.vendida = vendida;
     }
 
-    public File getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(File imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 }

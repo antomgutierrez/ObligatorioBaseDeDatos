@@ -53,7 +53,7 @@ public class PanelHome extends javax.swing.JPanel {
         try {
             List<Publicacion> listaPublicaciones = this.db.getPublicaciones(this.persona);
             mostrarPublicacionesEnTabla(tablaPublicaciones, listaPublicaciones);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.out.println(ex);
         }
         
@@ -762,8 +762,8 @@ public class PanelHome extends javax.swing.JPanel {
             try {
                 List<Publicacion> publicaciones = db.getPublicaciones(filter);
                 mostrarPublicacionesEnTabla(tablaExplorar, publicaciones);
-            } catch (SQLException ex) {
-                Logger.getLogger(PanelHome.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
             }
         }
         

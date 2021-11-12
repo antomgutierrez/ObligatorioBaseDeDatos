@@ -5,6 +5,13 @@
  */
 package BL.Helpers;
 import BL.Entities.*;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -13,6 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 
 
 /**
@@ -159,23 +167,23 @@ public class DatabaseService {
         return result.toArray(new String[0]);
     }
 
-    public List<Publicacion> getPublicaciones(Persona persona) throws SQLException {
+    public List<Publicacion> getPublicaciones(Persona persona) throws SQLException, IOException {
         List<Publicacion> publicaciones = new ArrayList<>();
         Statement stmt = this.getConn().createStatement();
         ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, "
-                + "valor_ucu_coin_estimado, vendida FROM public.publicaciones where publicaciones.ci_publicante = '%s' AND publicaciones.vendida = 'false'", persona.getCi()));
+                + "valor_ucu_coin_estimado, vendida, Imagen FROM public.publicaciones where publicaciones.ci_publicante = '%s' AND publicaciones.vendida = 'false'", persona.getCi()));
         while (rs.next()) {
             Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
                     rs.getString("descripcion_producto"),Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")), 
-                    Boolean.valueOf(rs.getString("vendida")));
+                    Boolean.valueOf(rs.getString("vendida")), rs.getBytes("Imagen"));
+            
             publicaciones.add(p);
         }
 
         return publicaciones;
-        // FALTA DEVOLVER IMAGEN
     }
     
-    public List<Publicacion> getPublicaciones(PublicationFilter filter) throws SQLException {
+    public List<Publicacion> getPublicaciones(PublicationFilter filter) throws SQLException, IOException {
         List<Publicacion> publicaciones = new ArrayList<>();
         
         String whereClause = String.format("vendida = false AND ci_publicante <> %s ", filter.getOwner().getCi());
@@ -193,41 +201,45 @@ public class DatabaseService {
             whereClause += String.format("AND valor_ucu_coin_estimado <= %s ", filter.getMaxValue());
         
         Statement stmt = this.getConn().createStatement();
-        ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, valor_ucu_coin_estimado, vendida FROM public.publicaciones where %s", whereClause));
+        ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, valor_ucu_coin_estimado, vendida, Imagen FROM public.publicaciones where %s", whereClause));
         while (rs.next()) {
             Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
                     rs.getString("descripcion_producto"),Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")), 
-                    Boolean.valueOf(rs.getString("vendida")));
+                    Boolean.valueOf(rs.getString("vendida")), rs.getBytes("Imagen"));
             publicaciones.add(p);
         }
         
         return publicaciones;
-        // FALTA DEVOLVER IMAGEN
     }
     
-    public Publicacion getPublicacion(int id) throws SQLException {
+    public Publicacion getPublicacion(int id) throws SQLException, IOException {
         Statement stmt = this.getConn().createStatement();
         ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, "
-                + "valor_ucu_coin_estimado, vendida FROM public.publicaciones where publicaciones.id_publicacion = %s", id));
+                + "valor_ucu_coin_estimado, vendida, Imagen FROM public.publicaciones where publicaciones.id_publicacion = %s", id));
         if (rs.next()) {
             Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
                     rs.getString("descripcion_producto"),Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")), 
-                    Boolean.valueOf(rs.getString("vendida")));
+                    Boolean.valueOf(rs.getString("vendida")), rs.getBytes("Imagen"));
             
             return p;
         }
         
         return null;
-        // FALTA DEVOLVER IMAGEN
     }
     
-    public void updatePublicacion(Publicacion p) throws SQLException {
+    public void insertPublicacion(Publicacion p) {
+        String xByte = p.getImagen().toString();
+        System.out.println(xByte);
+    }
+    
+    public void updatePublicacion(Publicacion p) throws SQLException, IOException {
         Statement stmt = this.getConn().createStatement();
-        String update = String.format("UPDATE TABLE public.Publicaciones SET nombre_producto = '%s', descripcion_producto = '%s', "
-                + "valor_ucu_coin_estimado = %s, cantidad = %s, id_categoria = %s", 
-                p.getNombreProducto(), p.getDescripcion(), p.getValorEstimado(), p.getCantidad(), p.getCategoria());
+        String update = String.format("UPDATE public.Publicaciones SET nombre_producto = '%s', descripcion_producto = '%s', "
+                + "valor_ucu_coin_estimado = %s, cantidad = %s, id_categoria = %s, Imagen=%s WHERE id_publicacion = %s", 
+                p.getNombreProducto(), p.getDescripcion(), p.getValorEstimado(), p.getCantidad(), p.getCategoria(), p.getImagen(), p.getId());
+        
         stmt.executeUpdate(update);
-        // FALTA INSERTAR IMAGEN
+        this.getConn().commit();
     }
     
     public void deletePublicacion(int id) throws SQLException {
@@ -265,7 +277,6 @@ public class DatabaseService {
         ResultSet rs = stmt.executeQuery(query);
         
         while (rs.next()) {
-            System.out.println(rs.getString("id_oferta_padre"));
             int idOfertaPadre = rs.getString("id_oferta_padre") == null ? 0 : Integer.parseInt(rs.getString("id_oferta_padre"));
             Oferta of = new Oferta(Integer.parseInt(rs.getString("id_oferta")), Integer.parseInt(rs.getString("id_publicacion")), rs.getBoolean("aceptada"), 
                     idOfertaPadre, Integer.parseInt(rs.getString("ci_ofertante")), Integer.parseInt(rs.getString("ucucoins_ofrecidas")),
