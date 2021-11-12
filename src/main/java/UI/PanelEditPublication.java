@@ -22,7 +22,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author Administrador
  */
-public class PanelEditPublication extends javax.swing.JDialog {
+public class PanelEditPublication extends javax.swing.JPanel {
 
     private Publicacion publicacion;
     private DatabaseService db;
@@ -36,8 +36,7 @@ public class PanelEditPublication extends javax.swing.JDialog {
      * @param publicacion
      * @param db
      */
-    public PanelEditPublication(JFrame parent, boolean modal, DatabaseService db, Publicacion publicacion) {
-        super(parent, modal);
+    public PanelEditPublication(JFrame parent, DatabaseService db, Publicacion publicacion) {
         initComponents();
         this.publicacion = publicacion;
         this.db = db;
@@ -49,6 +48,7 @@ public class PanelEditPublication extends javax.swing.JDialog {
         populateCategoryCombo();
         pubCategory.setSelectedIndex(publicacion.getCategoria());
         pubValue.setText(String.valueOf(publicacion.getValorEstimado()));
+        this.setVisible(true);
     }
 
     /**
@@ -306,7 +306,6 @@ public class PanelEditPublication extends javax.swing.JDialog {
         }
         
         this.db.closeConnectionDB();
-        this.dispose();
     }//GEN-LAST:event_btnPublishActionPerformed
 
 

@@ -18,7 +18,9 @@ import java.awt.Image;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -689,8 +691,12 @@ public class PanelHome extends javax.swing.JPanel {
             if (this.db.connectToDB()) {
                 int id = (int) tablaPublicaciones.getValueAt(tablaPublicaciones.getSelectedRow(), 0);
                 Publicacion pub = this.db.getPublicacion(id);
-                PanelEditPublication panel = new PanelEditPublication(this.frame, true, this.db, pub);
-                //panel.setVisible(true); DA ERROR ACA, NO LO SUPE ARREGLAR "GroupLayout can only be used with one Container at a time"
+                PanelEditPublication panel = new PanelEditPublication(this.frame, this.db, pub);
+                JDialog dialog = new JDialog(this.frame, true);
+                dialog.setSize(panel.getPreferredSize());
+                dialog.setLocationRelativeTo(null);
+                dialog.getContentPane().add(panel);
+                dialog.setVisible(true);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
