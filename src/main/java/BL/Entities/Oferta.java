@@ -12,19 +12,37 @@ import java.util.List;
  * @author Administrador
  */
 public class Oferta {
-    int idPublicacion;
     int idOferta;
+    int idPublicacion;
     boolean aceptada;
     int idOfertaPadre;
     int CIofertante;
+    int ucucoinsOfrecidas;
+    String nombreProducto;
+
     List<Publicacion> publicaciones;
     
-    public Oferta(int idPublicacion, int idOferta, boolean aceptada, int idOfertaPadre, int CIofertante) {
+    public Oferta(int idOferta, int idPublicacion, boolean aceptada, int idOfertaPadre, int CIofertante, int ucucoinsOfrecidas) {
         this.idPublicacion = idPublicacion;
         this.idOferta = idOferta;
         this.aceptada = aceptada;
         this.idOfertaPadre = idOfertaPadre;
         this.CIofertante = CIofertante;
+        this.ucucoinsOfrecidas = ucucoinsOfrecidas;
+    }
+    
+    public Oferta(int idOferta, int idPublicacion, boolean aceptada, int idOfertaPadre, int CIofertante, int ucucoinsOfrecidas, String nombreProducto) {
+        this.idPublicacion = idPublicacion;
+        this.idOferta = idOferta;
+        this.aceptada = aceptada;
+        this.idOfertaPadre = idOfertaPadre;
+        this.CIofertante = CIofertante;
+        this.ucucoinsOfrecidas = ucucoinsOfrecidas;
+        this.nombreProducto = nombreProducto;
+    }
+
+    public String getNombreProducto() {
+        return nombreProducto;
     }
 
     public int getIdPublicacion() {
@@ -45,6 +63,10 @@ public class Oferta {
 
     public int getCIofertante() {
         return CIofertante;
+    }
+    
+    public int getUcucoinsOfrecidas() {
+        return ucucoinsOfrecidas;
     }
 
     public List<Publicacion> getPublicaciones() {

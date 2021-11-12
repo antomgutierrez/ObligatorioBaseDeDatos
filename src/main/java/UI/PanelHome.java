@@ -5,6 +5,7 @@
  */
 package UI;
 
+import BL.Entities.Oferta;
 import BL.Entities.Persona;
 import BL.Entities.Publicacion;
 import BL.Entities.PublicationFilter;
@@ -46,12 +47,27 @@ public class PanelHome extends javax.swing.JPanel {
         populateCategoryCombos();
         labelNombreDeUsuario.setText(persona.getNombre() + " " + persona.getApellido());
         saldo.setText("U$C " + persona.getSaldoUCUCoins());
+        
         try {
             List<Publicacion> listaPublicaciones = this.db.getPublicaciones(this.persona);
             mostrarPublicacionesEnTabla(tablaPublicaciones, listaPublicaciones);
         } catch (SQLException ex) {
             System.out.println(ex);
-        }        
+        }
+        
+        try {
+            List<Oferta> listaOfertasEnviadas = this.db.getOfertasEnviadas(this.persona);
+            mostrarOfertasEnTabla(tablaOfertasEnviadas, listaOfertasEnviadas);
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        
+        try {
+            List<Oferta> listaOfertasRecibidas = this.db.getOfertasRecibidas(this.persona);
+            mostrarOfertasEnTabla(tablaOfertasRecibidas, listaOfertasRecibidas);
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
     }
 
     /**
@@ -86,15 +102,16 @@ public class PanelHome extends javax.swing.JPanel {
         jLabel16 = new javax.swing.JLabel();
         offersTab = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tablaOfertasRecibidas = new javax.swing.JTable();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        tablaOfertasEnviadas = new javax.swing.JTable();
         btnRemoveOffer = new javax.swing.JButton();
         btnAcceptOffer = new javax.swing.JButton();
         btnRejectOffer = new javax.swing.JButton();
         btnCounterOffer = new javax.swing.JButton();
+        btnVerPublicacionesInv = new javax.swing.JButton();
         publishTab = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -302,7 +319,7 @@ public class PanelHome extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Explorar", browseTab);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tablaOfertasRecibidas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -313,13 +330,13 @@ public class PanelHome extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(tablaOfertasRecibidas);
 
-        jLabel11.setText("Sent");
+        jLabel11.setText("Enviadas");
 
-        jLabel12.setText("Received");
+        jLabel12.setText("Recibidas");
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        tablaOfertasEnviadas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -330,7 +347,7 @@ public class PanelHome extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane4.setViewportView(tablaOfertasEnviadas);
 
         btnRemoveOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnRemoveOffer.setForeground(new java.awt.Color(255, 102, 102));
@@ -348,6 +365,15 @@ public class PanelHome extends javax.swing.JPanel {
         btnCounterOffer.setForeground(new java.awt.Color(255, 102, 102));
         btnCounterOffer.setText("Contraoferta");
 
+        btnVerPublicacionesInv.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnVerPublicacionesInv.setForeground(new java.awt.Color(255, 102, 102));
+        btnVerPublicacionesInv.setText("Ver publicaciones involucradas");
+        btnVerPublicacionesInv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerPublicacionesInvActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout offersTabLayout = new javax.swing.GroupLayout(offersTab);
         offersTab.setLayout(offersTabLayout);
         offersTabLayout.setHorizontalGroup(
@@ -356,20 +382,27 @@ public class PanelHome extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(offersTabLayout.createSequentialGroup()
-                        .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(0, 748, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRemoveOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnCounterOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
-                        .addComponent(btnRejectOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAcceptOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(offersTabLayout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(0, 749, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRemoveOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(btnRejectOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                                .addComponent(btnAcceptOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnCounterOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(offersTabLayout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(offersTabLayout.createSequentialGroup()
+                .addGap(242, 242, 242)
+                .addComponent(btnVerPublicacionesInv, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         offersTabLayout.setVerticalGroup(
             offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -378,21 +411,24 @@ public class PanelHome extends javax.swing.JPanel {
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRemoveOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
-                .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRemoveOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(offersTabLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, offersTabLayout.createSequentialGroup()
+                    .addGroup(offersTabLayout.createSequentialGroup()
+                        .addGap(35, 35, 35)
                         .addComponent(btnAcceptOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRejectOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCounterOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVerPublicacionesInv, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ofertas", offersTab);
@@ -626,7 +662,16 @@ public class PanelHome extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBorrarPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarPublicacionActionPerformed
-
+        try {
+            if (this.db.connectToDB()) {
+                int id = (int) tablaPublicaciones.getValueAt(tablaPublicaciones.getSelectedRow(), 0);
+                this.db.deletePublicacion(id);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        this.db.closeConnectionDB();
     }//GEN-LAST:event_btnBorrarPublicacionActionPerformed
 
     private void btnCerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesion1ActionPerformed
@@ -640,7 +685,16 @@ public class PanelHome extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCerrarSesion1ActionPerformed
 
     private void btnEditarPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPublicacionActionPerformed
-        
+        try {
+            if (this.db.connectToDB()) {
+                int id = (int) tablaPublicaciones.getValueAt(tablaPublicaciones.getSelectedRow(), 0);
+                Publicacion pub = this.db.getPublicacion(id);
+                PanelEditPublication panel = new PanelEditPublication(this.frame, true, this.db, pub);
+                //panel.setVisible(true); DA ERROR ACA, NO LO SUPE ARREGLAR "GroupLayout can only be used with one Container at a time"
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_btnEditarPublicacionActionPerformed
 
     private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed
@@ -710,26 +764,56 @@ public class PanelHome extends javax.swing.JPanel {
         this.db.closeConnectionDB();
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    private void btnVerPublicacionesInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPublicacionesInvActionPerformed
+        
+        // ACA TENEMOS QUE ABRIR UN POPUP QUE MUESTRE DE UN LADO LAS PUBLICACIONES QUE YO OFREZCO Y POR OTRO LADO LAS QUE ME OFRECEN        
+        
+    }//GEN-LAST:event_btnVerPublicacionesInvActionPerformed
+
     private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         
         if (listaPublicaciones.size() > 0) {
             DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.addColumn("#");
             tableModel.addColumn("Cdad.");
             tableModel.addColumn("Categoria");
             tableModel.addColumn("Nombre");
             tableModel.addColumn("Descripción");
             tableModel.addColumn("U$C");
 
-            Object[] row = new Object[5];
+            Object[] row = new Object[6];
 
             for (int i = 0; i < listaPublicaciones.size(); i++) {
-                row[0] = listaPublicaciones.get(i).getCantidad();
-                row[1] = comboCategories1.getItemAt(listaPublicaciones.get(i).getCategoria());
-                row[2] = listaPublicaciones.get(i).getNombreProducto();
-                row[3] = listaPublicaciones.get(i).getDescripcion();
-                row[4] = listaPublicaciones.get(i).getValorEstimado();
+                row[0] = listaPublicaciones.get(i).getId();
+                row[1] = listaPublicaciones.get(i).getCantidad();
+                row[2] = comboCategories1.getItemAt(listaPublicaciones.get(i).getCategoria());
+                row[3] = listaPublicaciones.get(i).getNombreProducto();
+                row[4] = listaPublicaciones.get(i).getDescripcion();
+                row[5] = listaPublicaciones.get(i).getValorEstimado();
+                tableModel.addRow(row);
+            }
+            table.setModel(tableModel);
+        }
+    }
+    
+    private void mostrarOfertasEnTabla(javax.swing.JTable table, List<Oferta> listaOfertas) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        
+        if (listaOfertas.size() > 0) {
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.addColumn("#");
+            tableModel.addColumn("Nombre");
+            tableModel.addColumn("U$C ofrecido");
+
+            Object[] row = new Object[3];
+
+            for (int i = 0; i < listaOfertas.size(); i++) {
+                row[0] = listaOfertas.get(i).getIdOferta();
+                row[1] = listaOfertas.get(i).getNombreProducto();
+                row[2] = listaOfertas.get(i).getUcucoinsOfrecidas();
                 tableModel.addRow(row);
             }
             table.setModel(tableModel);
@@ -767,6 +851,7 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JButton btnRemoveOffer;
     private javax.swing.JButton btnReplyMessage;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnVerPublicacionesInv;
     private javax.swing.ButtonGroup categoriesGroup;
     private javax.swing.JComboBox<String> comboCategories1;
     private javax.swing.JComboBox<String> comboCategories2;
@@ -794,8 +879,6 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
     private javax.swing.JTable jTable6;
     private javax.swing.JTextArea jTextArea1;
@@ -812,6 +895,8 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JPanel publishTab;
     private javax.swing.JLabel saldo;
     private javax.swing.JTable tablaExplorar;
+    private javax.swing.JTable tablaOfertasEnviadas;
+    private javax.swing.JTable tablaOfertasRecibidas;
     private javax.swing.JTable tablaPublicaciones;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtValueFrom;

@@ -10,6 +10,7 @@ import BL.Helpers.DatabaseService;
 import java.awt.Image;
 import java.io.File;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -21,23 +22,26 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author Administrador
  */
-public class PanelEditPublication extends javax.swing.JPanel {
+public class PanelEditPublication extends javax.swing.JDialog {
 
     private Publicacion publicacion;
-    private JFrame frame;
     private DatabaseService db;
+    private JFrame parent;
+    private File file = null;
     
     /**
      * Creates new form PanelEditPublication
+     * @param parent
+     * @param modal
      * @param publicacion
-     * @param frame
      * @param db
      */
-    public PanelEditPublication(Publicacion publicacion, JFrame frame, DatabaseService db) {
+    public PanelEditPublication(JFrame parent, boolean modal, DatabaseService db, Publicacion publicacion) {
+        super(parent, modal);
         initComponents();
         this.publicacion = publicacion;
-        this.frame = frame;
         this.db = db;
+        this.parent = parent;
         
         pubName.setText(publicacion.getNombreProducto());
         pubDesc.setText(publicacion.getDescripcion());
@@ -156,8 +160,9 @@ public class PanelEditPublication extends javax.swing.JPanel {
                 .addGap(30, 30, 30)
                 .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(publishTabLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addComponent(jToggleButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(labelNombreArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(labelMostrarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -165,16 +170,20 @@ public class PanelEditPublication extends javax.swing.JPanel {
         publishTabLayout.setVerticalGroup(
             publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(publishTabLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(pubName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel6)
-                        .addComponent(jToggleButton1))
+                .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(publishTabLayout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(labelNombreArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(37, 37, 37)
+                        .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel3)
+                                .addComponent(pubName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6))
+                            .addGroup(publishTabLayout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(labelNombreArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))))
+                    .addGroup(publishTabLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jToggleButton1)))
                 .addGap(18, 18, 18)
                 .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(publishTabLayout.createSequentialGroup()
@@ -222,12 +231,12 @@ public class PanelEditPublication extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addContainerGap(381, Short.MAX_VALUE))
+                .addContainerGap(417, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(43, Short.MAX_VALUE)
+                    .addContainerGap(61, Short.MAX_VALUE)
                     .addComponent(publishTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(29, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -237,17 +246,16 @@ public class PanelEditPublication extends javax.swing.JPanel {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg", "gif", "png");
 
         fileChooser.addChoosableFileFilter(filter);
-        fileChooser.setAcceptAllFileFilterUsed(false);
-
-        int option = fileChooser.showOpenDialog(frame);
+        int option = fileChooser.showOpenDialog(this.parent);
         if (option == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
+            file = fileChooser.getSelectedFile();
             targetImg = ResizeImage(file.getPath());
             labelMostrarImagen.setIcon(targetImg);
             labelNombreArchivo.setText("Archivo elegido: " + file.getPath());
         } else {
             labelNombreArchivo.setText("Cancelado");
         }
+
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     // Methode to resize imageIcon with the same size of a Jlabel
@@ -273,7 +281,32 @@ public class PanelEditPublication extends javax.swing.JPanel {
     }
     
     private void btnPublishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublishActionPerformed
-        // TODO add your handling code here:
+        int category = pubCategory.getSelectedIndex();
+        String name = pubName.getText();
+        String desc = pubDesc.getText();
+        
+        Integer value = null;
+        try {
+            value = Integer.parseInt(pubValue.getText());
+        } catch (NumberFormatException e) { }
+        
+        Integer qty = null;
+        try {
+            qty = Integer.parseInt(pubQty.getText());
+        } catch (NumberFormatException e) { }
+        
+        Publicacion p = new Publicacion(this.publicacion.getId(), this.publicacion.getFechaHora(), category == 0 ? this.publicacion.getCategoria() : category,
+                name, desc, value == null ? this.publicacion.getValorEstimado() : value, qty == null ? this.publicacion.getCantidad() : qty, 
+                this.publicacion.getPublicante(), this.publicacion.isVendida(), this.file == null ? this.publicacion.getImagen() : this.file);
+        
+        try {
+            this.db.updatePublicacion(p);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        this.db.closeConnectionDB();
+        this.dispose();
     }//GEN-LAST:event_btnPublishActionPerformed
 
 

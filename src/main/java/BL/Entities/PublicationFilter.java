@@ -15,7 +15,7 @@ public class PublicationFilter {
     private Integer category = null;
     private Integer minValue = null;
     private Integer maxValue = null;
-    private Persona owner;
+    private final Persona owner;
     
     public PublicationFilter(Persona owner) {
         this.owner = owner;

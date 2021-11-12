@@ -172,6 +172,7 @@ public class DatabaseService {
         }
 
         return publicaciones;
+        // FALTA DEVOLVER IMAGEN
     }
     
     public List<Publicacion> getPublicaciones(PublicationFilter filter) throws SQLException {
@@ -201,6 +202,78 @@ public class DatabaseService {
         }
         
         return publicaciones;
+        // FALTA DEVOLVER IMAGEN
+    }
+    
+    public Publicacion getPublicacion(int id) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, "
+                + "valor_ucu_coin_estimado, vendida FROM public.publicaciones where publicaciones.id_publicacion = %s", id));
+        if (rs.next()) {
+            Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
+                    rs.getString("descripcion_producto"),Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")), 
+                    Boolean.valueOf(rs.getString("vendida")));
+            
+            return p;
+        }
+        
+        return null;
+        // FALTA DEVOLVER IMAGEN
+    }
+    
+    public void updatePublicacion(Publicacion p) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        String update = String.format("UPDATE TABLE public.Publicaciones SET nombre_producto = '%s', descripcion_producto = '%s', "
+                + "valor_ucu_coin_estimado = %s, cantidad = %s, id_categoria = %s", 
+                p.getNombreProducto(), p.getDescripcion(), p.getValorEstimado(), p.getCantidad(), p.getCategoria());
+        stmt.executeUpdate(update);
+        // FALTA INSERTAR IMAGEN
+    }
+    
+    public void deletePublicacion(int id) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        stmt.executeUpdate(String.format("DELETE FROM Publicaciones WHERE id_publicacion = %s", id));
+        
+        // EL DELETE ANDA, PERO HAY QUE ELIMINAR TODOS LOS MENSAJES, OFERTAS Y PUBLICACIONES OFERTAS
+    }
+    
+    public List<Oferta> getOfertasEnviadas(Persona persona) throws SQLException {
+        List<Oferta> ofertas = new ArrayList<>();
+        Statement stmt = this.getConn().createStatement();
+        String query = String.format("SELECT id_oferta, ofer.id_publicacion, id_oferta_padre, ci_ofertante, aceptada, ucucoins_ofrecidas, nombre_producto FROM Ofertas ofer, Publicaciones pub "
+                + "WHERE ofer.id_publicacion = pub.id_publicacion AND ci_ofertante = %s AND aceptada = false", persona.getCi());
+        ResultSet rs = stmt.executeQuery(query);
+        
+        while (rs.next()) {
+            int idOfertaPadre = rs.getString("id_oferta_padre") == null ? 0 : Integer.parseInt(rs.getString("id_oferta_padre"));
+            Oferta of = new Oferta(Integer.parseInt(rs.getString("id_oferta")), Integer.parseInt(rs.getString("id_publicacion")), rs.getBoolean("aceptada"), 
+                    idOfertaPadre, Integer.parseInt(rs.getString("ci_ofertante")), Integer.parseInt(rs.getString("ucucoins_ofrecidas")),
+                    rs.getString("nombre_producto"));
+            ofertas.add(of);
+        }
+        
+        return ofertas;
+    }
+    
+    public List<Oferta> getOfertasRecibidas(Persona persona) throws SQLException {
+        List<Oferta> ofertas = new ArrayList<>();
+        Statement stmt = this.getConn().createStatement();
+        String query = String.format("SELECT id_oferta, Of1.id_publicacion, id_oferta_padre, ci_ofertante, aceptada, ucucoins_ofrecidas, nombre_producto FROM Ofertas Of1, Publicaciones Pub "
+                + "WHERE Of1.ci_ofertante <> %s AND Of1.aceptada = false AND Of1.id_publicacion = Pub.id_publicacion AND "
+                + "(Pub.ci_publicante = %s OR %s in (SELECT ci_ofertante from Ofertas Of2 WHERE Of2.id_oferta = Of1.id_oferta_padre))", 
+                persona.getCi(), persona.getCi(), persona.getCi());
+        ResultSet rs = stmt.executeQuery(query);
+        
+        while (rs.next()) {
+            System.out.println(rs.getString("id_oferta_padre"));
+            int idOfertaPadre = rs.getString("id_oferta_padre") == null ? 0 : Integer.parseInt(rs.getString("id_oferta_padre"));
+            Oferta of = new Oferta(Integer.parseInt(rs.getString("id_oferta")), Integer.parseInt(rs.getString("id_publicacion")), rs.getBoolean("aceptada"), 
+                    idOfertaPadre, Integer.parseInt(rs.getString("ci_ofertante")), Integer.parseInt(rs.getString("ucucoins_ofrecidas")),
+                    rs.getString("nombre_producto"));
+            ofertas.add(of);
+        }
+        
+        return ofertas;
     }
 
 }
