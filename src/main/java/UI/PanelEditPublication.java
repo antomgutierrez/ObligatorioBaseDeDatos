@@ -10,7 +10,9 @@ import BL.Helpers.DatabaseService;
 import BL.Helpers.FormatterService;
 import java.awt.Image;
 import java.io.File;
+import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -295,16 +297,18 @@ public class PanelEditPublication extends javax.swing.JPanel {
         } catch (NumberFormatException e) { }
         
         try {
+            byte[] fileContent = null;
+            if (this.file != null)
+                fileContent = Files.readAllBytes(this.file.toPath());
+        
             Publicacion p = new Publicacion(this.publicacion.getId(), this.publicacion.getFechaHora(), category == 0 ? this.publicacion.getCategoria() : category,
                 name, desc, value == null ? this.publicacion.getValorEstimado() : value, qty == null ? this.publicacion.getCantidad() : qty, 
-                this.publicacion.getPublicante(), this.publicacion.isVendida(), this.file == null ? this.publicacion.getImagen() : FormatterService.ImageToByte(this.file));
+                this.publicacion.getPublicante(), this.publicacion.isVendida(), fileContent == null ? this.publicacion.getImagen() : Base64.getEncoder().encodeToString(fileContent));
         
             this.db.updatePublicacion(p);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
-        this.db.closeConnectionDB();
     }//GEN-LAST:event_btnPublishActionPerformed
 
 

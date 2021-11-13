@@ -22,9 +22,9 @@ public class Publicacion {
     private int cantidad;
     private int publicante;
     private boolean vendida;
-    private byte[] imagen;
+    private String imagen;
 
-    public Publicacion(int id, LocalDateTime fechaHora, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, int publicante, boolean vendida, byte[] imagen) {
+    public Publicacion(int id, LocalDateTime fechaHora, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, int publicante, boolean vendida, String imagen) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.categoria = categoria;
@@ -37,7 +37,7 @@ public class Publicacion {
         this.imagen = imagen;
     }
     
-    public Publicacion(int id, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, boolean vendida, byte[] imagen) {
+    public Publicacion(int id, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, boolean vendida, String imagen) {
         this.id = id;
         this.categoria = categoria;
         this.nombreProducto = nombreProducto;
@@ -120,11 +120,11 @@ public class Publicacion {
         this.vendida = vendida;
     }
 
-    public byte[] getImagen() {
+    public String getImagen() {
         return imagen;
     }
 
-    public void setImagen(byte[] imagen) {
+    public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 }

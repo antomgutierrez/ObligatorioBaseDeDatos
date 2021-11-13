@@ -128,8 +128,6 @@ public class PanelLogin extends javax.swing.JPanel {
             jLabel4.setText("Imposible conectar a la Base de Datos");
         }
         this.db.closeConnectionDB();
-
-
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed

@@ -175,7 +175,7 @@ public class DatabaseService {
         while (rs.next()) {
             Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
                     rs.getString("descripcion_producto"),Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")), 
-                    Boolean.valueOf(rs.getString("vendida")), rs.getBytes("Imagen"));
+                    Boolean.valueOf(rs.getString("vendida")), rs.getString("Imagen"));
             
             publicaciones.add(p);
         }
@@ -205,7 +205,7 @@ public class DatabaseService {
         while (rs.next()) {
             Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
                     rs.getString("descripcion_producto"),Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")), 
-                    Boolean.valueOf(rs.getString("vendida")), rs.getBytes("Imagen"));
+                    Boolean.valueOf(rs.getString("vendida")), rs.getString("Imagen"));
             publicaciones.add(p);
         }
         
@@ -219,7 +219,7 @@ public class DatabaseService {
         if (rs.next()) {
             Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
                     rs.getString("descripcion_producto"),Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")), 
-                    Boolean.valueOf(rs.getString("vendida")), rs.getBytes("Imagen"));
+                    Boolean.valueOf(rs.getString("vendida")), rs.getString("Imagen"));
             
             return p;
         }
@@ -235,7 +235,7 @@ public class DatabaseService {
     public void updatePublicacion(Publicacion p) throws SQLException, IOException {
         Statement stmt = this.getConn().createStatement();
         String update = String.format("UPDATE public.Publicaciones SET nombre_producto = '%s', descripcion_producto = '%s', "
-                + "valor_ucu_coin_estimado = %s, cantidad = %s, id_categoria = %s, Imagen=%s WHERE id_publicacion = %s", 
+                + "valor_ucu_coin_estimado = %s, cantidad = %s, id_categoria = %s, Imagen='%s' WHERE id_publicacion = %s", 
                 p.getNombreProducto(), p.getDescripcion(), p.getValorEstimado(), p.getCantidad(), p.getCategoria(), p.getImagen(), p.getId());
         
         stmt.executeUpdate(update);
