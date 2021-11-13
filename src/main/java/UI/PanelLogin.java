@@ -123,11 +123,12 @@ public class PanelLogin extends javax.swing.JPanel {
                 jLabel4.setHorizontalAlignment(SwingConstants.CENTER);
                 jLabel4.setText("Usuario o contraseña inválidos");
             }
+            this.db.closeConnectionDB();
         } else {
             jLabel4.setHorizontalAlignment(SwingConstants.CENTER);
             jLabel4.setText("Imposible conectar a la Base de Datos");
         }
-        this.db.closeConnectionDB();
+        
 
 
     }//GEN-LAST:event_btnLoginActionPerformed

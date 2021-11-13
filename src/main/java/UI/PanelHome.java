@@ -16,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -33,6 +35,7 @@ public class PanelHome extends javax.swing.JPanel {
     private Persona persona;
     private JFrame frame;
     private DatabaseService db;
+    File file;
 
     /**
      * Creates new form PanelLogin
@@ -118,20 +121,21 @@ public class PanelHome extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        comboCategories2 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        listaCategorias = new javax.swing.JComboBox<>();
+        nombreField = new javax.swing.JTextField();
+        valorField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         btnPublish = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        cantidadField = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        descripcionField = new javax.swing.JTextArea();
         jToggleButton1 = new javax.swing.JToggleButton();
         labelMostrarImagen = new javax.swing.JLabel();
         labelNombreArchivo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        publicarMensajeError = new javax.swing.JLabel();
         messagesTab = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -441,21 +445,26 @@ public class PanelHome extends javax.swing.JPanel {
 
         jLabel5.setText("Categoria");
 
-        comboCategories2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        listaCategorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setText("Imagen");
 
         btnPublish.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnPublish.setForeground(new java.awt.Color(0, 102, 0));
         btnPublish.setText("Publicar");
+        btnPublish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPublishActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Cantidad");
 
         jLabel15.setText("Descripcion");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane7.setViewportView(jTextArea1);
+        descripcionField.setColumns(20);
+        descripcionField.setRows(5);
+        jScrollPane7.setViewportView(descripcionField);
 
         jToggleButton1.setText("Añadir imagen");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -465,6 +474,9 @@ public class PanelHome extends javax.swing.JPanel {
         });
 
         jLabel1.setText("U$C");
+
+        publicarMensajeError.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        publicarMensajeError.setForeground(new java.awt.Color(255, 0, 51));
 
         javax.swing.GroupLayout publishTabLayout = new javax.swing.GroupLayout(publishTab);
         publishTab.setLayout(publishTabLayout);
@@ -477,7 +489,7 @@ public class PanelHome extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, publishTabLayout.createSequentialGroup()
                             .addComponent(jLabel9)
                             .addGap(29, 29, 29)
-                            .addComponent(jTextField4))
+                            .addComponent(cantidadField))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, publishTabLayout.createSequentialGroup()
                             .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -487,10 +499,10 @@ public class PanelHome extends javax.swing.JPanel {
                                     .addGap(36, 36, 36)
                                     .addComponent(jLabel1)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(valorField, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(publishTabLayout.createSequentialGroup()
                                     .addGap(24, 24, 24)
-                                    .addComponent(comboCategories2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(listaCategorias, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addComponent(btnPublish, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(publishTabLayout.createSequentialGroup()
                         .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -499,7 +511,7 @@ public class PanelHome extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(publishTabLayout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel6))
                             .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -509,7 +521,8 @@ public class PanelHome extends javax.swing.JPanel {
                         .addComponent(jToggleButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(labelNombreArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(labelMostrarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(labelMostrarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(publicarMensajeError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         publishTabLayout.setVerticalGroup(
@@ -519,7 +532,7 @@ public class PanelHome extends javax.swing.JPanel {
                 .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel6)
                         .addComponent(jToggleButton1))
                     .addGroup(publishTabLayout.createSequentialGroup()
@@ -534,19 +547,21 @@ public class PanelHome extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(valorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(comboCategories2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(listaCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(13, 13, 13)
                         .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cantidadField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(labelMostrarImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnPublish, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPublish, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(publicarMensajeError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -726,7 +741,7 @@ public class PanelHome extends javax.swing.JPanel {
 
         int option = fileChooser.showOpenDialog(frame);
         if (option == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
+            file = fileChooser.getSelectedFile();
             targetImg = ResizeImage(file.getPath());
             labelMostrarImagen.setIcon(targetImg);
             labelNombreArchivo.setText("Archivo elegido: " + file.getPath());
@@ -775,6 +790,30 @@ public class PanelHome extends javax.swing.JPanel {
         // ACA TENEMOS QUE ABRIR UN POPUP QUE MUESTRE DE UN LADO LAS PUBLICACIONES QUE YO OFREZCO Y POR OTRO LADO LAS QUE ME OFRECEN        
         
     }//GEN-LAST:event_btnVerPublicacionesInvActionPerformed
+
+    private void btnPublishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublishActionPerformed
+        String nombre = nombreField.getText();
+        String descripcion = descripcionField.getText();
+        String valor = valorField.getText();
+        String categoria = listaCategorias.getSelectedItem().toString();
+        String cantidad = cantidadField.getText();
+        byte[] imagen = null;
+        try {
+            imagen = Files.readAllBytes(file.toPath());
+        } catch (IOException ex) {
+            publicarMensajeError.setText("Elija una imagen");
+        }
+        System.out.println(String.format("%s,%s,%s,%s,%s",nombre,descripcion,valor,categoria,cantidad));
+        if (imagen != null){
+            Publicacion p = new Publicacion(Integer.valueOf(categoria) , nombre, descripcion, Integer.valueOf(valor), Integer.valueOf(cantidad), false, imagen);
+            try {
+                db.addNewPublicacion(p);
+            } catch (SQLException ex) {
+                publicarMensajeError.setText(String.format("Error al insertar en la BBDD %s", ex));
+            }
+        }
+        
+    }//GEN-LAST:event_btnPublishActionPerformed
 
     private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -830,12 +869,12 @@ public class PanelHome extends javax.swing.JPanel {
         try {
             String[] categories = db.getCategories();
             comboCategories1.removeAllItems();
-            comboCategories2.removeAllItems();
+            listaCategorias.removeAllItems();
             comboCategories1.addItem("Select");
-            comboCategories2.addItem("Select");
+            listaCategorias.addItem("Select");
             for (String category : categories) {
                 comboCategories1.addItem(category);
-                comboCategories2.addItem(category);
+                listaCategorias.addItem(category);
             }
         } catch (SQLException ex) {
             Logger.getLogger(PanelEditPublication.class.getName()).log(Level.SEVERE, null, ex);
@@ -858,9 +897,10 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JButton btnReplyMessage;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnVerPublicacionesInv;
+    private javax.swing.JTextField cantidadField;
     private javax.swing.ButtonGroup categoriesGroup;
     private javax.swing.JComboBox<String> comboCategories1;
-    private javax.swing.JComboBox<String> comboCategories2;
+    private javax.swing.JTextArea descripcionField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -887,17 +927,16 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable5;
     private javax.swing.JTable jTable6;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel labelMostrarImagen;
     private javax.swing.JLabel labelNombreArchivo;
     private javax.swing.JLabel labelNombreDeUsuario;
+    private javax.swing.JComboBox<String> listaCategorias;
     private javax.swing.JPanel messagesTab;
     private javax.swing.JPanel myProductsTab;
+    private javax.swing.JTextField nombreField;
     private javax.swing.JPanel offersTab;
+    private javax.swing.JLabel publicarMensajeError;
     private javax.swing.JPanel publishTab;
     private javax.swing.JLabel saldo;
     private javax.swing.JTable tablaExplorar;
@@ -907,5 +946,6 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtValueFrom;
     private javax.swing.JTextField txtValueTo;
+    private javax.swing.JTextField valorField;
     // End of variables declaration//GEN-END:variables
 }
