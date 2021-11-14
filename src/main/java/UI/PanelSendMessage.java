@@ -59,6 +59,8 @@ public class PanelSendMessage extends javax.swing.JPanel {
         btnEnviarMensaje = new javax.swing.JButton();
         contenidoMensaje = new javax.swing.JTextField();
 
+        setPreferredSize(new java.awt.Dimension(600, 400));
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Enviar mensaje a");
 

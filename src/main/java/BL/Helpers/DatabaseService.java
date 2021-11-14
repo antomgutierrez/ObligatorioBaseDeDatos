@@ -14,7 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -345,7 +344,7 @@ public class DatabaseService {
 
     public void addNewPublicacion(Publicacion p) throws SQLException {
         Statement stmt = this.getConn().createStatement();
-        java.sql.Date sqlDate = java.sql.Date.valueOf(p.getFechaHora().toLocalDate());
+        java.sql.Timestamp sqlDate = java.sql.Timestamp.valueOf(p.getFechaHora());
         String insert = String.format("INSERT INTO publicaciones(cantidad, fecha_hora_publicacion, nombre_producto, "
                 + "descripcion_producto, valor_ucu_coin_estimado, id_categoria, vendida, imagen, ci_publicante) "
                 + " VALUES (%s, '%s', '%s', '%s', %s, %s, '%s', '%s', '%s');", p.getCantidad(), sqlDate, p.getNombreProducto(), p.getDescripcion(),
@@ -368,7 +367,7 @@ public class DatabaseService {
 
     public void insertNewMessage(Mensaje mensaje) throws SQLException {
         Statement stmt = this.getConn().createStatement();
-        java.sql.Date sqlDate = java.sql.Date.valueOf(mensaje.getFechaHora().toLocalDate());
+        java.sql.Timestamp sqlDate = java.sql.Timestamp.valueOf(mensaje.getFechaHora());
         String insert = String.format("INSERT INTO mensajes(contenido_mensaje, id_publicacion, id_mensaje_padre,"
                 + " ci_origen, ci_destino, respondido, fecha_hora_mensaje) "
                 + " VALUES ('%s', %s, %s, %s, %s, '%s', '%s');", mensaje.getContenido(), mensaje.getIdPublicacion(), "null", mensaje.getCIorigen(), 

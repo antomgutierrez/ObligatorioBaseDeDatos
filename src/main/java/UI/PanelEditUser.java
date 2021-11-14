@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Arrays;
+import javax.swing.JDialog;
 
 /**
  *
@@ -573,7 +574,13 @@ public class PanelEditUser extends javax.swing.JPanel {
             }
 
             this.db.closeConnectionDB();
-            this.frame.dispose();
+            
+            PanelSucces panel = new PanelSucces(this.frame);
+            JDialog dialog = new JDialog(this.frame, true);
+            dialog.setSize(panel.getPreferredSize());
+            dialog.setLocationRelativeTo(null);
+            dialog.getContentPane().add(panel);
+            dialog.setVisible(true);
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 

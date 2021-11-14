@@ -85,7 +85,7 @@
                           <Component id="btnBorrarPublicacion" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="btnEditarPublicacion" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="25" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -224,7 +224,7 @@
                           </Group>
                           <Component id="jScrollPane2" min="-2" pref="299" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="25" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnOffer" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
                           <Component id="btnAsk" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
@@ -786,17 +786,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jComboBox1" min="-2" pref="239" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="jComboBox1" min="-2" pref="239" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="jScrollPane8" min="-2" pref="835" max="-2" attributes="0"/>
+                              <Component id="jScrollPane8" min="-2" pref="847" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnReplyMessage" pref="133" max="32767" attributes="0"/>
+                              <Component id="btnReplyMessage" min="-2" pref="121" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -812,7 +809,7 @@
                               <Component id="btnReplyMessage" min="-2" pref="46" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="11" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -882,7 +879,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="750" y="60" width="210" height="40"/>
+          <AbsoluteConstraints x="820" y="60" width="170" height="40"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -916,7 +913,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="620" y="60" width="240" height="30"/>
+          <AbsoluteConstraints x="620" y="60" width="200" height="30"/>
         </Constraint>
       </Constraints>
     </Component>

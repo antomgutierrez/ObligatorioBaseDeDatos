@@ -222,7 +222,7 @@ public class PanelHome extends javax.swing.JPanel {
                 .addGroup(myProductsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBorrarPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEditarPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Mis productos", myProductsTab);
@@ -336,7 +336,7 @@ public class PanelHome extends javax.swing.JPanel {
                         .addGap(40, 40, 40)
                         .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(browseTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAsk, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -614,14 +614,12 @@ public class PanelHome extends javax.swing.JPanel {
             messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(messagesTabLayout.createSequentialGroup()
                 .addGroup(messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(messagesTabLayout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(messagesTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 835, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 847, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnReplyMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(btnReplyMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         messagesTabLayout.setVerticalGroup(
             messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -633,7 +631,7 @@ public class PanelHome extends javax.swing.JPanel {
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(275, 275, 275)
                         .addComponent(btnReplyMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Mensajes", messagesTab);
@@ -644,7 +642,7 @@ public class PanelHome extends javax.swing.JPanel {
         saldo.setForeground(new java.awt.Color(255, 102, 102));
         saldo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         saldo.setText("$ ...");
-        add(saldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 60, 210, 40));
+        add(saldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 60, 170, 40));
 
         jLabel2.setFont(new java.awt.Font("Tw Cen MT", 0, 48)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -656,7 +654,7 @@ public class PanelHome extends javax.swing.JPanel {
         labelNombreDeUsuario.setForeground(new java.awt.Color(0, 0, 204));
         labelNombreDeUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelNombreDeUsuario.setText("userName");
-        add(labelNombreDeUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 60, 240, 30));
+        add(labelNombreDeUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 60, 200, 30));
 
         btnEditarPerfil.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnEditarPerfil.setForeground(new java.awt.Color(0, 153, 0));
@@ -893,6 +891,15 @@ public class PanelHome extends javax.swing.JPanel {
                 this.db.addNewPublicacion(p);
                 refreshPublicaciones();
                 this.db.closeConnectionDB();
+                
+                JFrame frameDialog = new JFrame();
+                PanelSucces panel = new PanelSucces(frameDialog);
+                JDialog dialog = new JDialog(frameDialog, true);
+                dialog.setSize(panel.getPreferredSize());
+                dialog.setLocationRelativeTo(null);
+                dialog.getContentPane().add(panel);
+                dialog.setVisible(true);
+
             } catch (SQLException ex) {
                 publicarMensajeError.setText(String.format("Error en la Base de Datos: %s", ex.getMessage()));
 

@@ -10,9 +10,9 @@ import BL.Helpers.DatabaseService;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
-
 
 /**
  *
@@ -22,6 +22,7 @@ public class PanelLogin extends javax.swing.JPanel {
 
     /**
      * Creates new form PanelLogin
+     *
      * @param frame
      * @param db
      */
@@ -29,11 +30,10 @@ public class PanelLogin extends javax.swing.JPanel {
         this.frame = frame;
         this.db = db;
         initComponents();
-        
+
     }
     JFrame frame;
     DatabaseService db;
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,6 +52,7 @@ public class PanelLogin extends javax.swing.JPanel {
         btnRegister = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -95,11 +96,21 @@ public class PanelLogin extends javax.swing.JPanel {
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 340, 20));
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 780, 400));
+
+        jButton1.setBackground(new java.awt.Color(255, 204, 51));
+        jButton1.setForeground(new java.awt.Color(255, 102, 51));
+        jButton1.setText("BBDD");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, 30));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        
+
         boolean isValidUser = false;
         boolean isConnectedWithDB = this.db.connectToDB();
         if (isConnectedWithDB) {
@@ -115,8 +126,8 @@ public class PanelLogin extends javax.swing.JPanel {
                 } catch (SQLException ex) {
                     Logger.getLogger(PanelLogin.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                PanelHome panel = new PanelHome(persona, this.frame , this.db);
+
+                PanelHome panel = new PanelHome(persona, this.frame, this.db);
                 this.frame.setSize(panel.getPreferredSize());
                 this.frame.getContentPane().add(panel);
                 this.frame.setVisible(true);
@@ -150,12 +161,23 @@ public class PanelLogin extends javax.swing.JPanel {
         this.db.closeConnectionDB();
     }//GEN-LAST:event_btnRegisterActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JFrame frameDialog = new JFrame();
+        PanelConfigureBBDD panel = new PanelConfigureBBDD(frameDialog);
+        JDialog dialog = new JDialog(frameDialog, true);
+        dialog.setSize(panel.getPreferredSize());
+        dialog.setLocationRelativeTo(null);
+        dialog.getContentPane().add(panel);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnRegister;
     private javax.swing.JTextField inputNombreDeUsuario;
     private javax.swing.JPasswordField inputPassword;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
