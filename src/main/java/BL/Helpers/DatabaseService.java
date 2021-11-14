@@ -244,9 +244,23 @@ public class DatabaseService {
 
     public void deletePublicacion(int id) throws SQLException {
         Statement stmt = this.getConn().createStatement();
+        ResultSet rs = stmt.executeQuery(String.format("SELECT id_oferta FROM Ofertas WHERE id_publicacion = %s ORDER BY id_oferta DESC", id));
+        
+        // ELIMINO TODAS LAS OFERTAS RELACIONADAS
+        while (rs.next()) {
+            int idOferta = rs.getInt(1);
+            Statement stmt2 = this.getConn().createStatement();
+            stmt2.executeUpdate(String.format("DELETE FROM publicacion_ofertas WHERE id_oferta = %s", idOferta));
+            stmt2.executeUpdate(String.format("DELETE FROM Ofertas WHERE id_oferta = %s", idOferta));
+        }
+        
+        // ELIMINO TODOS LOS MENSAJES ASOCIADOS A ESA PUBLICACION
+        stmt.executeUpdate(String.format("DELETE FROM Mensajes WHERE id_publicacion = %s", id));
+        
+        // ELIMINO LA PUBLICACION
         stmt.executeUpdate(String.format("DELETE FROM Publicaciones WHERE id_publicacion = %s", id));
-
-        // EL DELETE ANDA, PERO HAY QUE ELIMINAR TODOS LOS MENSAJES, OFERTAS Y PUBLICACIONES OFERTAS
+        
+        this.getConn().commit();
     }
 
     public List<Oferta> getOfertasEnviadas(Persona persona) throws SQLException {

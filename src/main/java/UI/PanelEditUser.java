@@ -287,7 +287,7 @@ public class PanelEditUser extends javax.swing.JPanel {
         jLabel3.setText("Nombre de usuario");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel2.setText("Registro de usuario nuevo");
+        jLabel2.setText("Editar usuario");
 
         btnActualizar.setBackground(new java.awt.Color(51, 153, 0));
         btnActualizar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N

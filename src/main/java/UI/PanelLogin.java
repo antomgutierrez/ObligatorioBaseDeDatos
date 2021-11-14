@@ -22,6 +22,8 @@ public class PanelLogin extends javax.swing.JPanel {
 
     /**
      * Creates new form PanelLogin
+     * @param frame
+     * @param db
      */
     public PanelLogin(JFrame frame, DatabaseService db) {
         this.frame = frame;
