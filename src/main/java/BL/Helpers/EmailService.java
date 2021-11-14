@@ -86,13 +86,13 @@ public class EmailService {
         for (Publicacion pub : pub1) {
             pub1string += pub.getCantidad() + " " + pub.getNombreProducto() + "\n";
         }
-        String msg1 = String.format(msgGenerico, p2.getNombre() + " " + p2.getApellido(), p2.getDepartamento(), p2.getTelefono(), p2.getEmail(), pub1string);
+        String msg1 = String.format(msgGenerico, p2.getNombre() + " " + p2.getApellido(), p2.getNombreDepartamento(), p2.getTelefono(), p2.getEmail(), pub1string);
         
         String pub2string = "";
         for (Publicacion pub : pub2) {
             pub2string += pub.getCantidad() + " " + pub.getNombreProducto() + "\n";
         }
-        String msg2 = String.format(msgGenerico, p1.getNombre() + " " + p1.getApellido(), p1.getDepartamento(), p1.getTelefono(), p1.getEmail(), pub2string);
+        String msg2 = String.format(msgGenerico, p1.getNombre() + " " + p1.getApellido(), p1.getNombreDepartamento(), p1.getTelefono(), p1.getEmail(), pub2string);
         
         sendEmail(p1.getEmail(), "Trueque aceptado!", msg1);
         sendEmail(p2.getEmail(), "Trueque aceptado!", msg2);
