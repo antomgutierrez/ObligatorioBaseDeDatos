@@ -9,9 +9,16 @@ import BL.Entities.Oferta;
 import BL.Entities.Persona;
 import BL.Entities.Publicacion;
 import BL.Helpers.DatabaseService;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
@@ -44,13 +51,23 @@ public class PanelNewOffer extends javax.swing.JPanel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        jLabel4.setVisible(false);
+        jCheckBox1.setVisible(false);
     }
     
     private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         
-        DefaultTableModel tableModel = new DefaultTableModel();
+        DefaultTableModel tableModel = new DefaultTableModel() {
+                @Override
+                public Class<?> getColumnClass(int column) {
+                    return switch (column) {
+                        case 5 -> ImageIcon.class;
+                        default -> Object.class;
+                    };
+                }
+            };
         tableModel.addColumn("#");
         tableModel.addColumn("Cdad.");
         tableModel.addColumn("Nombre");
@@ -68,29 +85,28 @@ public class PanelNewOffer extends javax.swing.JPanel {
                 row[3] = listaPublicaciones.get(i).getDescripcion();
                 row[4] = listaPublicaciones.get(i).getValorEstimado();
                 
-                /*
                 String image = listaPublicaciones.get(i).getImagen();
-                if (image != null) {
+                ImageIcon icon;
+                if (!image.isEmpty()) {
                     byte[] decodedBytes = Base64.getDecoder().decode(image);
-                    Path destinationFile = Paths.get("", "myImage.jpg");
-                    Files.write(destinationFile, decodedBytes);
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(decodedBytes);                         
+                    BufferedImage bufImage;
                     try {
-                        fos = new FileOutputStream(file);
-                        fos.write(decodedBytes);
-                        fos.close();
-                        ImageIcon targetImg = ResizeImage(file.getPath());
-                        row[5] = targetImg;
-                    } catch (Exception ex) {
+                        bufImage = ImageIO.read(inputStream);
+                        Image img = bufImage.getScaledInstance(120, 100, Image.SCALE_SMOOTH);
+                        icon = new ImageIcon(img);
+                        row[5] = icon;
+                    } catch (IOException ex) {
                         System.out.println(ex.getMessage());
                     }
                 }
-                */
                 
                 tableModel.addRow(row);
             }
         }
         
         table.setModel(tableModel);
+        table.setRowHeight(100);
     }
 
     /**
@@ -115,6 +131,8 @@ public class PanelNewOffer extends javax.swing.JPanel {
         lblName = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         jLabel1.setText("Mis publicaciones");
 
@@ -177,6 +195,11 @@ public class PanelNewOffer extends javax.swing.JPanel {
             }
         });
 
+        jLabel4.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel4.setText("aaaaaaaaaaaaaa");
+
+        jCheckBox1.setText("jCheckBox1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -186,10 +209,10 @@ public class PanelNewOffer extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
@@ -197,21 +220,30 @@ public class PanelNewOffer extends javax.swing.JPanel {
                         .addComponent(ucucoinsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(304, 304, 304))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(13, 13, 13)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(48, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(304, 304, 304))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jCheckBox1)
+                                .addGap(205, 205, 205))))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(btnOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(72, 72, 72))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,24 +256,30 @@ public class PanelNewOffer extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
+                        .addGap(51, 51, 51)
                         .addComponent(btnSend)
                         .addGap(18, 18, 18)
                         .addComponent(btnBack)))
-                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnOffer)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(ucucoinsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(ucucoinsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addComponent(jCheckBox1)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnOffer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(43, 43, 43))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -258,16 +296,29 @@ public class PanelNewOffer extends javax.swing.JPanel {
             publicaciones.add(new Publicacion((int) model.getValueAt(row, 0)));
         }
         
+        if (publicaciones.isEmpty()) {
+            jLabel4.setText("No se ingresaron publicaciones");
+            jLabel4.setVisible(true);
+            return;
+        }
+        
         int ucuCoins; 
         try {
             ucuCoins = Integer.parseInt(ucucoinsTxt.getText());
-        } catch (NumberFormatException e) {
-            ucuCoins = 0;
+            if (ucuCoins > (this.persona.getSaldoUCUCoins() - this.db.getTotalOfferedUcuCoins(this.persona))) {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            jLabel4.setText("La cantidad de ucu coins ingresada no es valida");
+            jLabel4.setVisible(true);
+            return;
         }
         
         try {
             Oferta oferta = new Oferta(this.publicacion.getId(), null, 0, this.persona.getCi(), ucuCoins, publicaciones);
             this.db.insertarOferta(oferta);
+            jCheckBox1.setSelected(true);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -303,9 +354,11 @@ public class PanelNewOffer extends javax.swing.JPanel {
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnOffer;
     private javax.swing.JButton btnSend;
+    public javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

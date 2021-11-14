@@ -24,6 +24,7 @@ public class Persona {
     private String contraseña;
     private int saldoUCUCoins;
     private boolean emailConfirmed;
+    private String nombreDepartamento;
 
     public Persona(int ci, String nombre, String apellido, Date fechaDeNacimiento, int telefono, String departamento, String email, String nombreDeUsuario, String contraseña, int saldoUCUCoins, boolean emailConfirmado) {
         this.ci = ci;
@@ -125,5 +126,13 @@ public class Persona {
 
     public void setSaldoUCUCoins(int saldoUCUCoins) {
         this.saldoUCUCoins = saldoUCUCoins;
+    }
+
+    public String getNombreDepartamento() {
+        return nombreDepartamento;
+    }
+
+    public void setNombreDepartamento(String nombreDepartamento) {
+        this.nombreDepartamento = nombreDepartamento;
     }
 }

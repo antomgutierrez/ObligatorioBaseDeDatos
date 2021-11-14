@@ -5,6 +5,11 @@
  */
 package BL.Helpers;
 
+import BL.Entities.Oferta;
+import BL.Entities.Persona;
+import BL.Entities.Publicacion;
+import java.util.ArrayList;
+import java.util.List;
 import javax.mail.Transport;
 import javax.mail.PasswordAuthentication;
 import java.util.Properties;
@@ -59,5 +64,37 @@ public class EmailService {
             Transport.send(message);
         } catch (MessagingException mex) {
         }
+    }
+    
+    public static void sendData(Persona p1, Persona p2, List<Publicacion> lista) {
+        List<Publicacion> pub1 = new ArrayList<>();
+        List<Publicacion> pub2 = new ArrayList<>();
+        
+        lista.forEach(pub -> {
+            if (pub.getPublicante() == p1.getCi())
+                pub1.add(pub);
+            else
+                pub2.add(pub);
+        });
+        
+        String msgGenerico = "Se ha concretado un trueque con %s! \n"
+                + "Vive en %s y su telefono de contacto es: %s \n"
+                + "Tambien puedes comunicarte por mail a la direccion %s \n"
+                + "Los articulos que debes entregar son los siguientes: \n %s";
+        
+        String pub1string = "";
+        for (Publicacion pub : pub1) {
+            pub1string += pub.getCantidad() + " " + pub.getNombreProducto() + "\n";
+        }
+        String msg1 = String.format(msgGenerico, p2.getNombre() + " " + p2.getApellido(), p2.getDepartamento(), p2.getTelefono(), p2.getEmail(), pub1string);
+        
+        String pub2string = "";
+        for (Publicacion pub : pub2) {
+            pub2string += pub.getCantidad() + " " + pub.getNombreProducto() + "\n";
+        }
+        String msg2 = String.format(msgGenerico, p1.getNombre() + " " + p1.getApellido(), p1.getDepartamento(), p1.getTelefono(), p1.getEmail(), pub2string);
+        
+        sendEmail(p1.getEmail(), "Trueque aceptado!", msg1);
+        sendEmail(p2.getEmail(), "Trueque aceptado!", msg2);
     }
 }
