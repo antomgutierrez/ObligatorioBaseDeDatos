@@ -6,22 +6,16 @@
 package BL.Helpers;
 
 import BL.Entities.*;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -259,7 +253,7 @@ public class DatabaseService {
         List<Oferta> ofertas = new ArrayList<>();
         Statement stmt = this.getConn().createStatement();
         String query = String.format("SELECT id_oferta, ofer.id_publicacion, id_oferta_padre, ci_ofertante, aceptada, ucucoins_ofrecidas, nombre_producto FROM Ofertas ofer, Publicaciones pub "
-                + "WHERE ofer.id_publicacion = pub.id_publicacion AND ci_ofertante = %s AND aceptada = false", persona.getCi());
+                + "WHERE ofer.id_publicacion = pub.id_publicacion AND ci_ofertante = %s AND aceptada is null", persona.getCi());
         ResultSet rs = stmt.executeQuery(query);
 
         while (rs.next()) {
@@ -277,8 +271,8 @@ public class DatabaseService {
         List<Oferta> ofertas = new ArrayList<>();
         Statement stmt = this.getConn().createStatement();
         String query = String.format("SELECT id_oferta, Of1.id_publicacion, id_oferta_padre, ci_ofertante, aceptada, ucucoins_ofrecidas, nombre_producto FROM Ofertas Of1, Publicaciones Pub "
-                + "WHERE Of1.ci_ofertante <> %s AND Of1.aceptada = false AND Of1.id_publicacion = Pub.id_publicacion AND "
-                + "(Pub.ci_publicante = %s OR %s in (SELECT ci_ofertante from Ofertas Of2 WHERE Of2.id_oferta = Of1.id_oferta_padre))",
+                + "WHERE Of1.ci_ofertante <> %s AND Of1.aceptada is null AND Of1.id_publicacion = Pub.id_publicacion AND "
+                + "(Pub.ci_publicante = %s OR %s in (SELECT ci_ofertante from Ofertas Of2 WHERE Of2.id_oferta = Of1.id_oferta_padre))", 
                 persona.getCi(), persona.getCi(), persona.getCi());
         ResultSet rs = stmt.executeQuery(query);
 
@@ -291,6 +285,34 @@ public class DatabaseService {
         }
 
         return ofertas;
+    }
+    
+    public void insertarOferta(Oferta oferta) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        String insertOferta = String.format("INSERT INTO Ofertas (id_publicacion, id_oferta_padre, ci_ofertante, aceptada, ucucoins_ofrecidas) "
+                + "VALUES (%s, %s, %s, %s, %s)", oferta.getIdPublicacion(), oferta.getIdOfertaPadre() == 0 ? "NULL" : String.valueOf(oferta.getIdOfertaPadre()),
+                oferta.getCIofertante(), oferta.isAceptada(), oferta.getUcucoinsOfrecidas());
+        stmt.executeUpdate(insertOferta);
+        
+        String queryOferta = "SELECT max(id_oferta) from Ofertas";
+        ResultSet rs = stmt.executeQuery(queryOferta);
+        if (rs.next()) {
+            oferta.setIdOferta(rs.getInt(1));
+        }
+        
+        if (oferta.getIdOfertaPadre() != 0) {
+            String querySetFalseAceptada = String.format("UPDATE Ofertas SET aceptada = false WHERE id_oferta = %s", oferta.getIdOfertaPadre());
+            stmt.executeUpdate(querySetFalseAceptada);
+        }
+        
+        PreparedStatement preparedStmt = this.getConn().prepareStatement("INSERT INTO publicacion_ofertas (id_publicacion, id_oferta) VALUES (?,?)");  
+        for (int i = 0; i < oferta.getPublicaciones().size(); i++) {
+            preparedStmt.setInt(1, oferta.getPublicaciones().get(i).getId());
+            preparedStmt.setInt(2, oferta.getIdOferta());
+            preparedStmt.executeUpdate();
+        }
+        
+        this.getConn().commit();
     }
 
     public void addNewPublicacion(Publicacion p) throws SQLException {

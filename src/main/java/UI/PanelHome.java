@@ -30,7 +30,6 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -67,21 +66,28 @@ public class PanelHome extends javax.swing.JPanel {
             List<Publicacion> listaPublicaciones = this.db.getPublicaciones(this.persona);
             mostrarPublicacionesEnTabla(tablaPublicaciones, listaPublicaciones);
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
+        }
+        
+        try {
+            List<Publicacion> listaPublicaciones = this.db.getPublicaciones(new PublicationFilter(this.persona));
+            mostrarPublicacionesEnTabla(tablaExplorar, listaPublicaciones);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
         
         try {
             List<Oferta> listaOfertasEnviadas = this.db.getOfertasEnviadas(this.persona);
             mostrarOfertasEnTabla(tablaOfertasEnviadas, listaOfertasEnviadas);
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
         
         try {
             List<Oferta> listaOfertasRecibidas = this.db.getOfertasRecibidas(this.persona);
             mostrarOfertasEnTabla(tablaOfertasRecibidas, listaOfertasRecibidas);
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -256,6 +262,11 @@ public class PanelHome extends javax.swing.JPanel {
         btnOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnOffer.setForeground(new java.awt.Color(255, 102, 102));
         btnOffer.setText("Ofertar");
+        btnOffer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOfferActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Valor desde");
 
@@ -748,6 +759,17 @@ public class PanelHome extends javax.swing.JPanel {
         this.db.closeConnectionDB();
     }
     
+    private void refreshOfertas() {
+        try {
+            List<Oferta> listaOfertasEnviadas = this.db.getOfertasEnviadas(this.persona);
+            mostrarOfertasEnTabla(tablaOfertasEnviadas, listaOfertasEnviadas);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        
+        this.db.closeConnectionDB();
+    }
+    
     private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarPerfilActionPerformed
@@ -772,7 +794,6 @@ public class PanelHome extends javax.swing.JPanel {
         int option = fileChooser.showOpenDialog(frame);
         if (option == JFileChooser.APPROVE_OPTION) {
             file = fileChooser.getSelectedFile();
-            file.length()
             targetImg = ResizeImage(file.getPath());
             labelMostrarImagen.setIcon(targetImg);
             labelNombreArchivo.setText("Archivo elegido: " + file.getPath());
@@ -846,6 +867,33 @@ public class PanelHome extends javax.swing.JPanel {
         }
         
     }//GEN-LAST:event_btnPublishActionPerformed
+
+    private void btnOfferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOfferActionPerformed
+        try {
+            if (this.db.connectToDB()) {
+                int id = (int) tablaExplorar.getValueAt(tablaExplorar.getSelectedRow(), 0);
+                Publicacion pub = this.db.getPublicacion(id);
+                PanelNewOffer panel = new PanelNewOffer(this.persona, pub, this.db, this.frame);
+                JDialog dialog = new JDialog(this.frame, true);
+                dialog.setSize(panel.getPreferredSize());
+                dialog.setLocationRelativeTo(null);
+                dialog.getContentPane().add(panel);
+                dialog.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        try {
+                            refreshOfertas();
+                        } catch (Exception ex) {
+                            System.out.println(ex);
+                        }
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_btnOfferActionPerformed
 
     private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();

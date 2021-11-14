@@ -14,7 +14,7 @@ import java.util.List;
 public class Oferta {
     int idOferta;
     int idPublicacion;
-    boolean aceptada;
+    Boolean aceptada;
     int idOfertaPadre;
     int CIofertante;
     int ucucoinsOfrecidas;
@@ -22,7 +22,16 @@ public class Oferta {
 
     List<Publicacion> publicaciones;
     
-    public Oferta(int idOferta, int idPublicacion, boolean aceptada, int idOfertaPadre, int CIofertante, int ucucoinsOfrecidas) {
+    public Oferta(int idPublicacion, Boolean aceptada, int idOfertaPadre, int CIofertante, int ucucoinsOfrecidas, List<Publicacion> publicaciones) {
+        this.idPublicacion = idPublicacion;
+        this.aceptada = aceptada;
+        this.idOfertaPadre = idOfertaPadre;
+        this.CIofertante = CIofertante;
+        this.ucucoinsOfrecidas = ucucoinsOfrecidas;
+        this.publicaciones = publicaciones;
+    }
+    
+    public Oferta(int idOferta, int idPublicacion, Boolean aceptada, int idOfertaPadre, int CIofertante, int ucucoinsOfrecidas) {
         this.idPublicacion = idPublicacion;
         this.idOferta = idOferta;
         this.aceptada = aceptada;
@@ -31,7 +40,7 @@ public class Oferta {
         this.ucucoinsOfrecidas = ucucoinsOfrecidas;
     }
     
-    public Oferta(int idOferta, int idPublicacion, boolean aceptada, int idOfertaPadre, int CIofertante, int ucucoinsOfrecidas, String nombreProducto) {
+    public Oferta(int idOferta, int idPublicacion, Boolean aceptada, int idOfertaPadre, int CIofertante, int ucucoinsOfrecidas, String nombreProducto) {
         this.idPublicacion = idPublicacion;
         this.idOferta = idOferta;
         this.aceptada = aceptada;
@@ -53,7 +62,7 @@ public class Oferta {
         return idOferta;
     }
 
-    public boolean isAceptada() {
+    public Boolean isAceptada() {
         return aceptada;
     }
 
@@ -71,5 +80,9 @@ public class Oferta {
 
     public List<Publicacion> getPublicaciones() {
         return publicaciones;
+    }
+    
+    public void setIdOferta(int idOferta) {
+        this.idOferta = idOferta;
     }
 }
