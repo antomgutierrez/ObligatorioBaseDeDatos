@@ -1,0 +1,382 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package UI;
+
+import BL.Entities.Oferta;
+import BL.Entities.Persona;
+import BL.Entities.Publicacion;
+import BL.Helpers.DatabaseService;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Administrador
+ */
+public class PanelCounterOffer extends javax.swing.JPanel {
+
+    private final Persona persona;
+    private final DatabaseService db;
+    private final Oferta oferta;
+    private boolean isMine;
+    private Persona otraPersona;
+    
+    /**
+     * Creates new form PanelNewOffer
+     */
+    public PanelCounterOffer(Persona persona, Oferta oferta, DatabaseService db) {
+        initComponents();
+        this.persona = persona;
+        this.oferta = oferta;
+        this.db = db;
+        
+        try {
+            Publicacion publicacion = this.db.getPublicacion(oferta.getIdPublicacion());
+            
+            List<Publicacion> publicaciones;
+            if (publicacion.getPublicante() == this.persona.getCi()) {
+                // la publicacion es mia, tengo que ver las publicaciones del otro
+                this.otraPersona = this.db.getPersona(this.oferta.getCIofertante());
+                publicaciones = this.db.getPublicaciones(this.otraPersona);
+                isMine = true;
+            } else {
+                // la publicacion no es mia, tengo que elegir dentro de mis publicaciones
+                publicaciones = this.db.getPublicaciones(this.persona);
+                Oferta ofertaAnterior = this.db.getOferta(this.oferta.getIdOfertaPadre());
+                this.otraPersona = this.db.getPersona(ofertaAnterior.getCIofertante());
+                isMine = false;
+            }
+            
+            mostrarPublicacionesEnTabla(misPublicaciones, publicaciones);
+            mostrarPublicacionesEnTabla(publicacionesOfrecidas, null);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        jLabel4.setVisible(false);
+        jCheckBox1.setVisible(false);
+    }
+    
+    private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        
+        DefaultTableModel tableModel = new DefaultTableModel() {
+                @Override
+                public Class<?> getColumnClass(int column) {
+                    return switch (column) {
+                        case 5 -> ImageIcon.class;
+                        default -> Object.class;
+                    };
+                }
+            };
+        tableModel.addColumn("#");
+        tableModel.addColumn("Cdad.");
+        tableModel.addColumn("Nombre");
+        tableModel.addColumn("Descripción");
+        tableModel.addColumn("U$C");
+        tableModel.addColumn("");
+        
+        if (listaPublicaciones != null && listaPublicaciones.size() > 0) {
+            Object[] row = new Object[6];
+
+            for (int i = 0; i < listaPublicaciones.size(); i++) {
+                row[0] = listaPublicaciones.get(i).getId();
+                row[1] = listaPublicaciones.get(i).getCantidad();
+                row[2] = listaPublicaciones.get(i).getNombreProducto();
+                row[3] = listaPublicaciones.get(i).getDescripcion();
+                row[4] = listaPublicaciones.get(i).getValorEstimado();
+                
+                String image = listaPublicaciones.get(i).getImagen();
+                ImageIcon icon;
+                if (!image.isEmpty()) {
+                    byte[] decodedBytes = Base64.getDecoder().decode(image);
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(decodedBytes);                         
+                    BufferedImage bufImage;
+                    try {
+                        bufImage = ImageIO.read(inputStream);
+                        Image img = bufImage.getScaledInstance(120, 100, Image.SCALE_SMOOTH);
+                        icon = new ImageIcon(img);
+                        row[5] = icon;
+                    } catch (IOException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+                
+                tableModel.addRow(row);
+            }
+        }
+        
+        table.setModel(tableModel);
+        table.setRowHeight(100);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btnOffer = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        publicacionesOfrecidas = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        misPublicaciones = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        ucucoinsTxt = new javax.swing.JTextField();
+        btnSend = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+
+        jLabel1.setText("Publicaciones disponibles");
+
+        jLabel2.setText("Publicaciones ofrecidas");
+
+        btnOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnOffer.setForeground(new java.awt.Color(255, 102, 102));
+        btnOffer.setText("Ofertar");
+        btnOffer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOfferActionPerformed(evt);
+            }
+        });
+
+        publicacionesOfrecidas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(publicacionesOfrecidas);
+
+        misPublicaciones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(misPublicaciones);
+
+        jLabel3.setText("UCUcoins ofrecidas junto con la oferta: ");
+
+        btnSend.setText("=>");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setText("Contraofertar");
+
+        btnBack.setText("<=");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel4.setText("aaaaaaaaaaaaaa");
+
+        jCheckBox1.setText("jCheckBox1");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(ucucoinsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(48, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(304, 304, 304))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jCheckBox1)
+                                .addGap(205, 205, 205))))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(btnOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(72, 72, 72))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(btnSend)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBack)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(ucucoinsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addComponent(jCheckBox1)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnOffer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(43, 43, 43))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        exchangeRows(misPublicaciones, publicacionesOfrecidas);
+    }//GEN-LAST:event_btnSendActionPerformed
+
+    private void btnOfferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOfferActionPerformed
+        DefaultTableModel model = (DefaultTableModel) publicacionesOfrecidas.getModel();
+        int rows = model.getRowCount();
+        
+        List<Publicacion> publicaciones = new ArrayList<>();
+        for (int row = 0; row < rows; row++) {
+            publicaciones.add(new Publicacion((int) model.getValueAt(row, 0)));
+        }
+        
+        if (publicaciones.isEmpty()) {
+            jLabel4.setText("No se ingresaron publicaciones");
+            jLabel4.setVisible(true);
+            return;
+        }
+        
+        int ucuCoins; 
+        try {
+            ucuCoins = Integer.parseInt(ucucoinsTxt.getText());
+            if (!this.isMine) {
+                if (ucuCoins > (this.persona.getSaldoUCUCoins() - this.db.getTotalOfferedUcuCoins(this.persona))) {
+                    throw new Exception();
+                }
+            } else {
+                if (ucuCoins > (this.otraPersona.getSaldoUCUCoins() - this.db.getTotalOfferedUcuCoins(this.otraPersona))) {
+                    throw new Exception();
+                }
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            jLabel4.setText("La cantidad de ucu coins ingresada no es valida");
+            jLabel4.setVisible(true);
+            return;
+        }
+        
+        try {
+            Oferta nuevaOferta = new Oferta(this.oferta.getIdPublicacion(), null, this.oferta.getIdOferta(), this.persona.getCi(), ucuCoins, publicaciones);
+            this.db.insertarOferta(nuevaOferta);
+            jCheckBox1.setSelected(true);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_btnOfferActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        exchangeRows(publicacionesOfrecidas, misPublicaciones);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void exchangeRows(javax.swing.JTable from, javax.swing.JTable to) {
+        try {
+            int row = from.getSelectedRow();
+            if (row > -1) {
+                DefaultTableModel modelFrom = (DefaultTableModel) from.getModel();
+                DefaultTableModel modelTo = (DefaultTableModel) to.getModel();
+                int columns = modelFrom.getColumnCount();
+                Object[] insertRow = new Object[columns];
+                for (int col = 0; col < columns; col++) {
+                    insertRow[col] = modelFrom.getValueAt(row, col);
+                }
+                modelTo.addRow(insertRow);
+                modelFrom.removeRow(row);
+                
+                from.setModel(modelFrom);
+                to.setModel(modelTo);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnOffer;
+    private javax.swing.JButton btnSend;
+    public javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable misPublicaciones;
+    private javax.swing.JTable publicacionesOfrecidas;
+    private javax.swing.JTextField ucucoinsTxt;
+    // End of variables declaration//GEN-END:variables
+}

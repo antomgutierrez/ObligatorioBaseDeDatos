@@ -383,6 +383,11 @@ public class PanelHome extends javax.swing.JPanel {
         btnCounterOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnCounterOffer.setForeground(new java.awt.Color(255, 102, 102));
         btnCounterOffer.setText("Contraoferta");
+        btnCounterOffer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCounterOfferActionPerformed(evt);
+            }
+        });
 
         btnOfEnvVer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnOfEnvVer.setForeground(new java.awt.Color(255, 102, 102));
@@ -1075,6 +1080,28 @@ public class PanelHome extends javax.swing.JPanel {
         }
         this.db.closeConnectionDB();
     }//GEN-LAST:event_btnOfRecVerActionPerformed
+
+    private void btnCounterOfferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCounterOfferActionPerformed
+        try {
+            if (this.db.connectToDB()) {
+                int id = (int) tablaOfertasRecibidas.getValueAt(tablaOfertasRecibidas.getSelectedRow(), 0);
+                Oferta ofer = this.db.getOferta(id);
+                PanelCounterOffer panel = new PanelCounterOffer(this.persona, ofer, this.db);
+                JDialog dialog = new JDialog(this.frame, true);
+                dialog.setSize(panel.getPreferredSize());
+                dialog.setLocationRelativeTo(null);
+                dialog.getContentPane().add(panel);
+                panel.jCheckBox1.addItemListener((java.awt.event.ItemEvent evt1) -> {
+                    refreshOfertas();
+                    dialog.dispose();
+                });
+                dialog.setVisible(true);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        this.db.closeConnectionDB();
+    }//GEN-LAST:event_btnCounterOfferActionPerformed
 
     private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
