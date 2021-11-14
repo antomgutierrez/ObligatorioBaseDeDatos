@@ -7,7 +7,6 @@ package UI;
 
 import BL.Entities.Publicacion;
 import BL.Helpers.DatabaseService;
-import BL.Helpers.FormatterService;
 import java.awt.Image;
 import java.io.File;
 import java.nio.file.Files;

@@ -17,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import java.io.IOException;
@@ -33,6 +35,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -62,33 +65,9 @@ public class PanelHome extends javax.swing.JPanel {
         labelNombreDeUsuario.setText(persona.getNombre() + " " + persona.getApellido());
         saldo.setText("U$C " + persona.getSaldoUCUCoins());
         
-        try {
-            List<Publicacion> listaPublicaciones = this.db.getPublicaciones(this.persona);
-            mostrarPublicacionesEnTabla(tablaPublicaciones, listaPublicaciones);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-        
-        try {
-            List<Publicacion> listaPublicaciones = this.db.getPublicaciones(new PublicationFilter(this.persona));
-            mostrarPublicacionesEnTabla(tablaExplorar, listaPublicaciones);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-        
-        try {
-            List<Oferta> listaOfertasEnviadas = this.db.getOfertasEnviadas(this.persona);
-            mostrarOfertasEnTabla(tablaOfertasEnviadas, listaOfertasEnviadas);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-        
-        try {
-            List<Oferta> listaOfertasRecibidas = this.db.getOfertasRecibidas(this.persona);
-            mostrarOfertasEnTabla(tablaOfertasRecibidas, listaOfertasRecibidas);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+        refreshPublicaciones();
+        refreshOfertas();
+        refreshExplorar();
     }
 
     /**
@@ -701,17 +680,40 @@ public class PanelHome extends javax.swing.JPanel {
 
     private void btnBorrarPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarPublicacionActionPerformed
         try {
-            if (this.db.connectToDB()) {
-                int id = (int) tablaPublicaciones.getValueAt(tablaPublicaciones.getSelectedRow(), 0);
-                this.db.deletePublicacion(id);
-            }
+            int id = (int) tablaPublicaciones.getValueAt(tablaPublicaciones.getSelectedRow(), 0);
+            JDialog dialog = new JDialog(this.frame, true);
+            PanelConfirmation panel = new PanelConfirmation(dialog);
+            dialog.setSize(panel.getPreferredSize());
+            dialog.setLocationRelativeTo(null);
+            dialog.getContentPane().add(panel);
+            panel.btnSi.addActionListener((java.awt.event.ActionEvent evt1) -> {
+                if (this.db.connectToDB()) {
+                    try {
+                        this.db.deletePublicacion(id);
+                        refreshPublicaciones();
+                        refreshOfertas();
+                        refreshExplorar();
+                    } catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+                db.closeConnectionDB();
+                dialog.dispose();
+            });
+            
+            panel.btnNo.addActionListener((java.awt.event.ActionEvent evt1) -> {
+                this.db.closeConnectionDB();
+                dialog.dispose();
+            });
+             
+            dialog.setVisible(true);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         
-        this.db.closeConnectionDB();
+        
     }//GEN-LAST:event_btnBorrarPublicacionActionPerformed
-
+    
     private void btnCerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesion1ActionPerformed
         this.persona = null;
         PanelLogin panel = new PanelLogin(frame, db);
@@ -738,8 +740,9 @@ public class PanelHome extends javax.swing.JPanel {
                         try {
                             refreshPublicaciones();
                         } catch (Exception ex) {
-                            System.out.println(ex);
+                            System.out.println(ex.getMessage());
                         }
+                        db.closeConnectionDB();
                     }
                 });
                 dialog.setVisible(true);
@@ -756,18 +759,27 @@ public class PanelHome extends javax.swing.JPanel {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        this.db.closeConnectionDB();
     }
     
     private void refreshOfertas() {
         try {
             List<Oferta> listaOfertasEnviadas = this.db.getOfertasEnviadas(this.persona);
             mostrarOfertasEnTabla(tablaOfertasEnviadas, listaOfertasEnviadas);
+            
+            List<Oferta> listaOfertasRecibidas = this.db.getOfertasRecibidas(this.persona);
+            mostrarOfertasEnTabla(tablaOfertasRecibidas, listaOfertasRecibidas);
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        
-        this.db.closeConnectionDB();
+    }
+    
+    private void refreshExplorar() {
+        try {
+            List<Publicacion> listaPublicaciones = this.db.getPublicaciones(new PublicationFilter(this.persona));
+            mostrarPublicacionesEnTabla(tablaExplorar, listaPublicaciones);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
     
     private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed

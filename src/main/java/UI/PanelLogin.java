@@ -92,8 +92,6 @@ public class PanelLogin extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 340, 20));
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UI/LOGO UCU TRUEQUE (1).png"))); // NOI18N
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 780, 400));
     }// </editor-fold>//GEN-END:initComponents
 
