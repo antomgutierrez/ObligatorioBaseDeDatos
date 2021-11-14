@@ -355,6 +355,11 @@ public class PanelHome extends javax.swing.JPanel {
         btnRemoveOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnRemoveOffer.setForeground(new java.awt.Color(255, 102, 102));
         btnRemoveOffer.setText("Eliminar");
+        btnRemoveOffer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveOfferActionPerformed(evt);
+            }
+        });
 
         btnAcceptOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAcceptOffer.setForeground(new java.awt.Color(255, 102, 102));
@@ -1018,8 +1023,21 @@ public class PanelHome extends javax.swing.JPanel {
             System.out.println(e.getMessage());
         }
         this.db.closeConnectionDB();
-        
     }//GEN-LAST:event_btnRejectOfferActionPerformed
+
+    private void btnRemoveOfferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveOfferActionPerformed
+        try {
+            int id = (int) tablaOfertasEnviadas.getValueAt(tablaOfertasEnviadas.getSelectedRow(), 0);
+            Oferta oferta = new Oferta(id);
+            if (this.db.connectToDB()) {
+                this.db.deleteOferta(oferta);
+            }
+            refreshOfertas();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        this.db.closeConnectionDB();
+    }//GEN-LAST:event_btnRemoveOfferActionPerformed
 
     private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();

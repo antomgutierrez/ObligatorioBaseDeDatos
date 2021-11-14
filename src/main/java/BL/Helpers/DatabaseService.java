@@ -486,4 +486,17 @@ public class DatabaseService {
         return "";
     }
 
+    public void deleteOferta(Oferta oferta) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        
+        // Elimino los items de la oferta
+        String deleteOffer = String.format("DELETE FROM publicacion_ofertas WHERE id_oferta = %s", oferta.getIdOferta());
+        stmt.executeUpdate(deleteOffer);
+        
+        // Elimino la oferta
+        deleteOffer = String.format("DELETE FROM Ofertas WHERE id_oferta = %s", oferta.getIdOferta());
+        stmt.executeUpdate(deleteOffer);
+        
+        this.getConn().commit();
+    }
 }
