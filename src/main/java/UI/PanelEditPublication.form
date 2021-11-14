@@ -133,7 +133,7 @@
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
-                                  <Component id="labelNombreArchivo" pref="19" max="32767" attributes="0"/>
+                                  <Component id="labelNombreArchivo" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>

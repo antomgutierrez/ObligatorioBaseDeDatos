@@ -15,9 +15,19 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Files;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -711,6 +721,16 @@ public class PanelHome extends javax.swing.JPanel {
                 dialog.setSize(panel.getPreferredSize());
                 dialog.setLocationRelativeTo(null);
                 dialog.getContentPane().add(panel);
+                dialog.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        try {
+                            refreshPublicaciones();
+                        } catch (Exception ex) {
+                            System.out.println(ex);
+                        }
+                    }
+                });
                 dialog.setVisible(true);
             }
         } catch (Exception e) {
@@ -718,6 +738,16 @@ public class PanelHome extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnEditarPublicacionActionPerformed
 
+    private void refreshPublicaciones() {
+        try {
+            List<Publicacion> listaPublicaciones = this.db.getPublicaciones(this.persona);
+            mostrarPublicacionesEnTabla(tablaPublicaciones, listaPublicaciones);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        this.db.closeConnectionDB();
+    }
+    
     private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarPerfilActionPerformed
@@ -742,6 +772,7 @@ public class PanelHome extends javax.swing.JPanel {
         int option = fileChooser.showOpenDialog(frame);
         if (option == JFileChooser.APPROVE_OPTION) {
             file = fileChooser.getSelectedFile();
+            file.length()
             targetImg = ResizeImage(file.getPath());
             labelMostrarImagen.setIcon(targetImg);
             labelNombreArchivo.setText("Archivo elegido: " + file.getPath());
@@ -798,6 +829,7 @@ public class PanelHome extends javax.swing.JPanel {
         String categoria = listaCategorias.getSelectedItem().toString();
         String cantidad = cantidadField.getText();
         byte[] imagen = null;
+        String cambiarEstoPorImagen = "";
         try {
             imagen = Files.readAllBytes(file.toPath());
         } catch (IOException ex) {
@@ -805,7 +837,7 @@ public class PanelHome extends javax.swing.JPanel {
         }
         System.out.println(String.format("%s,%s,%s,%s,%s",nombre,descripcion,valor,categoria,cantidad));
         if (imagen != null){
-            Publicacion p = new Publicacion(Integer.valueOf(categoria) , nombre, descripcion, Integer.valueOf(valor), Integer.valueOf(cantidad), false, imagen);
+            Publicacion p = new Publicacion(Integer.valueOf(categoria) , nombre, descripcion, Integer.valueOf(valor), Integer.valueOf(cantidad), false, cambiarEstoPorImagen);
             try {
                 db.addNewPublicacion(p);
             } catch (SQLException ex) {
@@ -827,8 +859,9 @@ public class PanelHome extends javax.swing.JPanel {
             tableModel.addColumn("Nombre");
             tableModel.addColumn("Descripción");
             tableModel.addColumn("U$C");
+            tableModel.addColumn("");
 
-            Object[] row = new Object[6];
+            Object[] row = new Object[7];
 
             for (int i = 0; i < listaPublicaciones.size(); i++) {
                 row[0] = listaPublicaciones.get(i).getId();
@@ -837,6 +870,25 @@ public class PanelHome extends javax.swing.JPanel {
                 row[3] = listaPublicaciones.get(i).getNombreProducto();
                 row[4] = listaPublicaciones.get(i).getDescripcion();
                 row[5] = listaPublicaciones.get(i).getValorEstimado();
+                
+                /*
+                String image = listaPublicaciones.get(i).getImagen();
+                if (image != null) {
+                    byte[] decodedBytes = Base64.getDecoder().decode(image);
+                    Path destinationFile = Paths.get("", "myImage.jpg");
+                    Files.write(destinationFile, decodedBytes);
+                    try {
+                        fos = new FileOutputStream(file);
+                        fos.write(decodedBytes);
+                        fos.close();
+                        ImageIcon targetImg = ResizeImage(file.getPath());
+                        row[6] = targetImg;
+                    } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+                */
+                
                 tableModel.addRow(row);
             }
             table.setModel(tableModel);
