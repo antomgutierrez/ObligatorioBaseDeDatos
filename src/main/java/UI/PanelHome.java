@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,28 +62,28 @@ public class PanelHome extends javax.swing.JPanel {
         populateCategoryCombos();
         labelNombreDeUsuario.setText(persona.getNombre() + " " + persona.getApellido());
         saldo.setText("U$C " + persona.getSaldoUCUCoins());
-        
+
         try {
             List<Publicacion> listaPublicaciones = this.db.getPublicaciones(this.persona);
             mostrarPublicacionesEnTabla(tablaPublicaciones, listaPublicaciones);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         try {
             List<Publicacion> listaPublicaciones = this.db.getPublicaciones(new PublicationFilter(this.persona));
             mostrarPublicacionesEnTabla(tablaExplorar, listaPublicaciones);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         try {
             List<Oferta> listaOfertasEnviadas = this.db.getOfertasEnviadas(this.persona);
             mostrarOfertasEnTabla(tablaOfertasEnviadas, listaOfertasEnviadas);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         try {
             List<Oferta> listaOfertasRecibidas = this.db.getOfertasRecibidas(this.persona);
             mostrarOfertasEnTabla(tablaOfertasRecibidas, listaOfertasRecibidas);
@@ -481,6 +482,8 @@ public class PanelHome extends javax.swing.JPanel {
 
         jLabel9.setText("Cantidad");
 
+        cantidadField.setText("1");
+
         jLabel15.setText("Descripcion");
 
         descripcionField.setColumns(20);
@@ -660,11 +663,11 @@ public class PanelHome extends javax.swing.JPanel {
 
         add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 980, 430));
 
-        saldo.setFont(new java.awt.Font("Yu Gothic", 1, 36)); // NOI18N
+        saldo.setFont(new java.awt.Font("Yu Gothic", 1, 24)); // NOI18N
         saldo.setForeground(new java.awt.Color(255, 102, 102));
         saldo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         saldo.setText("$ ...");
-        add(saldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 38, 220, 50));
+        add(saldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 60, 210, 40));
 
         jLabel2.setFont(new java.awt.Font("Tw Cen MT", 0, 48)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -676,7 +679,7 @@ public class PanelHome extends javax.swing.JPanel {
         labelNombreDeUsuario.setForeground(new java.awt.Color(0, 0, 204));
         labelNombreDeUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelNombreDeUsuario.setText("userName");
-        add(labelNombreDeUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 0, 350, 40));
+        add(labelNombreDeUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 60, 240, 30));
 
         btnEditarPerfil.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnEditarPerfil.setForeground(new java.awt.Color(0, 153, 0));
@@ -686,7 +689,7 @@ public class PanelHome extends javax.swing.JPanel {
                 btnEditarPerfilActionPerformed(evt);
             }
         });
-        add(btnEditarPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 50, 124, 30));
+        add(btnEditarPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 10, 124, 30));
 
         btnCerrarSesion1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnCerrarSesion1.setForeground(new java.awt.Color(255, 102, 102));
@@ -708,7 +711,7 @@ public class PanelHome extends javax.swing.JPanel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         this.db.closeConnectionDB();
     }//GEN-LAST:event_btnBorrarPublicacionActionPerformed
 
@@ -758,7 +761,7 @@ public class PanelHome extends javax.swing.JPanel {
         }
         this.db.closeConnectionDB();
     }
-    
+
     private void refreshOfertas() {
         try {
             List<Oferta> listaOfertasEnviadas = this.db.getOfertasEnviadas(this.persona);
@@ -766,12 +769,27 @@ public class PanelHome extends javax.swing.JPanel {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         this.db.closeConnectionDB();
     }
-    
+
     private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed
-        // TODO add your handling code here:
+        PanelEditUser panel = new PanelEditUser(this.frame, this.db, this.persona);
+        JDialog dialog = new JDialog(this.frame, true);
+        dialog.setSize(panel.getPreferredSize());
+        dialog.setLocationRelativeTo(null);
+        dialog.getContentPane().add(panel);
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    labelNombreDeUsuario.setText(persona.getNombre()+ " " + persona.getApellido());
+                } catch (Exception ex) {
+                    System.out.println(ex);
+                }
+            }
+        });
+        dialog.setVisible(true);
     }//GEN-LAST:event_btnEditarPerfilActionPerformed
 
     // Methode to resize imageIcon with the same size of a Jlabel
@@ -806,25 +824,27 @@ public class PanelHome extends javax.swing.JPanel {
         if (this.db.connectToDB()) {
             PublicationFilter filter = new PublicationFilter(this.persona);
 
-            if (!txtSearch.getText().isEmpty())
+            if (!txtSearch.getText().isEmpty()) {
                 filter.setPattern(txtSearch.getText());
+            }
 
-            if (comboCategories1.getSelectedIndex() != 0)
+            if (comboCategories1.getSelectedIndex() != 0) {
                 filter.setCategory(comboCategories1.getSelectedIndex());
+            }
 
             if (!txtValueFrom.getText().isEmpty()) {
                 try {
                     filter.setMinValue(Integer.parseInt(txtValueFrom.getText()));
+                } catch (NumberFormatException e) {
                 }
-                catch (NumberFormatException e) { }
             }
 
             if (!txtValueTo.getText().isEmpty()) {
                 try {
                     filter.setMaxValue(Integer.parseInt(txtValueTo.getText()));
+                } catch (NumberFormatException e) {
                 }
-                catch (NumberFormatException e) { }
-            } 
+            }
 
             try {
                 List<Publicacion> publicaciones = db.getPublicaciones(filter);
@@ -833,41 +853,75 @@ public class PanelHome extends javax.swing.JPanel {
                 System.out.println(ex.getMessage());
             }
         }
-        
+
         this.db.closeConnectionDB();
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnVerPublicacionesInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPublicacionesInvActionPerformed
-        
+
         // ACA TENEMOS QUE ABRIR UN POPUP QUE MUESTRE DE UN LADO LAS PUBLICACIONES QUE YO OFREZCO Y POR OTRO LADO LAS QUE ME OFRECEN        
-        
+
     }//GEN-LAST:event_btnVerPublicacionesInvActionPerformed
 
     private void btnPublishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublishActionPerformed
         String nombre = nombreField.getText();
         String descripcion = descripcionField.getText();
-        String valor = valorField.getText();
-        String categoria = listaCategorias.getSelectedItem().toString();
-        String cantidad = cantidadField.getText();
-        byte[] imagen = null;
-        String cambiarEstoPorImagen = "";
-        try {
-            imagen = Files.readAllBytes(file.toPath());
-        } catch (IOException ex) {
-            publicarMensajeError.setText("Elija una imagen");
-        }
-        System.out.println(String.format("%s,%s,%s,%s,%s",nombre,descripcion,valor,categoria,cantidad));
-        if (imagen != null){
-            Publicacion p = new Publicacion(Integer.valueOf(categoria) , nombre, descripcion, Integer.valueOf(valor), Integer.valueOf(cantidad), false, cambiarEstoPorImagen);
-            try {
-                db.addNewPublicacion(p);
-            } catch (SQLException ex) {
-                publicarMensajeError.setText(String.format("Error al insertar en la BBDD %s", ex));
+        String valor = valorField.getText() == "" ? "0" : valorField.getText();
+        int categoria = listaCategorias.getSelectedIndex();
+        if (validarCamposInsertarPublicaciones()) {
+            String cantidad = cantidadField.getText() == "" ? "1" : cantidadField.getText();
+            byte[] fileContent = null;
+            if (this.file != null)
+                try {
+                fileContent = Files.readAllBytes(this.file.toPath());
+            } catch (IOException ex) {
+                Logger.getLogger(PanelHome.class.getName()).log(Level.SEVERE, null, ex);
             }
+            System.out.println(String.format("%s,%s,%s,%s,%s", nombre, descripcion, valor, categoria, cantidad));
+            LocalDateTime fechaHora = LocalDateTime.now();
+            Publicacion p = new Publicacion(fechaHora, categoria, nombre, descripcion,
+                    Integer.valueOf(valor), Integer.valueOf(cantidad), false,
+                    fileContent == null ? "" : Base64.getEncoder().encodeToString(fileContent),
+                    persona.getCi());
+            try {
+                this.db.connectToDB();
+                this.db.addNewPublicacion(p);
+                refreshPublicaciones();
+                this.db.closeConnectionDB();
+            } catch (SQLException ex) {
+                publicarMensajeError.setText(String.format("Error en la Base de Datos: %s", ex.getMessage()));
+
+            }
+            resetInsertarPublicaciones();
         }
-        
     }//GEN-LAST:event_btnPublishActionPerformed
 
+    private boolean validarCamposInsertarPublicaciones() {
+        String nombre = nombreField.getText();
+        String descripcion = descripcionField.getText();
+        String valor = valorField.getText();
+        int valor2;
+        try {
+            Integer.parseInt(valor);
+        } catch (NumberFormatException e) {
+            publicarMensajeError.setText("El valor debe ser numerico");
+            return false;
+        }
+        if (Integer.valueOf(valor) <0 ){
+            publicarMensajeError.setText("El valor debe ser positivo");
+            return false;
+        }
+        int categoria = listaCategorias.getSelectedIndex();
+        if (nombre.isBlank() || descripcion.isBlank()) {
+            publicarMensajeError.setText("Debes escribir nombre y descripcion.");
+            return false;
+        } else if (categoria == 0) {
+            publicarMensajeError.setText("Debes elegir una categoría. ");
+            return false;
+        }
+        return true;
+
+    }
     private void btnOfferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOfferActionPerformed
         try {
             if (this.db.connectToDB()) {
@@ -898,7 +952,7 @@ public class PanelHome extends javax.swing.JPanel {
     private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        
+
         if (listaPublicaciones.size() > 0) {
             DefaultTableModel tableModel = new DefaultTableModel();
             tableModel.addColumn("#");
@@ -918,7 +972,7 @@ public class PanelHome extends javax.swing.JPanel {
                 row[3] = listaPublicaciones.get(i).getNombreProducto();
                 row[4] = listaPublicaciones.get(i).getDescripcion();
                 row[5] = listaPublicaciones.get(i).getValorEstimado();
-                
+
                 /*
                 String image = listaPublicaciones.get(i).getImagen();
                 if (image != null) {
@@ -935,18 +989,17 @@ public class PanelHome extends javax.swing.JPanel {
                         System.out.println(ex.getMessage());
                     }
                 }
-                */
-                
+                 */
                 tableModel.addRow(row);
             }
             table.setModel(tableModel);
         }
     }
-    
+
     private void mostrarOfertasEnTabla(javax.swing.JTable table, List<Oferta> listaOfertas) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        
+
         if (listaOfertas.size() > 0) {
             DefaultTableModel tableModel = new DefaultTableModel();
             tableModel.addColumn("#");
@@ -964,7 +1017,7 @@ public class PanelHome extends javax.swing.JPanel {
             table.setModel(tableModel);
         }
     }
-    
+
     private void populateCategoryCombos() {
         try {
             String[] categories = db.getCategories();
@@ -1048,4 +1101,15 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JTextField txtValueTo;
     private javax.swing.JTextField valorField;
     // End of variables declaration//GEN-END:variables
+
+    private void resetInsertarPublicaciones() {
+        nombreField.setText("");
+        descripcionField.setText("");
+        valorField.setText("");
+        listaCategorias.setSelectedIndex(0);
+        cantidadField.setText("");
+        this.file = null;
+        labelMostrarImagen.setIcon(null);
+        labelNombreArchivo.setText("");
+    }
 }

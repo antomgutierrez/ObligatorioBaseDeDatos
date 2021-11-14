@@ -716,6 +716,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="cantidadField">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="1"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel15">
               <Properties>
@@ -887,7 +890,7 @@
     <Component class="javax.swing.JLabel" name="saldo">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Yu Gothic" size="36" style="1"/>
+          <Font name="Yu Gothic" size="24" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="66" green="66" red="ff" type="rgb"/>
@@ -897,7 +900,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="620" y="38" width="220" height="50"/>
+          <AbsoluteConstraints x="750" y="60" width="210" height="40"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -931,7 +934,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="490" y="0" width="350" height="40"/>
+          <AbsoluteConstraints x="620" y="60" width="240" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -950,7 +953,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="870" y="50" width="124" height="30"/>
+          <AbsoluteConstraints x="740" y="10" width="124" height="30"/>
         </Constraint>
       </Constraints>
     </Component>

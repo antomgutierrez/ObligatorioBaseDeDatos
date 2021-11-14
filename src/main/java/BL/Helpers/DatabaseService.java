@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -235,7 +236,6 @@ public class DatabaseService {
         Statement stmt = this.getConn().createStatement();
         String update = String.format("UPDATE public.Publicaciones SET nombre_producto = '%s', descripcion_producto = '%s', "
                 + "valor_ucu_coin_estimado = %s, cantidad = %s, id_categoria = %s, Imagen=%s WHERE id_publicacion = %s",
-
                 p.getNombreProducto(), p.getDescripcion(), p.getValorEstimado(), p.getCantidad(), p.getCategoria(), p.getImagen(), p.getId());
 
         stmt.executeUpdate(update);
@@ -272,7 +272,7 @@ public class DatabaseService {
         Statement stmt = this.getConn().createStatement();
         String query = String.format("SELECT id_oferta, Of1.id_publicacion, id_oferta_padre, ci_ofertante, aceptada, ucucoins_ofrecidas, nombre_producto FROM Ofertas Of1, Publicaciones Pub "
                 + "WHERE Of1.ci_ofertante <> %s AND Of1.aceptada is null AND Of1.id_publicacion = Pub.id_publicacion AND "
-                + "(Pub.ci_publicante = %s OR %s in (SELECT ci_ofertante from Ofertas Of2 WHERE Of2.id_oferta = Of1.id_oferta_padre))", 
+                + "(Pub.ci_publicante = %s OR %s in (SELECT ci_ofertante from Ofertas Of2 WHERE Of2.id_oferta = Of1.id_oferta_padre))",
                 persona.getCi(), persona.getCi(), persona.getCi());
         ResultSet rs = stmt.executeQuery(query);
 
@@ -286,42 +286,55 @@ public class DatabaseService {
 
         return ofertas;
     }
-    
+
     public void insertarOferta(Oferta oferta) throws SQLException {
         Statement stmt = this.getConn().createStatement();
         String insertOferta = String.format("INSERT INTO Ofertas (id_publicacion, id_oferta_padre, ci_ofertante, aceptada, ucucoins_ofrecidas) "
                 + "VALUES (%s, %s, %s, %s, %s)", oferta.getIdPublicacion(), oferta.getIdOfertaPadre() == 0 ? "NULL" : String.valueOf(oferta.getIdOfertaPadre()),
                 oferta.getCIofertante(), oferta.isAceptada(), oferta.getUcucoinsOfrecidas());
         stmt.executeUpdate(insertOferta);
-        
+
         String queryOferta = "SELECT max(id_oferta) from Ofertas";
         ResultSet rs = stmt.executeQuery(queryOferta);
         if (rs.next()) {
             oferta.setIdOferta(rs.getInt(1));
         }
-        
+
         if (oferta.getIdOfertaPadre() != 0) {
             String querySetFalseAceptada = String.format("UPDATE Ofertas SET aceptada = false WHERE id_oferta = %s", oferta.getIdOfertaPadre());
             stmt.executeUpdate(querySetFalseAceptada);
         }
-        
-        PreparedStatement preparedStmt = this.getConn().prepareStatement("INSERT INTO publicacion_ofertas (id_publicacion, id_oferta) VALUES (?,?)");  
+
+        PreparedStatement preparedStmt = this.getConn().prepareStatement("INSERT INTO publicacion_ofertas (id_publicacion, id_oferta) VALUES (?,?)");
         for (int i = 0; i < oferta.getPublicaciones().size(); i++) {
             preparedStmt.setInt(1, oferta.getPublicaciones().get(i).getId());
             preparedStmt.setInt(2, oferta.getIdOferta());
             preparedStmt.executeUpdate();
         }
-        
+
         this.getConn().commit();
     }
 
     public void addNewPublicacion(Publicacion p) throws SQLException {
         Statement stmt = this.getConn().createStatement();
-        String insert = String.format("INSERT INTO public.publicaciones(nombre_producto,"
-                + "descripcion_producto, valor_ucu_coin_estimado, id_categoria, vendida, imagen)"
-                + " VALUES (?, ?, ?, ?, ?, ?, ?);", p.getNombreProducto(), p.getDescripcion(), p.getValorEstimado(), p.getCategoria(), "false", p.getImagen());
+        java.sql.Date sqlDate = java.sql.Date.valueOf(p.getFechaHora().toLocalDate());
+        String insert = String.format("INSERT INTO publicaciones(cantidad, fecha_hora_publicacion, nombre_producto, "
+                + "descripcion_producto, valor_ucu_coin_estimado, id_categoria, vendida, imagen, ci_publicante) "
+                + " VALUES (%s, '%s', '%s', '%s', %s, %s, '%s', '%s', '%s');", p.getCantidad(), sqlDate, p.getNombreProducto(), p.getDescripcion(),
+                String.valueOf(p.getValorEstimado()), String.valueOf(p.getCategoria()), "false", p.getImagen(), p.getPublicante());
 
         stmt.executeUpdate(insert);
+        this.getConn().commit();
+    }
+
+    public void updateUser(Persona p) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        String update = String.format("UPDATE Personas SET nombre = '%s', apellido = '%s', "
+                + "fecha_nac = %s, telefono = %s, departamento = %s, email= '%s', nombre_usuario = '%s', contraseña = '%s' WHERE ci = '%s'",
+                p.getNombre(), p.getApellido(), FormatterService.formatData(p.getFechaDeNacimiento()), 
+                p.getTelefono(), p.getDepartamento(), p.getEmail(), p.getNombreDeUsuario(), p.getContraseña(), String.valueOf(p.getCi()));
+
+        stmt.executeUpdate(update);
         this.getConn().commit();
     }
 

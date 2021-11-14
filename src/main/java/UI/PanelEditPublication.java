@@ -30,9 +30,10 @@ public class PanelEditPublication extends javax.swing.JPanel {
     private final DatabaseService db;
     private final JFrame parent;
     private File file = null;
-    
+
     /**
      * Creates new form PanelEditPublication
+     *
      * @param parent
      * @param publicacion
      * @param db
@@ -42,7 +43,7 @@ public class PanelEditPublication extends javax.swing.JPanel {
         this.publicacion = publicacion;
         this.db = db;
         this.parent = parent;
-        
+
         pubName.setText(publicacion.getNombreProducto());
         pubDesc.setText(publicacion.getDescripcion());
         pubQty.setText(String.valueOf(publicacion.getCantidad()));
@@ -171,20 +172,16 @@ public class PanelEditPublication extends javax.swing.JPanel {
         publishTabLayout.setVerticalGroup(
             publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(publishTabLayout.createSequentialGroup()
-                .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(37, 37, 37)
+                .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(pubName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel6)
+                        .addComponent(jToggleButton1))
                     .addGroup(publishTabLayout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3)
-                                .addComponent(pubName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel6))
-                            .addGroup(publishTabLayout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(labelNombreArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))))
-                    .addGroup(publishTabLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jToggleButton1)))
+                        .addGap(4, 4, 4)
+                        .addComponent(labelNombreArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(publishTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(publishTabLayout.createSequentialGroup()
@@ -267,7 +264,7 @@ public class PanelEditPublication extends javax.swing.JPanel {
         ImageIcon imageIcon = new ImageIcon(image);
         return imageIcon;
     }
-    
+
     private void populateCategoryCombo() {
         try {
             String[] categories = db.getCategories();
@@ -280,31 +277,35 @@ public class PanelEditPublication extends javax.swing.JPanel {
             Logger.getLogger(PanelEditPublication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void btnPublishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublishActionPerformed
         int category = pubCategory.getSelectedIndex();
         String name = pubName.getText();
         String desc = pubDesc.getText();
-        
+
         Integer value = null;
         try {
             value = Integer.parseInt(pubValue.getText());
-        } catch (NumberFormatException e) { }
-        
+        } catch (NumberFormatException e) {
+
+        }
+
         Integer qty = null;
         try {
             qty = Integer.parseInt(pubQty.getText());
-        } catch (NumberFormatException e) { }
-        
+        } catch (NumberFormatException e) {
+        }
+
         try {
             byte[] fileContent = null;
-            if (this.file != null)
+            if (this.file != null) {
                 fileContent = Files.readAllBytes(this.file.toPath());
-        
+            }
+
             Publicacion p = new Publicacion(this.publicacion.getId(), this.publicacion.getFechaHora(), category == 0 ? this.publicacion.getCategoria() : category,
-                name, desc, value == null ? this.publicacion.getValorEstimado() : value, qty == null ? this.publicacion.getCantidad() : qty, 
-                this.publicacion.getPublicante(), this.publicacion.isVendida(), fileContent == null ? this.publicacion.getImagen() : Base64.getEncoder().encodeToString(fileContent));
-        
+                    name, desc, value == null ? this.publicacion.getValorEstimado() : value, qty == null ? this.publicacion.getCantidad() : qty,
+                    this.publicacion.getPublicante(), this.publicacion.isVendida(), fileContent == null ? this.publicacion.getImagen() : Base64.getEncoder().encodeToString(fileContent));
+
             this.db.updatePublicacion(p);
         } catch (Exception e) {
             System.out.println(e.getMessage());

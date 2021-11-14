@@ -23,8 +23,8 @@ public class Publicacion {
     private int publicante;
     private Boolean vendida;
     private String imagen;
-    
-    public Publicacion (int id) {
+
+    public Publicacion(int id) {
         this.id = id;
     }
 
@@ -40,7 +40,7 @@ public class Publicacion {
         this.vendida = vendida;
         this.imagen = imagen;
     }
-    
+
     public Publicacion(int id, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, Boolean vendida, String imagen) {
         this.id = id;
         this.categoria = categoria;
@@ -51,8 +51,8 @@ public class Publicacion {
         this.vendida = vendida;
         this.imagen = imagen;
     }
-    
-        public Publicacion(int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, boolean vendida, String imagen) {
+
+    public Publicacion(LocalDateTime fechaHora, int categoria, String nombreProducto, String descripcion, int valorEstimado, int cantidad, boolean vendida, String imagen, int publicante) {
         this.categoria = categoria;
         this.nombreProducto = nombreProducto;
         this.descripcion = descripcion;
@@ -60,8 +60,11 @@ public class Publicacion {
         this.cantidad = cantidad;
         this.vendida = vendida;
         this.imagen = imagen;
+        this.publicante = publicante;
+        this.fechaHora = fechaHora;
+
     }
-    
+
     public int getId() {
         return id;
     }
