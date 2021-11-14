@@ -17,18 +17,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
-
 import java.io.IOException;
 import java.nio.file.Files;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.logging.Level;
@@ -36,7 +27,6 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -69,14 +59,14 @@ public class PanelHome extends javax.swing.JPanel {
         try {
             List<Publicacion> listaPublicaciones = this.db.getPublicaciones(this.persona);
             mostrarPublicacionesEnTabla(tablaPublicaciones, listaPublicaciones);
-        } catch (Exception ex) {
+        } catch (IOException | SQLException ex) {
             System.out.println(ex.getMessage());
         }
 
         try {
             List<Publicacion> listaPublicaciones = this.db.getPublicaciones(new PublicationFilter(this.persona));
             mostrarPublicacionesEnTabla(tablaExplorar, listaPublicaciones);
-        } catch (Exception ex) {
+        } catch (IOException | SQLException ex) {
             System.out.println(ex.getMessage());
         }
 
@@ -92,7 +82,7 @@ public class PanelHome extends javax.swing.JPanel {
             mostrarOfertasEnTabla(tablaOfertasRecibidas, listaOfertasRecibidas);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-        }        
+        }
         refreshPublicaciones();
         refreshOfertas();
         refreshExplorar();
@@ -160,13 +150,10 @@ public class PanelHome extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         publicarMensajeError = new javax.swing.JLabel();
         messagesTab = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
-        jLabel14 = new javax.swing.JLabel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        jTable6 = new javax.swing.JTable();
         btnReplyMessage = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         saldo = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         labelNombreDeUsuario = new javax.swing.JLabel();
@@ -265,6 +252,11 @@ public class PanelHome extends javax.swing.JPanel {
         btnAsk.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAsk.setForeground(new java.awt.Color(255, 102, 102));
         btnAsk.setText("Preguntar");
+        btnAsk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAskActionPerformed(evt);
+            }
+        });
 
         btnOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnOffer.setForeground(new java.awt.Color(255, 102, 102));
@@ -597,71 +589,50 @@ public class PanelHome extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Publicar", publishTab);
 
-        jLabel13.setText("Sent");
-
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane5.setViewportView(jTable5);
-
-        jLabel14.setText("Received");
-
-        jTable6.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane6.setViewportView(jTable6);
-
         btnReplyMessage.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnReplyMessage.setForeground(new java.awt.Color(255, 102, 102));
         btnReplyMessage.setText("Responder");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane8.setViewportView(jTable1);
 
         javax.swing.GroupLayout messagesTabLayout = new javax.swing.GroupLayout(messagesTab);
         messagesTab.setLayout(messagesTabLayout);
         messagesTabLayout.setHorizontalGroup(
             messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(messagesTabLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(messagesTabLayout.createSequentialGroup()
-                        .addGroup(messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5))
-                .addGap(18, 18, 18)
-                .addComponent(btnReplyMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(messagesTabLayout.createSequentialGroup()
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 835, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnReplyMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         messagesTabLayout.setVerticalGroup(
             messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(messagesTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(jLabel14)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(28, 28, 28)
                 .addGroup(messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReplyMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(messagesTabLayout.createSequentialGroup()
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(275, 275, 275)
+                        .addComponent(btnReplyMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
@@ -730,22 +701,21 @@ public class PanelHome extends javax.swing.JPanel {
                 db.closeConnectionDB();
                 dialog.dispose();
             });
-            
+
             panel.btnNo.addActionListener((java.awt.event.ActionEvent evt1) -> {
                 this.db.closeConnectionDB();
                 dialog.dispose();
             });
-             
+
             dialog.setVisible(true);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-
         this.db.closeConnectionDB();
-        
+
     }//GEN-LAST:event_btnBorrarPublicacionActionPerformed
-    
+
     private void btnCerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesion1ActionPerformed
         this.persona = null;
         PanelLogin panel = new PanelLogin(frame, db);
@@ -797,40 +767,32 @@ public class PanelHome extends javax.swing.JPanel {
         try {
             List<Oferta> listaOfertasEnviadas = this.db.getOfertasEnviadas(this.persona);
             mostrarOfertasEnTabla(tablaOfertasEnviadas, listaOfertasEnviadas);
-            
+
             List<Oferta> listaOfertasRecibidas = this.db.getOfertasRecibidas(this.persona);
             mostrarOfertasEnTabla(tablaOfertasRecibidas, listaOfertasRecibidas);
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println(ex);
         }
         this.db.closeConnectionDB();
     }
-    
+
     private void refreshExplorar() {
         try {
             List<Publicacion> listaPublicaciones = this.db.getPublicaciones(new PublicationFilter(this.persona));
             mostrarPublicacionesEnTabla(tablaExplorar, listaPublicaciones);
-        } catch (Exception ex) {
+        } catch (IOException | SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
     private void btnEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPerfilActionPerformed
-        PanelEditUser panel = new PanelEditUser(this.frame, this.db, this.persona);
-        JDialog dialog = new JDialog(this.frame, true);
+        JFrame frameDialog = new JFrame();
+        PanelEditUser panel = new PanelEditUser(frameDialog, this.db, this.persona);
+        JDialog dialog = new JDialog(frameDialog, true);
         dialog.setSize(panel.getPreferredSize());
         dialog.setLocationRelativeTo(null);
         dialog.getContentPane().add(panel);
-        dialog.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                try {
-                    labelNombreDeUsuario.setText(persona.getNombre()+ " " + persona.getApellido());
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                }
-            }
-        });
+
         dialog.setVisible(true);
     }//GEN-LAST:event_btnEditarPerfilActionPerformed
 
@@ -842,6 +804,7 @@ public class PanelHome extends javax.swing.JPanel {
         ImageIcon image = new ImageIcon(newImg);
         return image;
     }
+
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         ImageIcon targetImg;
@@ -891,7 +854,7 @@ public class PanelHome extends javax.swing.JPanel {
             try {
                 List<Publicacion> publicaciones = db.getPublicaciones(filter);
                 mostrarPublicacionesEnTabla(tablaExplorar, publicaciones);
-            } catch (Exception ex) {
+            } catch (IOException | SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         }
@@ -948,7 +911,7 @@ public class PanelHome extends javax.swing.JPanel {
             publicarMensajeError.setText("El valor debe ser numerico");
             return false;
         }
-        if (Integer.valueOf(valor) <0 ){
+        if (Integer.valueOf(valor) < 0) {
             publicarMensajeError.setText("El valor debe ser positivo");
             return false;
         }
@@ -989,6 +952,27 @@ public class PanelHome extends javax.swing.JPanel {
             System.out.println(e.getMessage());
         }
     }//GEN-LAST:event_btnOfferActionPerformed
+
+    private void btnAskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAskActionPerformed
+        JFrame frameDialog = new JFrame();
+        int id = (int) tablaExplorar.getValueAt(tablaExplorar.getSelectedRow(), 0);
+        Publicacion pub;
+        try {
+            this.db.connectToDB();
+            pub = this.db.getPublicacion(id);
+            Persona pRecibe = this.db.getPersona(pub.getPublicante());
+            PanelSendMessage panel = new PanelSendMessage(frameDialog, this.db, this.persona, pRecibe, pub);
+            JDialog dialog = new JDialog(frameDialog, true);
+            dialog.setSize(panel.getPreferredSize());
+            dialog.setLocationRelativeTo(null);
+            dialog.getContentPane().add(panel);
+            this.db.closeConnectionDB();
+            dialog.setVisible(true);
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(PanelHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnAskActionPerformed
 
     private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -1095,12 +1079,11 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.ButtonGroup categoriesGroup;
     private javax.swing.JComboBox<String> comboCategories1;
     private javax.swing.JTextArea descripcionField;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
@@ -1115,12 +1098,10 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable5;
-    private javax.swing.JTable jTable6;
+    private javax.swing.JTable jTable1;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel labelMostrarImagen;
     private javax.swing.JLabel labelNombreArchivo;

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
  * @author Administrador
  */
 public class Mensaje {
+
     private int id;
     private String contenido;
     private int idPadre;
@@ -20,11 +21,20 @@ public class Mensaje {
     private int CIdestino;
     private boolean respondido;
     private LocalDateTime fechaHora;
-    
+
     public Mensaje(int id, String contenido, int idPadre, int idPublicacion, int CIorigen, int CIdestino, boolean respondido, LocalDateTime fechaHora) {
         this.id = id;
         this.contenido = contenido;
         this.idPadre = idPadre;
+        this.idPublicacion = idPublicacion;
+        this.CIorigen = CIorigen;
+        this.CIdestino = CIdestino;
+        this.respondido = respondido;
+        this.fechaHora = fechaHora;
+    }
+
+    public Mensaje(String contenido, int idPublicacion, int CIorigen, int CIdestino, boolean respondido, LocalDateTime fechaHora) {
+        this.contenido = contenido;
         this.idPublicacion = idPublicacion;
         this.CIorigen = CIorigen;
         this.CIdestino = CIdestino;

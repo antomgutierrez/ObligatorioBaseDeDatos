@@ -573,12 +573,12 @@ public class PanelEditUser extends javax.swing.JPanel {
             }
 
             this.db.closeConnectionDB();
-
+            this.frame.dispose();
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-
+        this.frame.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneActionPerformed

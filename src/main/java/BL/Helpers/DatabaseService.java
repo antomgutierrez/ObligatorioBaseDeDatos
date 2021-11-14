@@ -138,6 +138,20 @@ public class DatabaseService {
         return p;
     }
 
+    public Persona getPersona(int ci) throws SQLException {
+        Persona p = null;
+        Statement stmt = this.getConn().createStatement();
+        ResultSet rs = stmt.executeQuery(String.format("SELECT ci, nombre, apellido, fecha_nac, telefono, "
+                + "nombre_usuario, \"contraseña\", saldo_ucucoins, nombre_usuario, departamento, email, email_confirmado FROM public.personas WHERE ci =%s", ci));
+        while (rs.next()) {
+            p = new Persona(Integer.valueOf(rs.getString("ci")), rs.getString("nombre"), rs.getString("apellido"), Date.valueOf(rs.getString("fecha_nac")),
+                    Integer.valueOf(rs.getString("telefono")), rs.getString("departamento"), rs.getString("email"), rs.getString("nombre_usuario"),
+                    rs.getString("contraseña"), Integer.valueOf(rs.getString("saldo_ucucoins")), Boolean.valueOf(rs.getString("email_confirmado")));
+        }
+
+        return p;
+    }
+
     public String[] getDepartments() throws SQLException {
         ArrayList<String> result = new ArrayList<>();
         Statement stmt = this.getConn().createStatement();
@@ -165,12 +179,12 @@ public class DatabaseService {
     public List<Publicacion> getPublicaciones(Persona persona) throws SQLException, IOException {
         List<Publicacion> publicaciones = new ArrayList<>();
         Statement stmt = this.getConn().createStatement();
-        ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, "
+        ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion,ci_publicante, cantidad, id_categoria, nombre_producto, descripcion_producto, "
                 + "valor_ucu_coin_estimado, vendida, Imagen FROM public.publicaciones where publicaciones.ci_publicante = '%s' AND publicaciones.vendida = 'false'", persona.getCi()));
         while (rs.next()) {
             Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
                     rs.getString("descripcion_producto"), Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")),
-                    Boolean.valueOf(rs.getString("vendida")), rs.getString("Imagen"));
+                    Boolean.valueOf(rs.getString("vendida")), rs.getString("Imagen"),Integer.valueOf(rs.getString("ci_publicante")));
 
             publicaciones.add(p);
         }
@@ -200,11 +214,11 @@ public class DatabaseService {
         }
 
         Statement stmt = this.getConn().createStatement();
-        ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, valor_ucu_coin_estimado, vendida, Imagen FROM public.publicaciones where %s", whereClause));
+        ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto,ci_publicante, descripcion_producto, valor_ucu_coin_estimado, vendida, Imagen FROM public.publicaciones where %s", whereClause));
         while (rs.next()) {
             Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
                     rs.getString("descripcion_producto"), Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")),
-                    Boolean.valueOf(rs.getString("vendida")), rs.getString("Imagen"));
+                    Boolean.valueOf(rs.getString("vendida")), rs.getString("Imagen") ,Integer.valueOf(rs.getString("ci_publicante")));
 
             publicaciones.add(p);
         }
@@ -215,11 +229,11 @@ public class DatabaseService {
     public Publicacion getPublicacion(int id) throws SQLException, IOException {
         Statement stmt = this.getConn().createStatement();
         ResultSet rs = stmt.executeQuery(String.format("SELECT id_publicacion, cantidad, id_categoria, nombre_producto, descripcion_producto, "
-                + "valor_ucu_coin_estimado, vendida, Imagen FROM public.publicaciones where publicaciones.id_publicacion = %s", id));
+                + "valor_ucu_coin_estimado, vendida, Imagen, ci_publicante FROM public.publicaciones where publicaciones.id_publicacion = %s", id));
         if (rs.next()) {
             Publicacion p = new Publicacion(Integer.valueOf(rs.getString("id_publicacion")), Integer.valueOf(rs.getString("id_categoria")), rs.getString("nombre_producto"),
                     rs.getString("descripcion_producto"), Integer.valueOf(rs.getString("valor_ucu_coin_estimado")), Integer.valueOf(rs.getString("cantidad")),
-                    Boolean.valueOf(rs.getString("vendida")), rs.getString("Imagen"));
+                    Boolean.valueOf(rs.getString("vendida")), rs.getString("Imagen"),Integer.valueOf(rs.getString("ci_publicante")));
 
             return p;
         }
@@ -245,7 +259,7 @@ public class DatabaseService {
     public void deletePublicacion(int id) throws SQLException {
         Statement stmt = this.getConn().createStatement();
         ResultSet rs = stmt.executeQuery(String.format("SELECT id_oferta FROM Ofertas WHERE id_publicacion = %s ORDER BY id_oferta DESC", id));
-        
+
         // ELIMINO TODAS LAS OFERTAS RELACIONADAS
         while (rs.next()) {
             int idOferta = rs.getInt(1);
@@ -253,13 +267,13 @@ public class DatabaseService {
             stmt2.executeUpdate(String.format("DELETE FROM publicacion_ofertas WHERE id_oferta = %s", idOferta));
             stmt2.executeUpdate(String.format("DELETE FROM Ofertas WHERE id_oferta = %s", idOferta));
         }
-        
+
         // ELIMINO TODOS LOS MENSAJES ASOCIADOS A ESA PUBLICACION
         stmt.executeUpdate(String.format("DELETE FROM Mensajes WHERE id_publicacion = %s", id));
-        
+
         // ELIMINO LA PUBLICACION
         stmt.executeUpdate(String.format("DELETE FROM Publicaciones WHERE id_publicacion = %s", id));
-        
+
         this.getConn().commit();
     }
 
@@ -345,10 +359,21 @@ public class DatabaseService {
         Statement stmt = this.getConn().createStatement();
         String update = String.format("UPDATE Personas SET nombre = '%s', apellido = '%s', "
                 + "fecha_nac = %s, telefono = %s, departamento = %s, email= '%s', nombre_usuario = '%s', contraseña = '%s' WHERE ci = '%s'",
-                p.getNombre(), p.getApellido(), FormatterService.formatData(p.getFechaDeNacimiento()), 
+                p.getNombre(), p.getApellido(), FormatterService.formatData(p.getFechaDeNacimiento()),
                 p.getTelefono(), p.getDepartamento(), p.getEmail(), p.getNombreDeUsuario(), p.getContraseña(), String.valueOf(p.getCi()));
 
         stmt.executeUpdate(update);
+        this.getConn().commit();
+    }
+
+    public void insertNewMessage(Mensaje mensaje) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        java.sql.Date sqlDate = java.sql.Date.valueOf(mensaje.getFechaHora().toLocalDate());
+        String insert = String.format("INSERT INTO mensajes(contenido_mensaje, id_publicacion, id_mensaje_padre,"
+                + " ci_origen, ci_destino, respondido, fecha_hora_mensaje) "
+                + " VALUES ('%s', %s, %s, %s, %s, '%s', '%s');", mensaje.getContenido(), mensaje.getIdPublicacion(), "null", mensaje.getCIorigen(), 
+                mensaje.getCIdestino(), "false", sqlDate);
+        stmt.executeUpdate(insert);
         this.getConn().commit();
     }
 
