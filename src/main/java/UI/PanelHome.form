@@ -291,6 +291,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Ofertar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOfferActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtValueFrom">
             </Component>
