@@ -6,6 +6,7 @@
 package UI;
 
 import BL.Helpers.ConnectionData;
+import BL.Helpers.DatabaseService;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
@@ -16,14 +17,16 @@ import javax.swing.JFrame;
 public class PanelConfigureBBDD extends javax.swing.JPanel {
 
     JFrame frame;
+    DatabaseService db;
 
     /**
      * Creates new form PanelConfirmation
      *
      * @param frameDialog
      */
-    public PanelConfigureBBDD(JFrame frameDialog) {
+    public PanelConfigureBBDD(JFrame frameDialog, DatabaseService db) {
         this.frame = frameDialog;
+        this.db = db;
         initComponents();
         initTexts();
     }
@@ -272,6 +275,8 @@ public class PanelConfigureBBDD extends javax.swing.JPanel {
             ConnectionData.setDB_PASSWORD(passwordDB.getText());
             ConnectionData.setEMAIL(dirCe.getText());
             ConnectionData.setEMAIL_PASSWORD(passwordEmail.getText());
+            
+            this.db.setParameters(ConnectionData.getDB_ADDRESS(), ConnectionData.getDB_PORT(), ConnectionData.getDB_NAME());
 
             PanelSucces panel = new PanelSucces(this.frame, "Datos de conexión actualizados con éxito.");
             JDialog dialog = new JDialog(this.frame, true);

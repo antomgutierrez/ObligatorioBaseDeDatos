@@ -22,15 +22,7 @@ import java.util.List;
  */
 public class DatabaseService {
 
-    /**
-     *
-     * @param host
-     * @param port
-     * @param database
-     */
-    public DatabaseService(String host, String port, String database) {
-        this.url = String.format("jdbc:postgresql://%s:%s/%s", host, port, database);
-    }
+    public DatabaseService() {  }
 
     /**
      *
@@ -47,6 +39,10 @@ public class DatabaseService {
      */
     public void setConn(Connection conn) {
         this.conn = conn;
+    }
+    
+    public void setParameters(String host, String port, String database) {
+        this.url = String.format("jdbc:postgresql://%s:%s/%s", host, port, database);
     }
 
     private Connection conn = null;

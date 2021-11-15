@@ -51,7 +51,6 @@ public class PanelLogin extends javax.swing.JPanel {
         btnLogin = new javax.swing.JButton();
         btnRegister = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -60,17 +59,17 @@ public class PanelLogin extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel1.setText("Contraseña");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 420, -1, -1));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, -1, -1));
 
         inputPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        add(inputPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 420, 225, -1));
+        add(inputPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 220, 225, -1));
 
         inputNombreDeUsuario.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        add(inputNombreDeUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 225, -1));
+        add(inputNombreDeUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 180, 225, -1));
 
         jLabel3.setFont(new java.awt.Font("Dubai", 0, 18)); // NOI18N
         jLabel3.setText("Usuario");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, -1, -1));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, -1, -1));
 
         btnLogin.setBackground(new java.awt.Color(0, 153, 51));
         btnLogin.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -80,7 +79,7 @@ public class PanelLogin extends javax.swing.JPanel {
                 btnLoginActionPerformed(evt);
             }
         });
-        add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 490, 164, -1));
+        add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 340, 164, -1));
 
         btnRegister.setBackground(new java.awt.Color(0, 204, 204));
         btnRegister.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -90,12 +89,11 @@ public class PanelLogin extends javax.swing.JPanel {
                 btnRegisterActionPerformed(evt);
             }
         });
-        add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 490, 165, -1));
+        add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 340, 165, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 340, 20));
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 780, 400));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 260, 340, 20));
 
         jButton1.setBackground(new java.awt.Color(255, 204, 51));
         jButton1.setForeground(new java.awt.Color(255, 102, 51));
@@ -163,7 +161,7 @@ public class PanelLogin extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JFrame frameDialog = new JFrame();
-        PanelConfigureBBDD panel = new PanelConfigureBBDD(frameDialog);
+        PanelConfigureBBDD panel = new PanelConfigureBBDD(frameDialog, this.db);
         JDialog dialog = new JDialog(frameDialog, true);
         dialog.setSize(panel.getPreferredSize());
         dialog.setLocationRelativeTo(null);
@@ -179,7 +177,6 @@ public class PanelLogin extends javax.swing.JPanel {
     private javax.swing.JPasswordField inputPassword;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     // End of variables declaration//GEN-END:variables

@@ -78,7 +78,7 @@ public class main extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                DatabaseService db = new DatabaseService(ConnectionData.DB_ADDRESS, ConnectionData.DB_PORT, ConnectionData.DB_NAME);
+                DatabaseService db = new DatabaseService();
                 JFrame frame = new JFrame("UCUTRUEQUE APP");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 

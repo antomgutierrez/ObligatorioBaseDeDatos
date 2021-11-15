@@ -68,11 +68,11 @@ public class ConnectionData {
     }
     
     // Database connection utils
-    public static String DB_USER = "diego";
-    public static String DB_PASSWORD = "diego";
+    public static String DB_USER = "user";
+    public static String DB_PASSWORD = "password";
     public static String DB_ADDRESS = "192.168.56.2";
     public static String DB_PORT = "5432";
-    public static String DB_NAME = "proyectoBBDD2";
+    public static String DB_NAME = "database name";
 
     // Email service utils
     public static String EMAIL = "ucutrueque@gmail.com";
