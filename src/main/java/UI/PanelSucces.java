@@ -14,14 +14,16 @@ import javax.swing.JFrame;
 public class PanelSucces extends javax.swing.JPanel {
 
     JFrame frame;
+    String text;
 
     /**
      * Creates new form PanelConfirmation
      * @param frameDialog
      */
-    public PanelSucces(JFrame frameDialog) {
+    public PanelSucces(JFrame frameDialog, String text) {
         this.frame = frameDialog;
         initComponents();
+        jLabel1.setText(text);
     }
 
     /**
@@ -36,9 +38,9 @@ public class PanelSucces extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         btnYes = new javax.swing.JButton();
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("ACCIÓN EXITOSA");
+        jLabel1.setText("text");
 
         btnYes.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnYes.setForeground(new java.awt.Color(0, 204, 0));
@@ -57,19 +59,19 @@ public class PanelSucces extends javax.swing.JPanel {
                 .addGap(48, 48, 48)
                 .addComponent(btnYes, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(62, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(btnYes, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addGap(39, 39, 39))
         );
     }// </editor-fold>//GEN-END:initComponents
 

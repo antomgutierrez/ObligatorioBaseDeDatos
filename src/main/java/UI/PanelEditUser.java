@@ -575,7 +575,7 @@ public class PanelEditUser extends javax.swing.JPanel {
 
             this.db.closeConnectionDB();
             
-            PanelSucces panel = new PanelSucces(this.frame);
+            PanelSucces panel = new PanelSucces(this.frame, persona.getNombre() + " actualizado con éxito.");
             JDialog dialog = new JDialog(this.frame, true);
             dialog.setSize(panel.getPreferredSize());
             dialog.setLocationRelativeTo(null);

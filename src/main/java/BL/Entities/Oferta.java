@@ -22,6 +22,10 @@ public class Oferta {
 
     List<Publicacion> publicaciones;
     
+    public Oferta(int idOferta) {
+        this.idOferta = idOferta;
+    }
+    
     public Oferta(int idPublicacion, Boolean aceptada, int idOfertaPadre, int CIofertante, int ucucoinsOfrecidas, List<Publicacion> publicaciones) {
         this.idPublicacion = idPublicacion;
         this.aceptada = aceptada;

@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 /**
@@ -127,11 +128,17 @@ public class PanelSendMessage extends javax.swing.JPanel {
             try {
                 this.db.insertNewMessage(mensaje);
                 this.db.closeConnectionDB();
+
+                PanelSucces panel = new PanelSucces(this.frame, "Mensaje enviado con éxito.");
+                JDialog dialog = new JDialog(this.frame, true);
+                dialog.setSize(panel.getPreferredSize());
+                dialog.setLocationRelativeTo(null);
+                dialog.getContentPane().add(panel);
+                dialog.setVisible(true);
+
             } catch (SQLException ex) {
                 Logger.getLogger(PanelSendMessage.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            this.frame.dispose();
         }
 
     }//GEN-LAST:event_btnEnviarMensajeActionPerformed

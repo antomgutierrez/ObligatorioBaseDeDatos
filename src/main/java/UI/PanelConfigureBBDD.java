@@ -5,7 +5,7 @@
  */
 package UI;
 
-import BL.Helpers.Constants;
+import BL.Helpers.ConnectionData;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
@@ -29,11 +29,11 @@ public class PanelConfigureBBDD extends javax.swing.JPanel {
     }
 
     private void initTexts() {
-        ip.setText(Constants.getDB_ADDRESS());
-        puerto.setText(Constants.getDB_PORT());
-        nombrebbdd.setText(Constants.getDB_NAME());
-        usuariobbdd.setText(Constants.getDB_USER());
-        dirCe.setText(Constants.getEMAIL());
+        ip.setText(ConnectionData.getDB_ADDRESS());
+        puerto.setText(ConnectionData.getDB_PORT());
+        nombrebbdd.setText(ConnectionData.getDB_NAME());
+        usuariobbdd.setText(ConnectionData.getDB_USER());
+        dirCe.setText(ConnectionData.getEMAIL());
     }
 
     /**
@@ -265,15 +265,15 @@ public class PanelConfigureBBDD extends javax.swing.JPanel {
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         if ((!passwordDB.getText().isBlank()) && (!passwordEmail.getText().isBlank())) {
-            Constants.setDB_ADDRESS(ip.getText());
-            Constants.setDB_PORT(puerto.getText());
-            Constants.setDB_NAME(nombrebbdd.getText());
-            Constants.setDB_USER(usuariobbdd.getText());
-            Constants.setDB_PASSWORD(passwordDB.getText());
-            Constants.setEMAIL(dirCe.getText());
-            Constants.setEMAIL_PASSWORD(passwordEmail.getText());
+            ConnectionData.setDB_ADDRESS(ip.getText());
+            ConnectionData.setDB_PORT(puerto.getText());
+            ConnectionData.setDB_NAME(nombrebbdd.getText());
+            ConnectionData.setDB_USER(usuariobbdd.getText());
+            ConnectionData.setDB_PASSWORD(passwordDB.getText());
+            ConnectionData.setEMAIL(dirCe.getText());
+            ConnectionData.setEMAIL_PASSWORD(passwordEmail.getText());
 
-            PanelSucces panel = new PanelSucces(this.frame);
+            PanelSucces panel = new PanelSucces(this.frame, "Datos de conexión actualizados con éxito.");
             JDialog dialog = new JDialog(this.frame, true);
             dialog.setSize(panel.getPreferredSize());
             dialog.setLocationRelativeTo(null);

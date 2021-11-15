@@ -5,11 +5,13 @@
  */
 package UI;
 
+import BL.Entities.Mensaje;
 import BL.Entities.Oferta;
 import BL.Entities.Persona;
 import BL.Entities.Publicacion;
 import BL.Entities.PublicationFilter;
 import BL.Helpers.DatabaseService;
+import BL.Helpers.EmailService;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JFrame;
@@ -17,16 +19,23 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDateTime;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -53,36 +62,10 @@ public class PanelHome extends javax.swing.JPanel {
         this.db = db;
         initComponents();
         populateCategoryCombos();
+        populatecomboMensajes();
         labelNombreDeUsuario.setText(persona.getNombre() + " " + persona.getApellido());
         saldo.setText("U$C " + persona.getSaldoUCUCoins());
 
-        try {
-            List<Publicacion> listaPublicaciones = this.db.getPublicaciones(this.persona);
-            mostrarPublicacionesEnTabla(tablaPublicaciones, listaPublicaciones);
-        } catch (IOException | SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        try {
-            List<Publicacion> listaPublicaciones = this.db.getPublicaciones(new PublicationFilter(this.persona));
-            mostrarPublicacionesEnTabla(tablaExplorar, listaPublicaciones);
-        } catch (IOException | SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        try {
-            List<Oferta> listaOfertasEnviadas = this.db.getOfertasEnviadas(this.persona);
-            mostrarOfertasEnTabla(tablaOfertasEnviadas, listaOfertasEnviadas);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        try {
-            List<Oferta> listaOfertasRecibidas = this.db.getOfertasRecibidas(this.persona);
-            mostrarOfertasEnTabla(tablaOfertasRecibidas, listaOfertasRecibidas);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
         refreshPublicaciones();
         refreshOfertas();
         refreshExplorar();
@@ -151,9 +134,9 @@ public class PanelHome extends javax.swing.JPanel {
         publicarMensajeError = new javax.swing.JLabel();
         messagesTab = new javax.swing.JPanel();
         btnReplyMessage = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboMensajes = new javax.swing.JComboBox<>();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaMensajes = new javax.swing.JTable();
         saldo = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         labelNombreDeUsuario = new javax.swing.JLabel();
@@ -382,10 +365,20 @@ public class PanelHome extends javax.swing.JPanel {
         btnAcceptOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAcceptOffer.setForeground(new java.awt.Color(255, 102, 102));
         btnAcceptOffer.setText("Aceptar");
+        btnAcceptOffer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcceptOfferActionPerformed(evt);
+            }
+        });
 
         btnRejectOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnRejectOffer.setForeground(new java.awt.Color(255, 102, 102));
         btnRejectOffer.setText("Rechazar");
+        btnRejectOffer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRejectOfferActionPerformed(evt);
+            }
+        });
 
         btnCounterOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnCounterOffer.setForeground(new java.awt.Color(255, 102, 102));
@@ -592,21 +585,20 @@ public class PanelHome extends javax.swing.JPanel {
         btnReplyMessage.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnReplyMessage.setForeground(new java.awt.Color(255, 102, 102));
         btnReplyMessage.setText("Responder");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        btnReplyMessage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReplyMessageActionPerformed(evt);
             }
-        ));
-        jScrollPane8.setViewportView(jTable1);
+        });
+
+        comboMensajes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { }));
+        comboMensajes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboMensajesItemStateChanged(evt);
+            }
+        });
+
+        jScrollPane8.setViewportView(tablaMensajes);
 
         javax.swing.GroupLayout messagesTabLayout = new javax.swing.GroupLayout(messagesTab);
         messagesTab.setLayout(messagesTabLayout);
@@ -614,11 +606,11 @@ public class PanelHome extends javax.swing.JPanel {
             messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(messagesTabLayout.createSequentialGroup()
                 .addGroup(messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboMensajes, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(messagesTabLayout.createSequentialGroup()
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 847, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnReplyMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnReplyMessage)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         messagesTabLayout.setVerticalGroup(
@@ -628,10 +620,10 @@ public class PanelHome extends javax.swing.JPanel {
                 .addGroup(messagesTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(messagesTabLayout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboMensajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(275, 275, 275)
                         .addComponent(btnReplyMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Mensajes", messagesTab);
@@ -771,14 +763,13 @@ public class PanelHome extends javax.swing.JPanel {
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-        this.db.closeConnectionDB();
     }
 
     private void refreshExplorar() {
         try {
             List<Publicacion> listaPublicaciones = this.db.getPublicaciones(new PublicationFilter(this.persona));
             mostrarPublicacionesEnTabla(tablaExplorar, listaPublicaciones);
-        } catch (IOException | SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
@@ -852,7 +843,7 @@ public class PanelHome extends javax.swing.JPanel {
             try {
                 List<Publicacion> publicaciones = db.getPublicaciones(filter);
                 mostrarPublicacionesEnTabla(tablaExplorar, publicaciones);
-            } catch (IOException | SQLException ex) {
+            } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         }
@@ -891,9 +882,9 @@ public class PanelHome extends javax.swing.JPanel {
                 this.db.addNewPublicacion(p);
                 refreshPublicaciones();
                 this.db.closeConnectionDB();
-                
+
                 JFrame frameDialog = new JFrame();
-                PanelSucces panel = new PanelSucces(frameDialog);
+                PanelSucces panel = new PanelSucces(frameDialog, "Publicación realizada con éxito.");
                 JDialog dialog = new JDialog(frameDialog, true);
                 dialog.setSize(panel.getPreferredSize());
                 dialog.setLocationRelativeTo(null);
@@ -943,21 +934,16 @@ public class PanelHome extends javax.swing.JPanel {
                 dialog.setSize(panel.getPreferredSize());
                 dialog.setLocationRelativeTo(null);
                 dialog.getContentPane().add(panel);
-                dialog.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        try {
-                            refreshOfertas();
-                        } catch (Exception ex) {
-                            System.out.println(ex);
-                        }
-                    }
+                panel.jCheckBox1.addItemListener((java.awt.event.ItemEvent evt1) -> {
+                    refreshOfertas();
+                    dialog.dispose();
                 });
                 dialog.setVisible(true);
             }
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        this.db.closeConnectionDB();
     }//GEN-LAST:event_btnOfferActionPerformed
 
     private void btnAskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAskActionPerformed
@@ -975,18 +961,128 @@ public class PanelHome extends javax.swing.JPanel {
             dialog.getContentPane().add(panel);
             this.db.closeConnectionDB();
             dialog.setVisible(true);
-        } catch (SQLException | IOException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(PanelHome.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_btnAskActionPerformed
+
+    private void btnAcceptOfferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptOfferActionPerformed
+        try {
+            int id = (int) tablaOfertasRecibidas.getValueAt(tablaOfertasRecibidas.getSelectedRow(), 0);
+            if (this.db.connectToDB()) {
+                Oferta oferta = this.db.getOferta(id);
+                Persona otraPersona = this.db.getPersona(oferta.getCIofertante());
+                this.persona.setNombreDepartamento(this.db.getDepartmentName(this.persona.getDepartamento()));
+                otraPersona.setNombreDepartamento(this.db.getDepartmentName(otraPersona.getDepartamento()));
+                if (this.db.isPublicationFromThisPerson(oferta, otraPersona)) {
+                    this.db.updateUcuCoinsWallet(otraPersona, otraPersona.getSaldoUCUCoins() + oferta.getUcucoinsOfrecidas());
+                    this.persona.setSaldoUCUCoins(this.persona.getSaldoUCUCoins() - oferta.getUcucoinsOfrecidas());
+                    this.db.updateUcuCoinsWallet(this.persona, this.persona.getSaldoUCUCoins());
+                } else {
+                    this.db.updateUcuCoinsWallet(otraPersona, otraPersona.getSaldoUCUCoins() - oferta.getUcucoinsOfrecidas());
+                    this.persona.setSaldoUCUCoins(this.persona.getSaldoUCUCoins() + oferta.getUcucoinsOfrecidas());
+                    this.db.updateUcuCoinsWallet(this.persona, this.persona.getSaldoUCUCoins());
+                }
+
+                saldo.setText("U$C " + this.persona.getSaldoUCUCoins());
+                List<Publicacion> publicaciones = this.db.getPublicaciones(oferta);
+                publicaciones.add(this.db.getPublicacion(oferta.getIdPublicacion()));
+                this.db.aceptarOferta(oferta);
+                EmailService.sendData(otraPersona, this.persona, publicaciones);
+
+            }
+            refreshExplorar();
+            refreshPublicaciones();
+            refreshOfertas();
+
+            PanelOfferFeedback panel = new PanelOfferFeedback(true);
+            JDialog dialog = new JDialog(this.frame, true);
+            dialog.setSize(panel.getPreferredSize());
+            dialog.setLocationRelativeTo(null);
+            dialog.getContentPane().add(panel);
+            dialog.setVisible(true);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        this.db.closeConnectionDB();
+    }//GEN-LAST:event_btnAcceptOfferActionPerformed
+
+    private void btnRejectOfferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectOfferActionPerformed
+        try {
+            int id = (int) tablaOfertasRecibidas.getValueAt(tablaOfertasRecibidas.getSelectedRow(), 0);
+            Oferta oferta = new Oferta(id);
+            if (this.db.connectToDB()) {
+                this.db.rechazarOferta(oferta);
+            }
+
+            refreshOfertas();
+
+            PanelOfferFeedback panel = new PanelOfferFeedback(false);
+            JDialog dialog = new JDialog(this.frame, true);
+            dialog.setSize(panel.getPreferredSize());
+            dialog.setLocationRelativeTo(null);
+            dialog.getContentPane().add(panel);
+            dialog.setVisible(true);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        this.db.closeConnectionDB();
+
+    }//GEN-LAST:event_btnRejectOfferActionPerformed
+
+    private void comboMensajesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboMensajesItemStateChanged
+        if (evt.getSource() == comboMensajes) {
+            String userName = comboMensajes.getSelectedItem().toString();
+            if (!userName.equals("Select")) {
+                this.db.connectToDB();
+                cargarMensajes(tablaMensajes, userName);
+                this.db.closeConnectionDB();
+            }
+        }
+    }//GEN-LAST:event_comboMensajesItemStateChanged
+
+    private void btnReplyMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReplyMessageActionPerformed
+        try {
+            JFrame frameDialog = new JFrame();
+            this.db.connectToDB();
+            int id = (int) tablaMensajes.getValueAt(tablaMensajes.getSelectedRow(), 0);
+            Publicacion pub = this.db.getPublicacion(id);
+
+            Persona pRecibe = this.db.getPersona(comboMensajes.getItemAt(comboMensajes.getSelectedIndex()));
+            PanelSendMessage panel = new PanelSendMessage(frameDialog, this.db, this.persona, pRecibe, pub);
+            JDialog dialog = new JDialog(frameDialog, true);
+            dialog.setSize(panel.getPreferredSize());
+            dialog.setLocationRelativeTo(null);
+            dialog.getContentPane().add(panel);
+            this.db.closeConnectionDB();
+            dialog.setVisible(true);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_btnReplyMessageActionPerformed
 
     private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
 
         if (listaPublicaciones.size() > 0) {
-            DefaultTableModel tableModel = new DefaultTableModel();
+            DefaultTableModel tableModel = new DefaultTableModel() {
+                @Override
+                public Class<?> getColumnClass(int column) {
+                    return switch (column) {
+                        case 6 ->
+                            ImageIcon.class;
+                        default ->
+                            Object.class;
+                    };
+                }
+            };
             tableModel.addColumn("#");
             tableModel.addColumn("Cdad.");
             tableModel.addColumn("Categoria");
@@ -1005,26 +1101,25 @@ public class PanelHome extends javax.swing.JPanel {
                 row[4] = listaPublicaciones.get(i).getDescripcion();
                 row[5] = listaPublicaciones.get(i).getValorEstimado();
 
-                /*
                 String image = listaPublicaciones.get(i).getImagen();
-                if (image != null) {
+                ImageIcon icon;
+                if (image != null && !image.isEmpty()) {
                     byte[] decodedBytes = Base64.getDecoder().decode(image);
-                    Path destinationFile = Paths.get("", "myImage.jpg");
-                    Files.write(destinationFile, decodedBytes);
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(decodedBytes);
+                    BufferedImage bufImage;
                     try {
-                        fos = new FileOutputStream(file);
-                        fos.write(decodedBytes);
-                        fos.close();
-                        ImageIcon targetImg = ResizeImage(file.getPath());
-                        row[6] = targetImg;
-                    } catch (Exception ex) {
+                        bufImage = ImageIO.read(inputStream);
+                        Image img = bufImage.getScaledInstance(120, 100, Image.SCALE_SMOOTH);
+                        icon = new ImageIcon(img);
+                        row[6] = icon;
+                    } catch (IOException ex) {
                         System.out.println(ex.getMessage());
                     }
                 }
-                 */
                 tableModel.addRow(row);
             }
             table.setModel(tableModel);
+            table.setRowHeight(100);
         }
     }
 
@@ -1066,6 +1161,20 @@ public class PanelHome extends javax.swing.JPanel {
         }
     }
 
+    private void populatecomboMensajes() {
+        try {
+            String[] ciMensajesRecibidos = db.getCiMensajesRecibidos(this.persona);
+            String[] users = db.getUserNamesMensajesRecibidos(ciMensajesRecibidos);
+            comboMensajes.removeAllItems();
+            comboMensajes.addItem("Select");
+            for (String user : users) {
+                comboMensajes.addItem(user);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelEditPublication.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel browseTab;
     private javax.swing.JButton btnAcceptOffer;
@@ -1085,8 +1194,8 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JTextField cantidadField;
     private javax.swing.ButtonGroup categoriesGroup;
     private javax.swing.JComboBox<String> comboCategories1;
+    private javax.swing.JComboBox<String> comboMensajes;
     private javax.swing.JTextArea descripcionField;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1108,7 +1217,6 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel labelMostrarImagen;
     private javax.swing.JLabel labelNombreArchivo;
@@ -1122,6 +1230,7 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JPanel publishTab;
     private javax.swing.JLabel saldo;
     private javax.swing.JTable tablaExplorar;
+    private javax.swing.JTable tablaMensajes;
     private javax.swing.JTable tablaOfertasEnviadas;
     private javax.swing.JTable tablaOfertasRecibidas;
     private javax.swing.JTable tablaPublicaciones;
@@ -1140,5 +1249,43 @@ public class PanelHome extends javax.swing.JPanel {
         this.file = null;
         labelMostrarImagen.setIcon(null);
         labelNombreArchivo.setText("");
+    }
+
+    private void cargarMensajes(JTable mensajesTable, String userName) {
+        try {
+            Persona p = this.db.getPersona(userName);
+            List<Mensaje> mensajes = this.db.getMensajes(p, this.persona);
+
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.addColumn("N° publicacion");
+            tableModel.addColumn("Recibidos");
+            tableModel.addColumn("Fecha Hora");
+            tableModel.addColumn("Enviados");
+            tableModel.addColumn("Fecha Hora");
+
+            for (int i = 0; i < mensajes.size(); i++) {
+                Object[] row = new Object[5];
+                row[0] = mensajes.get(i).getIdPublicacion();
+                if (mensajes.get(i).getCIorigen() == p.getCi()) {
+                    row[1] = mensajes.get(i).getContenido();
+                    LocalDateTime fhm = mensajes.get(i).getFechaHora();
+                    String fechaHora = String.format("%s/%s/%s %s:%s", fhm.getDayOfMonth(), fhm.getMonthValue(), fhm.getYear(), fhm.getHour(), fhm.getMinute());
+                    row[2] = fechaHora;
+                } else if (mensajes.get(i).getCIorigen() == this.persona.getCi()) {
+                    row[3] = mensajes.get(i).getContenido();
+                    LocalDateTime fhm = mensajes.get(i).getFechaHora();
+                    String fechaHora = String.format("%s/%s/%s %s:%s", fhm.getDayOfMonth(), fhm.getMonthValue(), fhm.getYear(), fhm.getHour(), fhm.getMinute());
+                    row[4] = fechaHora;
+                }
+                tableModel.addRow(row);
+
+            }
+            mensajesTable.setRowHeight(100);
+            mensajesTable.setModel(tableModel);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }
