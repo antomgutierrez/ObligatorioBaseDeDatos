@@ -5,6 +5,22 @@
  */
 package UI;
 
+import BL.Entities.Oferta;
+import BL.Entities.Persona;
+import BL.Entities.Publicacion;
+import BL.Helpers.DatabaseService;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Administrador
@@ -13,9 +29,82 @@ public class ViewOfferInvolvedPublications extends javax.swing.JPanel {
 
     /**
      * Creates new form ViewOfferInvolvedPublications
+     * @param db
      */
-    public ViewOfferInvolvedPublications() {
+    public ViewOfferInvolvedPublications(DatabaseService db, Oferta oferta, Persona persona) {
         initComponents();
+        
+        try {
+            List<Publicacion> listaPublicaciones = db.getPublicaciones(oferta);
+            Publicacion publicacion = db.getPublicacion(oferta.getIdPublicacion());
+            List<Publicacion> listaPublicaciones2 = new ArrayList<>();
+            listaPublicaciones2.add(publicacion);
+            
+            if (publicacion.getPublicante() == persona.getCi()) {
+                mostrarPublicacionesEnTabla(jTable1, listaPublicaciones2);
+                mostrarPublicacionesEnTabla(jTable2, listaPublicaciones);
+            } else {
+                mostrarPublicacionesEnTabla(jTable1, listaPublicaciones);
+                mostrarPublicacionesEnTabla(jTable2, listaPublicaciones2);
+            }
+            
+            jLabel5.setText(String.valueOf(oferta.getUcucoinsOfrecidas()));
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        
+        DefaultTableModel tableModel = new DefaultTableModel() {
+                @Override
+                public Class<?> getColumnClass(int column) {
+                    return switch (column) {
+                        case 4 -> ImageIcon.class;
+                        default -> Object.class;
+                    };
+                }
+            };
+        tableModel.addColumn("Cdad.");
+        tableModel.addColumn("Nombre");
+        tableModel.addColumn("Descripción");
+        tableModel.addColumn("U$C");
+        tableModel.addColumn("");
+        
+        if (listaPublicaciones != null && listaPublicaciones.size() > 0) {
+            Object[] row = new Object[5];
+
+            for (int i = 0; i < listaPublicaciones.size(); i++) {
+                row[0] = listaPublicaciones.get(i).getCantidad();
+                row[1] = listaPublicaciones.get(i).getNombreProducto();
+                row[2] = listaPublicaciones.get(i).getDescripcion();
+                row[3] = listaPublicaciones.get(i).getValorEstimado();
+                
+                String image = listaPublicaciones.get(i).getImagen();
+                ImageIcon icon;
+                if (!image.isEmpty()) {
+                    byte[] decodedBytes = Base64.getDecoder().decode(image);
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(decodedBytes);                         
+                    BufferedImage bufImage;
+                    try {
+                        bufImage = ImageIO.read(inputStream);
+                        Image img = bufImage.getScaledInstance(120, 100, Image.SCALE_SMOOTH);
+                        icon = new ImageIcon(img);
+                        row[4] = icon;
+                    } catch (IOException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+                
+                tableModel.addRow(row);
+            }
+        }
+        
+        table.setModel(tableModel);
+        table.setRowHeight(100);
     }
 
     /**
@@ -33,6 +122,9 @@ public class ViewOfferInvolvedPublications extends javax.swing.JPanel {
         jTable2 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -64,6 +156,13 @@ public class ViewOfferInvolvedPublications extends javax.swing.JPanel {
 
         jLabel2.setText("Sus publicaciones");
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setText("Detalles de la oferta");
+
+        jLabel4.setText("UCUcoins ofrecidas: ");
+
+        jLabel5.setText("jLabel5");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,21 +170,28 @@ public class ViewOfferInvolvedPublications extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3))
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(385, 385, 385))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5))
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
@@ -101,6 +207,9 @@ public class ViewOfferInvolvedPublications extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;

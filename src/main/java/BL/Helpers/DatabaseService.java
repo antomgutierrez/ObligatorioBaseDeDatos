@@ -13,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -489,6 +488,7 @@ public class DatabaseService {
         return "";
     }
 
+
     public String[] getUserNamesMensajesRecibidos(String[] ci_mensajes_destino) throws SQLException {
         ArrayList<String> result = new ArrayList<>();
         Statement stmt = this.getConn().createStatement();
@@ -530,6 +530,20 @@ public class DatabaseService {
 
         }
         return mensajes;
+    }
+
+    public void deleteOferta(Oferta oferta) throws SQLException {
+        Statement stmt = this.getConn().createStatement();
+        
+        // Elimino los items de la oferta
+        String deleteOffer = String.format("DELETE FROM publicacion_ofertas WHERE id_oferta = %s", oferta.getIdOferta());
+        stmt.executeUpdate(deleteOffer);
+        
+        // Elimino la oferta
+        deleteOffer = String.format("DELETE FROM Ofertas WHERE id_oferta = %s", oferta.getIdOferta());
+        stmt.executeUpdate(deleteOffer);
+        
+        this.getConn().commit();
     }
 
 }

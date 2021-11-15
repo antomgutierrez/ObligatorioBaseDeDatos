@@ -112,7 +112,8 @@ public class PanelHome extends javax.swing.JPanel {
         btnAcceptOffer = new javax.swing.JButton();
         btnRejectOffer = new javax.swing.JButton();
         btnCounterOffer = new javax.swing.JButton();
-        btnVerPublicacionesInv = new javax.swing.JButton();
+        btnOfEnvVer = new javax.swing.JButton();
+        btnOfRecVer = new javax.swing.JButton();
         publishTab = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -361,6 +362,11 @@ public class PanelHome extends javax.swing.JPanel {
         btnRemoveOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnRemoveOffer.setForeground(new java.awt.Color(255, 102, 102));
         btnRemoveOffer.setText("Eliminar");
+        btnRemoveOffer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveOfferActionPerformed(evt);
+            }
+        });
 
         btnAcceptOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAcceptOffer.setForeground(new java.awt.Color(255, 102, 102));
@@ -383,13 +389,27 @@ public class PanelHome extends javax.swing.JPanel {
         btnCounterOffer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnCounterOffer.setForeground(new java.awt.Color(255, 102, 102));
         btnCounterOffer.setText("Contraoferta");
-
-        btnVerPublicacionesInv.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnVerPublicacionesInv.setForeground(new java.awt.Color(255, 102, 102));
-        btnVerPublicacionesInv.setText("Ver publicaciones involucradas");
-        btnVerPublicacionesInv.addActionListener(new java.awt.event.ActionListener() {
+        btnCounterOffer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVerPublicacionesInvActionPerformed(evt);
+                btnCounterOfferActionPerformed(evt);
+            }
+        });
+
+        btnOfEnvVer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnOfEnvVer.setForeground(new java.awt.Color(255, 102, 102));
+        btnOfEnvVer.setText("Ver");
+        btnOfEnvVer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOfEnvVerActionPerformed(evt);
+            }
+        });
+
+        btnOfRecVer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnOfRecVer.setForeground(new java.awt.Color(255, 102, 102));
+        btnOfRecVer.setText("Ver");
+        btnOfRecVer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOfRecVerActionPerformed(evt);
             }
         });
 
@@ -400,28 +420,22 @@ public class PanelHome extends javax.swing.JPanel {
             .addGroup(offersTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(offersTabLayout.createSequentialGroup()
                         .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(offersTabLayout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addGap(0, 749, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(18, 18, 18)
-                        .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnRemoveOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnRejectOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
-                                .addComponent(btnAcceptOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(btnCounterOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(offersTabLayout.createSequentialGroup()
-                        .addComponent(jLabel12)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12))
                         .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnOfRecVer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRemoveOffer, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                    .addComponent(btnRejectOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                    .addComponent(btnAcceptOffer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCounterOffer, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                    .addComponent(btnOfEnvVer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(offersTabLayout.createSequentialGroup()
-                .addGap(242, 242, 242)
-                .addComponent(btnVerPublicacionesInv, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         offersTabLayout.setVerticalGroup(
             offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -430,23 +444,26 @@ public class PanelHome extends javax.swing.JPanel {
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRemoveOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(offersTabLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel12)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnRemoveOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOfEnvVer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(offersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(offersTabLayout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(btnAcceptOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRejectOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCounterOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnVerPublicacionesInv, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCounterOffer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOfRecVer, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(offersTabLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -851,11 +868,23 @@ public class PanelHome extends javax.swing.JPanel {
         this.db.closeConnectionDB();
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void btnVerPublicacionesInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPublicacionesInvActionPerformed
-
-        // ACA TENEMOS QUE ABRIR UN POPUP QUE MUESTRE DE UN LADO LAS PUBLICACIONES QUE YO OFREZCO Y POR OTRO LADO LAS QUE ME OFRECEN        
-
-    }//GEN-LAST:event_btnVerPublicacionesInvActionPerformed
+    private void btnOfEnvVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOfEnvVerActionPerformed
+        try {
+            if (this.db.connectToDB()) {
+                int id = (int) tablaOfertasEnviadas.getValueAt(tablaOfertasEnviadas.getSelectedRow(), 0);
+                Oferta ofer = this.db.getOferta(id);
+                ViewOfferInvolvedPublications panel = new ViewOfferInvolvedPublications(this.db, ofer, this.persona);
+                JDialog dialog = new JDialog(this.frame, true);
+                dialog.setSize(panel.getPreferredSize());
+                dialog.setLocationRelativeTo(null);
+                dialog.getContentPane().add(panel);
+                dialog.setVisible(true);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        this.db.closeConnectionDB();
+    }//GEN-LAST:event_btnOfEnvVerActionPerformed
 
     private void btnPublishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublishActionPerformed
         String nombre = nombreField.getText();
@@ -1030,7 +1059,6 @@ public class PanelHome extends javax.swing.JPanel {
             System.out.println(e.getMessage());
         }
         this.db.closeConnectionDB();
-
     }//GEN-LAST:event_btnRejectOfferActionPerformed
 
     private void comboMensajesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboMensajesItemStateChanged
@@ -1066,6 +1094,61 @@ public class PanelHome extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_btnReplyMessageActionPerformed
+
+
+    private void btnRemoveOfferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveOfferActionPerformed
+        try {
+            int id = (int) tablaOfertasEnviadas.getValueAt(tablaOfertasEnviadas.getSelectedRow(), 0);
+            Oferta oferta = new Oferta(id);
+            if (this.db.connectToDB()) {
+                this.db.deleteOferta(oferta);
+            }
+            refreshOfertas();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        this.db.closeConnectionDB();
+    }//GEN-LAST:event_btnRemoveOfferActionPerformed
+
+    private void btnOfRecVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOfRecVerActionPerformed
+        try {
+            if (this.db.connectToDB()) {
+                int id = (int) tablaOfertasRecibidas.getValueAt(tablaOfertasRecibidas.getSelectedRow(), 0);
+                Oferta ofer = this.db.getOferta(id);
+                ViewOfferInvolvedPublications panel = new ViewOfferInvolvedPublications(this.db, ofer, this.persona);
+                JDialog dialog = new JDialog(this.frame, true);
+                dialog.setSize(panel.getPreferredSize());
+                dialog.setLocationRelativeTo(null);
+                dialog.getContentPane().add(panel);
+                dialog.setVisible(true);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        this.db.closeConnectionDB();
+    }//GEN-LAST:event_btnOfRecVerActionPerformed
+
+    private void btnCounterOfferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCounterOfferActionPerformed
+        try {
+            if (this.db.connectToDB()) {
+                int id = (int) tablaOfertasRecibidas.getValueAt(tablaOfertasRecibidas.getSelectedRow(), 0);
+                Oferta ofer = this.db.getOferta(id);
+                PanelCounterOffer panel = new PanelCounterOffer(this.persona, ofer, this.db);
+                JDialog dialog = new JDialog(this.frame, true);
+                dialog.setSize(panel.getPreferredSize());
+                dialog.setLocationRelativeTo(null);
+                dialog.getContentPane().add(panel);
+                panel.jCheckBox1.addItemListener((java.awt.event.ItemEvent evt1) -> {
+                    refreshOfertas();
+                    dialog.dispose();
+                });
+                dialog.setVisible(true);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        this.db.closeConnectionDB();
+    }//GEN-LAST:event_btnCounterOfferActionPerformed
 
     private void mostrarPublicacionesEnTabla(javax.swing.JTable table, List<Publicacion> listaPublicaciones) throws SQLException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -1157,7 +1240,8 @@ public class PanelHome extends javax.swing.JPanel {
                 listaCategorias.addItem(category);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PanelEditPublication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelEditPublication.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1171,7 +1255,8 @@ public class PanelHome extends javax.swing.JPanel {
                 comboMensajes.addItem(user);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PanelEditPublication.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelEditPublication.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1184,13 +1269,14 @@ public class PanelHome extends javax.swing.JPanel {
     private javax.swing.JButton btnCounterOffer;
     private javax.swing.JButton btnEditarPerfil;
     private javax.swing.JButton btnEditarPublicacion;
+    private javax.swing.JButton btnOfEnvVer;
+    private javax.swing.JButton btnOfRecVer;
     private javax.swing.JButton btnOffer;
     private javax.swing.JButton btnPublish;
     private javax.swing.JButton btnRejectOffer;
     private javax.swing.JButton btnRemoveOffer;
     private javax.swing.JButton btnReplyMessage;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnVerPublicacionesInv;
     private javax.swing.JTextField cantidadField;
     private javax.swing.ButtonGroup categoriesGroup;
     private javax.swing.JComboBox<String> comboCategories1;
@@ -1284,7 +1370,8 @@ public class PanelHome extends javax.swing.JPanel {
             mensajesTable.setModel(tableModel);
 
         } catch (SQLException ex) {
-            Logger.getLogger(PanelHome.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelHome.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
     }
